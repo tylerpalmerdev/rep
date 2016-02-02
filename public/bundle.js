@@ -7,14 +7,39 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'app/routes/rep/repTmpl.html',
     controller: 'repCtrl'
   })
+  .state('repfeed', {
+    parent: 'rep',
+    url: '/repfeed',
+    templateUrl: 'app/routes/rep/repfeed/repfeedTmpl.html',
+    controller: 'repfeedCtrl'
+  })
+  .state('newq', {
+    parent: 'rep',
+    url: '/newq',
+    templateUrl: 'app/routes/rep/newQ/newQTmpl.html',
+    controller: 'newQCtrl'
+  })
   .state('voter', {
     url: '/voter',
     templateUrl: 'app/routes/voter/voterTmpl.html',
     controller: 'voterCtrl'
+  })
+  .state('voterfeed', {
+    parent: 'voter',
+    url: '/voterfeed',
+    templateUrl: 'app/routes/voter/voterfeed/voterfeedTmpl.html',
+    controller: 'voterfeedTmpl'
+  })
+  .state('myreps', {
+    parent: 'voter',
+    url: '/myreps',
+    templateUrl: 'app/routes/voter/myreps/myrepsTmpl.html',
+    controller: 'myrepsCtrl'
   });
 
+
   $urlRouterProvider
-  .otherwise('/voter');
+  .otherwise('/rep');
 });
 
 repApp.service('districtSvc', function($http) {
@@ -184,17 +209,20 @@ repApp.service('repSvc', function($http) {
 
 repApp.controller('navbarCtrl', function($scope) {
   $scope.test = 'NAVBAR CTRL CONNECT';
-  $scope.auth = {
-    auth: true,
-    role: 'rep'
-  };
+  // $scope.currAuth = {
+  //   auth: true,
+  //   role: 'rep'
+  // };
 });
 
 repApp.directive('navBar', function() {
   return {
     templateUrl: 'app/directives/navbar/navbarTmpl.html',
     controller: 'navbarCtrl',
-    restrict: 'E'
+    restrict: 'E',
+    scope: {
+      currAuth: '='
+    }
   };
 });
 
@@ -213,12 +241,22 @@ repApp.directive('qBox', function() {
   };
 });
 
+repApp.controller('newQCtrl', function($scope) {
+
+});
+
 repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc) {
   $scope.test = 'REP CTLR CONNECT';
-  $scope.newQ = true;
+
+  $scope.currAuth = {
+    auth: true,
+    role: 'rep'
+  };
+
   $scope.newQObj = {
     options: []
   };
+
   $scope.repData = repSvc.getRepInfo('12ubasdg');
   districtSvc.getDistrictByLatLon($scope);
 
@@ -233,4 +271,16 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
 
 repApp.controller('voterCtrl', function($scope) {
   $scope.test = 'VOTER CTRL CONNECT';
+});
+
+repApp.controller('newQCtrl', function($scope) {
+
+});
+
+repApp.controller('repfeedCtrl', function($scope) {
+  $scope.test = 'repfeedCtrl connect';
+});
+
+repApp.controller('myrepsCtrl', function($scope) {
+  
 });

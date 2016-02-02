@@ -4,15 +4,11 @@ nav-bar {
   width: 100%;
   position: fixed;
   header {
-    .header-section {
       height: $header-section-height;
       padding: $header-section-padding-mobile;
       display: flex;
       flex-flow: row nowrap;
       align-items: center;
-    }
-
-    .header-top {
       background-color: $navbar-top-color;
       box-shadow: 0px 2px 2px #888888;
       justify-content: space-between;
@@ -27,7 +23,6 @@ nav-bar {
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
-
 
         .nav-icon {
           font-size: $nav-icon-font-size;
@@ -61,9 +56,6 @@ nav-bar {
       .active-icon {
         border-bottom: 2px solid white;
       }
-      }
     }
-
-
   }
 }

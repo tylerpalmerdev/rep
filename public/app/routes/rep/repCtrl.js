@@ -1,9 +1,15 @@
 repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc) {
   $scope.test = 'REP CTLR CONNECT';
-  $scope.newQ = true;
+
+  $scope.currAuth = {
+    auth: true,
+    role: 'rep'
+  };
+
   $scope.newQObj = {
     options: []
   };
+
   $scope.repData = repSvc.getRepInfo('12ubasdg');
   districtSvc.getDistrictByLatLon($scope);
 
