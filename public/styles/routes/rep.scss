@@ -1,0 +1,82 @@
+@import './../_variables.scss';
+
+.rep-content {
+  padding-top: $header-section-height;
+
+  .rep-info {
+    padding: $header-section-padding-mobile;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+
+    .rep-image {
+      width: 25%;
+      height: auto;
+    }
+
+    .rep-text {
+      margin-left: $rep-text-marg-l-mob;
+      .rep-title {
+        font-size: $rep-title-font-size-mob;
+      }
+
+      .rep-name {
+        font-size: $rep-name-font-size-mob;
+        font-weight: $bold-weight;
+      }
+
+      .electorate-info {
+        h5 {
+          margin: 5px auto;
+        }
+      }
+    }
+  }
+
+  .rep-questions {
+    h4 {
+      text-align: center;
+      margin: $req-q-h4-marg;
+    }
+
+    .question-filter {
+      display: flex;
+      flex-flow: row nowrap;
+
+      .filter-box {
+        width: 50%;
+        text-align: center;
+        padding: $rep-q-filter-box-padding;
+        border: 1px solid #888888;
+      }
+    }
+  }
+
+  .new-q-form {
+    padding: $header-section-padding-mobile;
+    
+    h3 {
+      margin: 0;
+    }
+
+    .form-group {
+      margin-bottom: $header-section-padding-mobile;
+
+      .group-label {
+        margin-bottom: $header-section-padding-mobile;
+        font-weight: bold;
+      }
+
+      .q-type-input {
+        input {
+          margin-right: $header-section-padding-mobile;
+        }
+      }
+
+      textarea {
+        width: 100%;
+        height: 15vh;
+      }
+    }
+  }
+}

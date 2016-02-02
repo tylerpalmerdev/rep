@@ -1,0 +1,11 @@
+<header>
+  <div class="header-top header-section">
+    <h2>REP</h2>
+    <nav ng-show="auth.auth">
+      <div class="nav-icon active-icon"><a href="#"><i class="fa fa-comments-o"></i></a></div>
+      <div ng-show="{{auth.role === 'voter'}}" class="nav-icon"><a href="#"><i class="fa fa-institution"></i></a></div>
+      <div ng-show="{{auth.role === 'rep'}}" class="nav-icon"><a href="#"><i class="fa fa-pencil-square-o"></i></a></div>
+      <div class="nav-icon"><a href="#"><i class="fa fa-cog"></i></a></div>
+    </nav>
+  </div>
+</header>

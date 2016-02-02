@@ -1,0 +1,36 @@
+{
+  "name": "dutiful",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/therealTP/dutiful.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/therealTP/dutiful/issues"
+  },
+  "homepage": "https://github.com/therealTP/dutiful#readme",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "cors": "^2.7.1",
+    "express": "^4.13.4",
+    "mongoose": "^4.3.7"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-ng-annotate": "^1.1.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-sass": "^2.1.1",
+    "gulp-watch": "^4.3.5",
+    "mongod": "^1.3.0",
+    "nodemon": "^1.8.1",
+    "path": "^0.12.7"
+  }
+}

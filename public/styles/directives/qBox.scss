@@ -1,0 +1,9 @@
+@import './../_variables.scss';
+
+.questions-container {
+  .question-box {
+    height: $q-box-height;
+    border-bottom: 1px solid #888888;
+    padding: $header-section-padding-mobile;
+  }
+}

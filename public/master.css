@@ -1,0 +1,159 @@
+*,
+*:after,
+*::before {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+}
+
+nav-bar {
+  width: 100%;
+  position: fixed;
+}
+
+nav-bar header .header-section {
+  height: 60px;
+  padding: 15px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+nav-bar header .header-top {
+  background-color: #008f00;
+  box-shadow: 0px 2px 2px #888888;
+  justify-content: space-between;
+}
+
+nav-bar header .header-top h2 {
+  margin: 0;
+  color: white;
+  font-family: "Josefin Slab", "Arial", sans-serif;
+}
+
+nav-bar header .header-top nav {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+nav-bar header .header-top nav .nav-icon {
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  margin-left: 35px;
+}
+
+nav-bar header .header-top nav .nav-icon i {
+  color: white;
+}
+
+nav-bar header .header-top nav .nav-icon:first-child {
+  padding-bottom: 4px;
+}
+
+nav-bar header .header-top nav .nav-icon:nth-of-type(2) {
+  padding-left: 2px;
+  padding-bottom: 3px;
+  font-size: 32px;
+}
+
+nav-bar header .header-top nav .nav-icon:nth-of-type(3) {
+  padding-top: 2px;
+  padding-left: 5px;
+}
+
+nav-bar header .header-top nav .active-icon {
+  border-bottom: 2px solid white;
+}
+
+.questions-container .question-box {
+  height: 80px;
+  border-bottom: 1px solid #888888;
+  padding: 15px;
+}
+
+.rep-content {
+  padding-top: 60px;
+}
+
+.rep-content .rep-info {
+  padding: 15px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.rep-content .rep-info .rep-image {
+  width: 25%;
+  height: auto;
+}
+
+.rep-content .rep-info .rep-text {
+  margin-left: 10px;
+}
+
+.rep-content .rep-info .rep-text .rep-title {
+  font-size: 20px;
+}
+
+.rep-content .rep-info .rep-text .rep-name {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.rep-content .rep-info .rep-text .electorate-info h5 {
+  margin: 5px auto;
+}
+
+.rep-content .rep-questions h4 {
+  text-align: center;
+  margin: 5px;
+}
+
+.rep-content .rep-questions .question-filter {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.rep-content .rep-questions .question-filter .filter-box {
+  width: 50%;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #888888;
+}
+
+.rep-content .new-q-form {
+  padding: 15px;
+}
+
+.rep-content .new-q-form h3 {
+  margin: 0;
+}
+
+.rep-content .new-q-form .form-group {
+  margin-bottom: 15px;
+}
+
+.rep-content .new-q-form .form-group .group-label {
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.rep-content .new-q-form .form-group .q-type-input input {
+  margin-right: 15px;
+}
+
+.rep-content .new-q-form .form-group textarea {
+  width: 100%;
+  height: 15vh;
+}
+
+.voter-content {
+  padding-top: 60px;
+}
