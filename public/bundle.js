@@ -184,6 +184,21 @@ repApp.service('questionSvc', function() {
 });
 
 repApp.service('repSvc', function($http) {
+  this.getAllReps = function() {
+    return $http({
+      method: 'GET',
+      url: 'http://localhost:9000/reps'
+    })
+    .then(
+      function(response) {
+        return response.data;
+      },
+      function(err) {
+        return err;
+      }
+    );
+  };
+
   this.getRepInfo = function(repId) {
     // GET /reps/:repId
     var repInfo = {
@@ -269,8 +284,13 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
 
 });
 
-repApp.controller('voterCtrl', function($scope) {
-  $scope.test = 'VOTER CTRL CONNECT';
+repApp.controller('voterCtrl', function($scope, repSvc) {
+  repSvc.getAllReps()
+  .then(
+    function(response) {
+      $scope.repData = response;
+    }
+  );
 });
 
 repApp.controller('newQCtrl', function($scope) {

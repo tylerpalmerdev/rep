@@ -1,3 +1,8 @@
-repApp.controller('voterCtrl', function($scope) {
-  $scope.test = 'VOTER CTRL CONNECT';
+repApp.controller('voterCtrl', function($scope, repSvc) {
+  repSvc.getAllReps()
+  .then(
+    function(response) {
+      $scope.repData = response;
+    }
+  );
 });

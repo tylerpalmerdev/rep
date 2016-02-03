@@ -1,4 +1,10 @@
 <nav-bar></nav-bar>
-<div class="voter-content">
-  <h3>VOTER PAGE</h3>
-</div>
+<ui-view></ui-view>
+<h3>Reps:</h3>
+<!-- <p ng-repeat="rep in repData">
+  {{rep.first_name}} {{rep.last_name}}
+</p> -->
+<h1>REPS</h1>
+<select ng-model="repSelect">
+  <option ng-repeat="rep in repData" ng-value="{{rep._id}}">{{rep.title}}. {{rep.first_name}} {{rep.last_name}} - {{rep.state}}</option>
+</select>

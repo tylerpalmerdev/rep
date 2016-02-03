@@ -1,4 +1,19 @@
 repApp.service('repSvc', function($http) {
+  this.getAllReps = function() {
+    return $http({
+      method: 'GET',
+      url: 'http://localhost:9000/reps'
+    })
+    .then(
+      function(response) {
+        return response.data;
+      },
+      function(err) {
+        return err;
+      }
+    );
+  };
+
   this.getRepInfo = function(repId) {
     // GET /reps/:repId
     var repInfo = {
