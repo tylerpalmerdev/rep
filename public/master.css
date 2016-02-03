@@ -11,6 +11,19 @@ body {
   font-family: "Arial", sans-serif;
 }
 
+dual-toggle .toggle-wrap {
+  display: flex;
+}
+
+dual-toggle .toggle-wrap .toggle {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: 1px solid black;
+}
+
 nav-bar {
   width: 100%;
   position: fixed;
@@ -158,6 +171,47 @@ nav-bar header nav .active-icon {
   text-align: center;
   padding: 10px;
   border: 1px solid #888888;
+}
+
+.signup-content {
+  background-color: #d6d6d6;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-content .signup-form {
+  width: 90%;
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.signup-content .signup-form dual-toggle .active-toggle {
+  background-color: #d6d6d6;
+  color: white;
+  font-weight: bold;
+}
+
+.signup-content .signup-form .form-group {
+  margin-top: 10px;
+}
+
+.signup-content .signup-form .form-group input {
+  display: block;
+  width: 100%;
+  border: 2px solid gray;
+}
+
+.signup-content .signup-form .form-group .input-text {
+  font-size: 10px;
+  font-style: italic;
 }
 
 .voter-content {

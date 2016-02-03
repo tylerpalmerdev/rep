@@ -13,31 +13,28 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
     controller: 'newQCtrl'
   })
   .state('voter', {
-    url: '/voter',
+    url: '/voter/:voterId',
     templateUrl: 'app/routes/voter/voterTmpl.html',
     controller: 'voterCtrl'
   })
-  .state('voterfeed', {
-    parent: 'voter',
-    url: '/voterfeed',
-    templateUrl: 'app/routes/voter/voterfeed/voterfeedTmpl.html',
-    controller: 'voterfeedTmpl'
-  })
   .state('myreps', {
-    parent: 'voter',
-    url: '/myreps',
-    templateUrl: 'app/routes/voter/myreps/myrepsTmpl.html',
+    url: '/myreps/:voterId',
+    templateUrl: 'app/routes/myreps/myrepsTmpl.html',
     controller: 'myrepsCtrl'
   })
-  .state('land', {
-    url: '/',
-    templateUrl: 'app/routes/land/landTmpl.html',
-    controller: 'landCtrl'
+  .state('login', {
+    url: '/login',
+    templateUrl: 'app/routes/login/loginTmpl.html',
+    controller: 'loginCtrl'
+  })
+  .state('signup', {
+    url: '/signup',
+    templateUrl: 'app/routes/signup/signupTmpl.html',
+    controller: 'signupCtrl'
   });
 
-
   $urlRouterProvider
-  .otherwise('/');
+  .otherwise('/login');
 });
 
 repApp.service('districtSvc', function($http) {
@@ -213,35 +210,18 @@ repApp.service('repSvc', function($http) {
   };
 });
 
-repApp.controller('navbarCtrl', function($scope, $state) {
-  $scope.test = 'NAVBAR CTRL CONNECT';
-  $scope.currState = $state.current.name;
-  if($scope.currState === 'rep') {
-    $scope.repState = true;
-  } else if ($scope.currState === 'newq') {
-    $scope.newqState = true;
-  }
-});
-
-repApp.directive('navBar', function() {
-  return {
-    templateUrl: 'app/directives/navbar/navbarTmpl.html',
-    controller: 'navbarCtrl',
-    restrict: 'E',
-    scope: {
-      currAuth: '='
-    }
-  };
-});
-
-repApp.controller('landCtrl', function($scope, $state, repSvc) {
-  $scope.test = 'Land CTRL connect';
+repApp.controller('loginCtrl', function($scope, $state, repSvc) {
+  $scope.test = 'Login CTRL connect';
   repSvc.getAllReps()
   .then(
     function(response) {
       $scope.repData = response;
     }
   );
+});
+
+repApp.controller('myrepsCtrl', function($scope) {
+  
 });
 
 repApp.controller('newQCtrl', function($scope, $stateParams) {
@@ -290,8 +270,98 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
 
 });
 
+repApp.controller('signupCtrl', function($scope) {
+  $scope.test = 'SIGNUP CTRL CONNECT';
+  $scope.roleOptions = [
+    {
+      label: 'Representative',
+      value: 'rep',
+      defaultOption: true
+    },
+    {
+      label: 'Voter',
+      value: 'voter'
+    }
+  ];
+});
+
 repApp.controller('voterCtrl', function($scope, repSvc) {
   $scope.test = 'voter ctrl connect';
+});
+
+repApp.controller('dualToggleCtrl', function($scope) {
+
+  $scope.highlightBox = function(boxIndex) {
+    if (boxIndex === 0) {
+      $scope.first = true;
+      $scope.second = false;
+    } else if (boxIndex === 1) {
+      $scope.second = true;
+      $scope.first = false;
+    }
+  };
+
+  // optional 'defaultOption' property on option objects.
+  $scope.options.forEach(function(elem, i, arr) {
+    if (elem.defaultOption) {
+      $scope.selected = elem.value;
+      $scope.highlightBox(i);
+    }
+  });
+
+  $scope.select = function(option) {
+    $scope.selected = $scope.options[option].value;
+    $scope.highlightBox(option);
+  };
+});
+
+/*
+Example data:
+$scope.roleOptions = [
+  {
+    label: 'Representative',
+    value: 'rep',
+    defaultOption: true
+  },
+  {
+    label: 'Voter',
+    value: 'voter'
+  }
+];
+*/
+
+repApp.directive('dualToggle', function() {
+  return {
+    templateUrl: 'app/directives/dualToggle/dualToggleTmpl.html',
+    controller: 'dualToggleCtrl',
+    restrict: 'E',
+    scope: {
+      options: '=', // arr with two objects
+      selected: '=', // pass back up to $scope
+      toggleDefualt: '@'
+    }
+  };
+});
+
+repApp.controller('navbarCtrl', function($scope, $state) {
+  $scope.test = 'NAVBAR CTRL CONNECT';
+  $scope.currState = $state.current.name;
+  if($scope.currState === 'rep') {
+    $scope.repState = true;
+  } else if ($scope.currState === 'newq') {
+    $scope.newqState = true;
+  }
+});
+
+repApp.directive('navBar', function() {
+  return {
+    templateUrl: 'app/directives/navbar/navbarTmpl.html',
+    controller: 'navbarCtrl',
+    restrict: 'E',
+    scope: {
+      currAuth: '='
+    }
+  };
 });
 
 repApp.controller('qBoxCtrl', function($scope) {
@@ -307,8 +377,4 @@ repApp.directive('qBox', function() {
       rep: '@'
     }
   };
-});
-
-repApp.controller('myrepsCtrl', function($scope) {
-  
 });

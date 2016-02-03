@@ -13,29 +13,26 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
     controller: 'newQCtrl'
   })
   .state('voter', {
-    url: '/voter',
+    url: '/voter/:voterId',
     templateUrl: 'app/routes/voter/voterTmpl.html',
     controller: 'voterCtrl'
   })
-  .state('voterfeed', {
-    parent: 'voter',
-    url: '/voterfeed',
-    templateUrl: 'app/routes/voter/voterfeed/voterfeedTmpl.html',
-    controller: 'voterfeedTmpl'
-  })
   .state('myreps', {
-    parent: 'voter',
-    url: '/myreps',
-    templateUrl: 'app/routes/voter/myreps/myrepsTmpl.html',
+    url: '/myreps/:voterId',
+    templateUrl: 'app/routes/myreps/myrepsTmpl.html',
     controller: 'myrepsCtrl'
   })
-  .state('land', {
-    url: '/',
-    templateUrl: 'app/routes/land/landTmpl.html',
-    controller: 'landCtrl'
+  .state('login', {
+    url: '/login',
+    templateUrl: 'app/routes/login/loginTmpl.html',
+    controller: 'loginCtrl'
+  })
+  .state('signup', {
+    url: '/signup',
+    templateUrl: 'app/routes/signup/signupTmpl.html',
+    controller: 'signupCtrl'
   });
 
-
   $urlRouterProvider
-  .otherwise('/');
+  .otherwise('/login');
 });
