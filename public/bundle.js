@@ -3,20 +3,13 @@ var repApp = angular.module('repApp', ['ui.router', 'ngAnimate']);
 repApp.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
   .state('rep', {
-    url: '/rep',
+    url: '/rep/:repId',
     templateUrl: 'app/routes/rep/repTmpl.html',
     controller: 'repCtrl'
   })
-  .state('repfeed', {
-    parent: 'rep',
-    url: '/repfeed',
-    templateUrl: 'app/routes/rep/repfeed/repfeedTmpl.html',
-    controller: 'repfeedCtrl'
-  })
   .state('newq', {
-    parent: 'rep',
-    url: '/newq',
-    templateUrl: 'app/routes/rep/newQ/newQTmpl.html',
+    url: '/newq/:repId',
+    templateUrl: 'app/routes/newQ/newQTmpl.html',
     controller: 'newQCtrl'
   })
   .state('voter', {
@@ -35,11 +28,16 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
     url: '/myreps',
     templateUrl: 'app/routes/voter/myreps/myrepsTmpl.html',
     controller: 'myrepsCtrl'
+  })
+  .state('land', {
+    url: '/',
+    templateUrl: 'app/routes/land/landTmpl.html',
+    controller: 'landCtrl'
   });
 
 
   $urlRouterProvider
-  .otherwise('/rep');
+  .otherwise('/');
 });
 
 repApp.service('districtSvc', function($http) {
@@ -187,7 +185,7 @@ repApp.service('repSvc', function($http) {
   this.getAllReps = function() {
     return $http({
       method: 'GET',
-      url: 'http://localhost:9000/reps'
+      url: '/reps'
     })
     .then(
       function(response) {
@@ -199,35 +197,30 @@ repApp.service('repSvc', function($http) {
     );
   };
 
-  this.getRepInfo = function(repId) {
+  this.getRepInfo = function(repId) { // uses bioguide_id
     // GET /reps/:repId
-    var repInfo = {
-      name: 'Barbara Boxer',
-      title: 'Senator',
-      state: 'CA',
-      district: 6,
-      state_name: 'California',
-      year_elected: '1992',
-      address: '123 Capitol Hill, Washington, DC, 12345',
-      website: 'barbara-boxer.senate.gov',
-      official_email: 'barbara@senate.gov',
-      registered: true,
-      phone: '202-123-5435',
-      rep_id: 'ik8jhasi98h',
-      bioguide_id: 'B000711',
-      photo_url: "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B000711.jpg"
-    };
-
-    return repInfo;
+    return $http({
+      method: 'GET',
+      url: '/reps/' + repId
+    })
+    .then(
+      function(response) {
+        var data = response.data[0];
+        data.photo_url = "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/" + repId + ".jpg";
+        return data;
+      }
+    );
   };
 });
 
-repApp.controller('navbarCtrl', function($scope) {
+repApp.controller('navbarCtrl', function($scope, $state) {
   $scope.test = 'NAVBAR CTRL CONNECT';
-  // $scope.currAuth = {
-  //   auth: true,
-  //   role: 'rep'
-  // };
+  $scope.currState = $state.current.name;
+  if($scope.currState === 'rep') {
+    $scope.repState = true;
+  } else if ($scope.currState === 'newq') {
+    $scope.newqState = true;
+  }
 });
 
 repApp.directive('navBar', function() {
@@ -239,6 +232,66 @@ repApp.directive('navBar', function() {
       currAuth: '='
     }
   };
+});
+
+repApp.controller('landCtrl', function($scope, $state, repSvc) {
+  $scope.test = 'Land CTRL connect';
+  repSvc.getAllReps()
+  .then(
+    function(response) {
+      $scope.repData = response;
+    }
+  );
+});
+
+repApp.controller('newQCtrl', function($scope, $stateParams) {
+  $scope.currAuth = {
+    auth: true,
+    role: 'rep',
+    repId: $stateParams.repId
+  };
+});
+
+repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc) {
+
+  $scope.currAuth = {
+    auth: true,
+    role: 'rep',
+    repId: $stateParams.repId
+  };
+
+  $scope.newQObj = {
+    options: []
+  };
+
+  $scope.qFilter = 'active';
+  $scope.changeQFilter = function(filterBy) {
+    $scope.qFilter = filterBy;
+  };
+
+  $scope.repQs = questionSvc.getQsForRep('aoku78asd');
+
+  $scope.isSen = true;
+  repSvc.getRepInfo($stateParams.repId)
+  .then(
+    function(response) {
+      $scope.repData = response;
+      if($scope.repData.title === 'Sen') {
+        $scope.repTitle = 'Senator';
+        $scope.isSen = true;
+      } else if ($scope.repData.title === 'Rep') {
+        $scope.repTitle = 'Representative';
+        $scope.isSen = false;
+      } else {
+        $scope.repTitle = $scope.repData.title + '.';
+      }
+    }
+  );
+
+});
+
+repApp.controller('voterCtrl', function($scope, repSvc) {
+  $scope.test = 'voter ctrl connect';
 });
 
 repApp.controller('qBoxCtrl', function($scope) {
@@ -254,51 +307,6 @@ repApp.directive('qBox', function() {
       rep: '@'
     }
   };
-});
-
-repApp.controller('newQCtrl', function($scope) {
-
-});
-
-repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc) {
-  $scope.test = 'REP CTLR CONNECT';
-
-  $scope.currAuth = {
-    auth: true,
-    role: 'rep'
-  };
-
-  $scope.newQObj = {
-    options: []
-  };
-
-  $scope.repData = repSvc.getRepInfo('12ubasdg');
-  districtSvc.getDistrictByLatLon($scope);
-
-  $scope.qFilter = 'active';
-  $scope.changeQFilter = function(filterBy) {
-    $scope.qFilter = filterBy;
-  };
-
-  $scope.repQs = questionSvc.getQsForRep('aoku78asd');
-
-});
-
-repApp.controller('voterCtrl', function($scope, repSvc) {
-  repSvc.getAllReps()
-  .then(
-    function(response) {
-      $scope.repData = response;
-    }
-  );
-});
-
-repApp.controller('newQCtrl', function($scope) {
-
-});
-
-repApp.controller('repfeedCtrl', function($scope) {
-  $scope.test = 'repfeedCtrl connect';
 });
 
 repApp.controller('myrepsCtrl', function($scope) {

@@ -3,20 +3,13 @@ var repApp = angular.module('repApp', ['ui.router', 'ngAnimate']);
 repApp.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
   .state('rep', {
-    url: '/rep',
+    url: '/rep/:repId',
     templateUrl: 'app/routes/rep/repTmpl.html',
     controller: 'repCtrl'
   })
-  .state('repfeed', {
-    parent: 'rep',
-    url: '/repfeed',
-    templateUrl: 'app/routes/rep/repfeed/repfeedTmpl.html',
-    controller: 'repfeedCtrl'
-  })
   .state('newq', {
-    parent: 'rep',
-    url: '/newq',
-    templateUrl: 'app/routes/rep/newQ/newQTmpl.html',
+    url: '/newq/:repId',
+    templateUrl: 'app/routes/newQ/newQTmpl.html',
     controller: 'newQCtrl'
   })
   .state('voter', {
@@ -35,9 +28,14 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
     url: '/myreps',
     templateUrl: 'app/routes/voter/myreps/myrepsTmpl.html',
     controller: 'myrepsCtrl'
+  })
+  .state('land', {
+    url: '/',
+    templateUrl: 'app/routes/land/landTmpl.html',
+    controller: 'landCtrl'
   });
 
 
   $urlRouterProvider
-  .otherwise('/rep');
+  .otherwise('/');
 });

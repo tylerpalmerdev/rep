@@ -1,15 +1,17 @@
 <header>
     <h2>REP</h2>
     <nav ng-show="currAuth.auth">
-      <div class="nav-icon active-icon">
-        <a ng-show="{{currAuth.role === 'rep'}}" ui-sref="repfeed"><i class="fa fa-comments-o"></i></a>
-        <a ng-hide="{{currAuth.role === 'rep'}}" ui-sref="voterfeed"><i class="fa fa-comments-o"></i></a>
+      <div class="nav-icon" ng-show="{{currAuth.role === 'rep'}}" ng-class="{'active-icon': repState}">
+        <a ui-sref="rep({repId:currAuth.repId})"><i class="fa fa-comments-o"></i></a>
+      </div>
+      <div class="nav-icon" ng-hide="{{currAuth.role === 'rep'}}" >
+        <a ui-sref="voterfeed"><i class="fa fa-comments-o"></i></a>
       </div>
       <div ng-hide="{{currAuth.role === 'rep'}}" class="nav-icon">
         <a ui-sref="myreps" href="#"><i class="fa fa-institution"></i></a>
       </div>
-      <div ng-show="{{currAuth.role === 'rep'}}" class="nav-icon">
-        <a ui-sref="newq"><i class="fa fa-pencil-square-o"></i></a>
+      <div ng-show="{{currAuth.role === 'rep'}}" class="nav-icon" ng-class="{'active-icon': newqState}">
+        <a ui-sref="newq({repId:currAuth.repId})"><i class="fa fa-pencil-square-o"></i></a>
       </div>
       <div class="nav-icon"><a ui-sref="settings"><i class="fa fa-cog"></i></a></div>
     </nav>

@@ -2,7 +2,7 @@ repApp.service('repSvc', function($http) {
   this.getAllReps = function() {
     return $http({
       method: 'GET',
-      url: 'http://localhost:9000/reps'
+      url: '/reps'
     })
     .then(
       function(response) {
@@ -14,25 +14,18 @@ repApp.service('repSvc', function($http) {
     );
   };
 
-  this.getRepInfo = function(repId) {
+  this.getRepInfo = function(repId) { // uses bioguide_id
     // GET /reps/:repId
-    var repInfo = {
-      name: 'Barbara Boxer',
-      title: 'Senator',
-      state: 'CA',
-      district: 6,
-      state_name: 'California',
-      year_elected: '1992',
-      address: '123 Capitol Hill, Washington, DC, 12345',
-      website: 'barbara-boxer.senate.gov',
-      official_email: 'barbara@senate.gov',
-      registered: true,
-      phone: '202-123-5435',
-      rep_id: 'ik8jhasi98h',
-      bioguide_id: 'B000711',
-      photo_url: "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/B000711.jpg"
-    };
-
-    return repInfo;
+    return $http({
+      method: 'GET',
+      url: '/reps/' + repId
+    })
+    .then(
+      function(response) {
+        var data = response.data[0];
+        data.photo_url = "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/" + repId + ".jpg";
+        return data;
+      }
+    );
   };
 });

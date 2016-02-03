@@ -1,2 +1,31 @@
 <nav-bar curr-auth="currAuth"></nav-bar>
-<ui-view></ui-view>
+<!-- <ui-view></ui-view> -->
+<div class="rep-content">
+  <div class="rep-info">
+    <img ng-src="{{repData.photo_url}}" class="rep-image"/>
+    <div class="rep-text">
+      <!-- {{repData}} -->
+      <div class="rep-title">
+        {{repTitle}}
+      </div>
+      <div class="rep-name">
+        {{repData.first_name}} {{repData.last_name}}
+      </div>
+      <div class="electorate-info">
+        {{repData.state_name}} <span ng-hide="isSen">District {{repData.district}}</span>
+      </div>
+    </div>
+    <!-- <a ui-sref="newq({repId: currAuth.repId})">CLEEK</a> -->
+  </div>
+  <div class="rep-questions">
+    <h4>QUESTIONS ASKED</h4>
+    <div class="question-filter">
+      <div ng-click="changeQFilter('active')" class="filter-box">ACTIVE</div>
+      <div ng-click="changeQFilter('completed')" class="filter-box">COMPLETED</div>
+    </div>
+    <div class="questions-container">
+      <q-box ng-repeat="question in repQs" q-info="question" rep="{{true}}">
+      </q-box>
+    </div>
+  </div>
+</div>
