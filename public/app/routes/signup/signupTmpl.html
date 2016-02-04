@@ -1,0 +1,46 @@
+<div class="signup-content">
+  <h3>REP</h3>
+  <p>
+    Sign up below.
+  </p>
+  <form class="signup-form">
+    <p>
+      Select account type:
+    </p>
+    <dual-toggle options="roleOptions" selected="newUserObj.role"></dual-toggle>
+
+    <div ng-show="newUserObj.role === 'rep'" class="form-group">
+      <label>Representative: </label>
+      <rep-select rep-id="newUserObj.rep_id"></rep-select>
+    </div>
+
+    <div class="form-group">
+      <label>Name: </label>
+      <input ng-model="newUserObj.name"type="text">
+    </div>
+
+    <div ng-show="newUserObj.role === 'voter'" class="form-group">
+      <label>Address: </label>
+      <address-search address-data="newUserObj.addressData"></address-search>
+      <div class="input-text">Used to determine who your representatives are.</div>
+      <div ng-show="addressSelected" class="district-text">
+        Your District: {{newUserObj.addressData.state_long}} - {{newUserObj.district.district}}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email: </label>
+      <input ng-model="newUserObj.email" type="text">
+    </div>
+
+    <div class="form-group">
+      <label>Choose Password: </label>
+      <input ng-model="newUserObj.pass" type="text">
+    </div>
+    <button ng-click="register(newUserObj)" type="button" name="button">Sign Up</button>
+  </form>
+
+  <div class="">
+    Already signed up? <a ui-sref="login">Log in</a> here.
+  </div>
+</div>

@@ -1,0 +1,40 @@
+@import './../_variables.scss';
+
+.signup-content {
+  background-color: $body-color;
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+
+  .signup-form {
+    width: 90%;
+    background-color: $form-color;
+    border-radius: $form-border-radius;
+    padding: $form-padding;
+
+    dual-toggle {
+      .active-toggle {
+        background-color: $body-color;
+        color: $form-color;
+        font-weight: bold;
+      }
+    }
+
+    .form-group {
+      margin-top: 10px;
+      input {
+        display: block;
+        width: 100%;
+        border: 2px solid gray;
+      }
+
+      .input-text {
+        font-size: 10px;
+        font-style: italic;
+      }
+    }
+  }
+}
