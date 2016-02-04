@@ -10,10 +10,17 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
     options: []
   };
 
-  $scope.qFilter = 'active';
-  $scope.changeQFilter = function(filterBy) {
-    $scope.qFilter = filterBy;
-  };
+  $scope.filterOptions = [
+    {
+      label: 'Active',
+      value: 'active',
+      defaultOption: true
+    },
+    {
+      label: 'Completed',
+      value: 'completed'
+    }
+  ];
 
   $scope.repQs = questionSvc.getQsForRep('aoku78asd');
 

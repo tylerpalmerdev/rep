@@ -14,14 +14,11 @@
         {{repData.state_name}} <span ng-hide="isSen">District {{repData.district}}</span>
       </div>
     </div>
-    <!-- <a ui-sref="newq({repId: currAuth.repId})">CLEEK</a> -->
   </div>
   <div class="rep-questions">
     <h4>QUESTIONS ASKED</h4>
-    <div class="question-filter">
-      <div ng-click="changeQFilter('active')" class="filter-box">ACTIVE</div>
-      <div ng-click="changeQFilter('completed')" class="filter-box">COMPLETED</div>
-    </div>
+    {{qFilter}}
+    <dual-toggle options="filterOptions" selected="qFilter"></dual-toggle>
     <div class="questions-container">
       <q-box ng-repeat="question in repQs" q-info="question" rep="{{true}}">
       </q-box>

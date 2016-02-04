@@ -1,4 +1,6 @@
-repApp.service('repSvc', function($http) {
+repApp.service('repSvc', function($http, constants) {
+
+  // get all rep info from own db
   this.getAllReps = function() {
     return $http({
       method: 'GET',
@@ -14,8 +16,9 @@ repApp.service('repSvc', function($http) {
     );
   };
 
+  // get single rep info from own db
   this.getRepInfo = function(repId) { // uses bioguide_id
-    // GET /reps/:repId
+
     return $http({
       method: 'GET',
       url: '/reps/' + repId
@@ -23,9 +26,10 @@ repApp.service('repSvc', function($http) {
     .then(
       function(response) {
         var data = response.data[0];
-        data.photo_url = "https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/" + repId + ".jpg";
+        data.photo_url = constants.repPhotosBaseUrl + repId + ".jpg";
         return data;
       }
     );
   };
-});
+
+}); // END

@@ -1,19 +1,14 @@
-repApp.service('districtSvc', function($http) {
-  var sunlightBaseUrl = 'https://congress.api.sunlightfoundation.com';
-  var sunlightApiKey = 'c8b4c2f1a90e4d76adf7c80417b20882';
+repApp.service('districtSvc', function($http, constants) {
+  // uses sunlight api
+  this.getDistrictByLatLon = function(lat, lng) {
 
-  this.getDistrictByLatLon = function(scopeObj) {
-    // get lat lon from address/google map
-    var lat = 33.799828;
-    var lon = -118.352848;
-
-    $http({
+    return $http({
       method: 'GET',
-      url: (sunlightBaseUrl + '/districts/locate?apikey=' + sunlightApiKey + '&latitude=' + lat + '&longitude=' + lon)
+      url: (constants.sunlightBaseUrl + '/districts/locate?apikey=' + constants.sunlightApiKey + '&latitude=' + lat + '&longitude=' + lng)
     })
     .then(
       function(response) {
-        scopeObj.district = response.data.results[0];
+        return response.data.results[0];
       }
     );
   };
