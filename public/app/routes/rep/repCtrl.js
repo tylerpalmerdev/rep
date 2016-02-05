@@ -1,10 +1,10 @@
 repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc) {
 
-  $scope.currAuth = {
-    auth: true,
-    role: 'rep',
-    repId: $stateParams.repId
-  };
+  // $scope.currAuth = {
+  //   auth: true,
+  //   role: 'rep',
+  //   repId: $stateParams.repId
+  // };
 
   $scope.newQObj = {
     options: []

@@ -1,9 +1,8 @@
-<nav-bar curr-auth="currAuth"></nav-bar>
+<nav-bar curr-auth="currUserData"></nav-bar>
 <div class="rep-content">
   <div class="rep-info">
     <img ng-src="{{repData.photo_url}}" class="rep-image"/>
     <div class="rep-text">
-      <!-- {{repData}} -->
       <div class="rep-title">
         {{repTitle}}
       </div>
@@ -15,6 +14,7 @@
       </div>
     </div>
   </div>
+  {{currUserData}}
   <div class="rep-questions">
     <h4>QUESTIONS ASKED</h4>
     {{qFilter}}

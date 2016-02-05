@@ -23,6 +23,7 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
       var lat = $scope.newUserObj.addressData.lat;
       var lng = $scope.newUserObj.addressData.lng;
 
+      // pull district data
       districtSvc.getDistrictByLatLon(lat, lng)
       .then(
         function(response) {
@@ -34,11 +35,10 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
   });
 
   $scope.register = function(newUserObj) {
-    // console.log(newUserObj);
     authSvc.registerNewUser(newUserObj)
     .then(
       function(response) {
-        console.log(response);
+        $scope.updateCurrUserData();
       },
       function(err) {
         console.log(err);

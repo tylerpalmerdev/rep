@@ -48,8 +48,8 @@ repApp.service('authSvc', function($http, $state) {
     })
     .then(
       function(response) {
-        console.log('user logged out');
         $state.go('login');
+        return response.data;
       }
     );
   };
@@ -61,7 +61,7 @@ repApp.service('authSvc', function($http, $state) {
     })
     .then(
       function(response) {
-        console.log(response);
+        return response.data;
       }
     );
   };

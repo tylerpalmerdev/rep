@@ -173,6 +173,10 @@ nav-bar header nav .active-icon {
   border: 1px solid #888888;
 }
 
+.settings-content {
+  padding-top: 100px;
+}
+
 .signup-content {
   background-color: #d6d6d6;
   position: absolute;

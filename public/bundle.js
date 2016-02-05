@@ -22,6 +22,11 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'app/routes/myreps/myrepsTmpl.html',
     controller: 'myrepsCtrl'
   })
+  .state('settings', {
+    url: '/settings',
+    templateUrl: 'app/routes/settings/settingsTmpl.html',
+    controller: 'settingsCtrl'
+  })
   .state('login', {
     url: '/login',
     templateUrl: 'app/routes/login/loginTmpl.html',
@@ -35,6 +40,22 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
 
   $urlRouterProvider
   .otherwise('/login');
+});
+
+repApp.controller('repAppCtrl', function($scope, authSvc) {
+
+  $scope.updateCurrUserData = function() {
+    authSvc.getCurrUser()
+    .then(
+      function(response) {
+        $scope.currUserData = response;
+        console.log('Current user data updated to:', $scope.currUserData);
+      }
+    );
+  };
+
+  $scope.updateCurrUserData();
+
 });
 
 repApp.service('authSvc', function($http, $state) {
@@ -87,8 +108,8 @@ repApp.service('authSvc', function($http, $state) {
     })
     .then(
       function(response) {
-        console.log('user logged out');
         $state.go('login');
+        return response.data;
       }
     );
   };
@@ -100,7 +121,7 @@ repApp.service('authSvc', function($http, $state) {
     })
     .then(
       function(response) {
-        console.log(response);
+        return response.data;
       }
     );
   };
@@ -407,10 +428,6 @@ repApp.controller('navbarCtrl', function($scope, $state, authSvc) {
   } else if ($scope.currState === 'newq') {
     $scope.newqState = true;
   }
-
-  $scope.logoutUser = function() {
-    authSvc.logout();
-  };
 });
 
 repApp.directive('navBar', function() {
@@ -472,15 +489,13 @@ repApp.controller('loginCtrl', function($scope, $state, repSvc, authSvc) {
     authSvc.loginUser(userObj)
     .then(
       function(response) {
-        console.log(response);
+        $scope.updateCurrUserData();
       },
       function(err) {
         console.log(err);
       }
     )
   };
-
-  authSvc.getCurrUser();
 
 });
 
@@ -514,11 +529,11 @@ repApp.controller('newQCtrl', function($scope, $stateParams) {
 
 repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc) {
 
-  $scope.currAuth = {
-    auth: true,
-    role: 'rep',
-    repId: $stateParams.repId
-  };
+  // $scope.currAuth = {
+  //   auth: true,
+  //   role: 'rep',
+  //   repId: $stateParams.repId
+  // };
 
   $scope.newQObj = {
     options: []
@@ -557,6 +572,18 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
 
 });
 
+repApp.controller('settingsCtrl', function($scope, authSvc) {
+  $scope.test = 'settingsCtrl connect';
+  $scope.logout = function() {
+    authSvc.logout()
+    .then(
+      function(response) {
+        $scope.updateCurrUserData();
+      }
+    );
+  };
+});
+
 repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
 
   // custom options for dual-toggle directive
@@ -582,6 +609,7 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
       var lat = $scope.newUserObj.addressData.lat;
       var lng = $scope.newUserObj.addressData.lng;
 
+      // pull district data
       districtSvc.getDistrictByLatLon(lat, lng)
       .then(
         function(response) {
@@ -593,11 +621,10 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
   });
 
   $scope.register = function(newUserObj) {
-    // console.log(newUserObj);
     authSvc.registerNewUser(newUserObj)
     .then(
       function(response) {
-        console.log(response);
+        $scope.updateCurrUserData();
       },
       function(err) {
         console.log(err);

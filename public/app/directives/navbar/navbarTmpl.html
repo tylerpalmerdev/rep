@@ -1,21 +1,22 @@
 <header>
     <h2>REP</h2>
-    <nav ng-show="currAuth.auth">
+    <!-- {{currAuth}} -->
+    <nav ng-show="currAuth">
       <div class="nav-icon" ng-show="{{currAuth.role === 'rep'}}" ng-class="{'active-icon': repState}">
-        <a ui-sref="rep({repId:currAuth.repId})"><i class="fa fa-comments-o"></i></a>
+        <a ui-sref="rep({repId:currAuth.bioguide_id})"><i class="fa fa-comments-o"></i></a>
       </div>
       <div class="nav-icon" ng-hide="{{currAuth.role === 'rep'}}" >
-        <a ui-sref="voterfeed"><i class="fa fa-comments-o"></i></a>
+        <a ui-sref="voter({voterId: currAuth._id})"><i class="fa fa-comments-o"></i></a>
       </div>
       <div ng-hide="{{currAuth.role === 'rep'}}" class="nav-icon">
-        <a ui-sref="myreps" href="#"><i class="fa fa-institution"></i></a>
+        <a ui-sref="myreps({voterId: currAuth._id})" href="#"><i class="fa fa-institution"></i></a>
       </div>
       <div ng-show="{{currAuth.role === 'rep'}}" class="nav-icon" ng-class="{'active-icon': newqState}">
-        <a ui-sref="newq({repId:currAuth.repId})"><i class="fa fa-pencil-square-o"></i></a>
+        <a ui-sref="newq({repId:currAuth.bioguide_id})"><i class="fa fa-pencil-square-o"></i></a>
       </div>
-      <div class="nav-icon"><a ng-click="logoutUser()"><i class="fa fa-sign-out"></i></a></div>
+      <div class="nav-icon"><a ui-sref="settings"><i class="fa fa-gear"></i></a></div>
     </nav>
-    <div ng-hide="currAuth.auth" class="signup-link">
+    <div ng-hide="currAuth" class="signup-link">
       <a ui-sref="login">LOGIN</a> or <a ui-sref="register">REGISTER</a>
     </div>
 </header>

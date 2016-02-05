@@ -22,6 +22,11 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'app/routes/myreps/myrepsTmpl.html',
     controller: 'myrepsCtrl'
   })
+  .state('settings', {
+    url: '/settings',
+    templateUrl: 'app/routes/settings/settingsTmpl.html',
+    controller: 'settingsCtrl'
+  })
   .state('login', {
     url: '/login',
     templateUrl: 'app/routes/login/loginTmpl.html',

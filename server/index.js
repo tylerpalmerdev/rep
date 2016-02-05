@@ -39,9 +39,6 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// config passport-local to use User model for auth
-// passport.use(User.createStrategy());
-
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
     console.log("user serialized:", user);
@@ -163,10 +160,9 @@ app.get('/currUser', function(req, res) {
 });
 
 app.get('/logout', function(req, res) {
+  req.session.destroy();
   req.logout();
-  req.session.destroy(function(err) {
-    res.send('user logged out.');
-  });
+  res.send('user logged out.');
 });
 
 // reps endpoints

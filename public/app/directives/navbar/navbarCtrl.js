@@ -6,8 +6,4 @@ repApp.controller('navbarCtrl', function($scope, $state, authSvc) {
   } else if ($scope.currState === 'newq') {
     $scope.newqState = true;
   }
-
-  $scope.logoutUser = function() {
-    authSvc.logout();
-  };
 });
