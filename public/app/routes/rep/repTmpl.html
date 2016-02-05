@@ -1,5 +1,5 @@
-<nav-bar curr-auth="currUserData"></nav-bar>
-<div class="rep-content">
+<nav-bar curr-auth="currUserData" curr-status="status"></nav-bar>
+<div ng-show="status === 'rep-home'" class="rep-home rep-content content">
   <div class="rep-info">
     <img ng-src="{{repData.photo_url}}" class="rep-image"/>
     <div class="rep-text">
@@ -24,4 +24,55 @@
       </q-box>
     </div>
   </div>
+</div>
+<form ng-show="status === 'new-q'" class="new-q-form rep-content content">
+  <h3>Ask your voters a new question.</h3>
+  <div class="form-group">
+    <div class="group-label">Type:</div>
+    <dual-toggle options="qTypes" selected="newQObj.type"></dual-toggle>
+  </div>
+
+  <div ng-show="newQObj.type" class="form-group">
+    <div class="group-label">Question:</div>
+    <textarea ng-model="newQObj.text" name="name" placeholder="Limit 150 characters."></textarea>
+  </div>
+
+  <div ng-show="newQObj.type === 'yn'" class="form-group options-input yn-options">
+    Options:
+    <div class="input-group">
+      Option 1: YES
+    </div>
+    <div class="input-group">
+      Option 2: NO
+    </div>
+  </div>
+
+  <div ng-show="newQObj.type === 'mc'" class="form-group options-input mc-options">
+    Options (5 max):
+    <div class="input-group">
+      Option 1: <input ng-model="newQObj.options[0]" type="text">
+    </div>
+    <div class="input-group">
+      Option 2: <input ng-model="newQObj.options[1]" type="text">
+    </div>
+    <div class="input-group">
+      Option 3: <input ng-model="newQObj.options[2]" type="text">
+    </div>
+    <div class="input-group">
+      Option 4: <input ng-model="newQObj.options[3]" type="text">
+    </div>
+    <div class="input-group">
+      Option 5: <input ng-model="newQObj.options[4]" type="text">
+    </div>
+  </div>
+
+  <div ng-show="newQObj.type" class="form-group form-buttons">
+    <button ng-click="clearQForm()" type="button" name="button">CLEAR FORM</button>
+    <button ng-click="postNewQuestion(repId, newQObj)" type="button" name="button">SUBMIT</button>
+  </div>
+
+  {{newQObj}}
+</form>
+<div ng-show="status === 'settings'" class="rep-settings rep-content content">
+  <button ng-click="logout()" type="button" name="button">Logout</button>
 </div>

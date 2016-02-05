@@ -421,13 +421,21 @@ repApp.directive('dualToggle', function() {
 });
 
 repApp.controller('navbarCtrl', function($scope, $state, authSvc) {
-  $scope.test = 'NAVBAR CTRL CONNECT';
+
   $scope.currState = $state.current.name;
-  if($scope.currState === 'rep') {
-    $scope.repState = true;
-  } else if ($scope.currState === 'newq') {
-    $scope.newqState = true;
-  }
+
+  $scope.changeStatus = function(status) {
+    $scope.currStatus = status;
+  };
+
+  /*
+  statuses:
+  rep-home
+  new-q
+  voter-home
+  my-reps
+  settings
+  */
 });
 
 repApp.directive('navBar', function() {
@@ -436,7 +444,8 @@ repApp.directive('navBar', function() {
     controller: 'navbarCtrl',
     restrict: 'E',
     scope: {
-      currAuth: '='
+      currAuth: '=',
+      currStatus: '='
     }
   };
 });
@@ -504,11 +513,6 @@ repApp.controller('myrepsCtrl', function($scope) {
 });
 
 repApp.controller('newQCtrl', function($scope, $stateParams) {
-  $scope.currAuth = {
-    auth: true,
-    role: 'rep',
-    repId: $stateParams.repId
-  };
 
   // declare now so options can be added to array
   $scope.newQObj = {
@@ -527,28 +531,22 @@ repApp.controller('newQCtrl', function($scope, $stateParams) {
   ];
 });
 
-repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc) {
+repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc) {
 
-  // $scope.currAuth = {
-  //   auth: true,
-  //   role: 'rep',
-  //   repId: $stateParams.repId
-  // };
+  $scope.status = 'rep-home'; // default
 
   $scope.newQObj = {
     options: []
   };
 
   $scope.filterOptions = [
-    {
-      label: 'Active',
-      value: 'active',
-      defaultOption: true
-    },
-    {
-      label: 'Completed',
-      value: 'completed'
-    }
+    {label: 'Active', value: 'active', defaultOption: true},
+    {label: 'Completed', value: 'completed'}
+  ];
+
+  $scope.qTypes = [
+    {label: 'Yes/No', value: 'yn'},
+    {label: 'Multiple Choice', value: 'mc'}
   ];
 
   $scope.repQs = questionSvc.getQsForRep('aoku78asd');
@@ -569,6 +567,15 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
       }
     }
   );
+
+  $scope.logout = function() {
+    authSvc.logout()
+    .then(
+      function(response) {
+        $scope.updateCurrUserData();
+      }
+    );
+  };
 
 });
 
@@ -636,4 +643,5 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
 
 repApp.controller('voterCtrl', function($scope, repSvc) {
   $scope.test = 'voter ctrl connect';
+  $scope.status = 'voter-home';
 });

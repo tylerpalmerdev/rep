@@ -1,4 +1,12 @@
-<nav-bar curr-auth="currUserData"></nav-bar>
-<div class="voter-content">
+<nav-bar curr-auth="currUserData" curr-status="status"></nav-bar>
+<div ng-show="status === 'voter-home'" class="voter-home voter-content content">
+  <h3>VOTER HOME HERE</h3>
   {{currUserData}}
+</div>
+<div ng-show="status === 'my-reps'" class="my-reps voter-content content">
+  <h3>LIST OF ALL REPS HERE</h3>
+  {{currUserData}}
+</div>
+<div ng-show="status === 'settings'" class="voter-home voter-content content">
+  <button ng-click="logout()" type="button" name="button">Logout</button>
 </div>

@@ -1,25 +1,19 @@
-repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc) {
+repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc) {
 
-  // $scope.currAuth = {
-  //   auth: true,
-  //   role: 'rep',
-  //   repId: $stateParams.repId
-  // };
+  $scope.status = 'rep-home'; // default
 
   $scope.newQObj = {
     options: []
   };
 
   $scope.filterOptions = [
-    {
-      label: 'Active',
-      value: 'active',
-      defaultOption: true
-    },
-    {
-      label: 'Completed',
-      value: 'completed'
-    }
+    {label: 'Active', value: 'active', defaultOption: true},
+    {label: 'Completed', value: 'completed'}
+  ];
+
+  $scope.qTypes = [
+    {label: 'Yes/No', value: 'yn'},
+    {label: 'Multiple Choice', value: 'mc'}
   ];
 
   $scope.repQs = questionSvc.getQsForRep('aoku78asd');
@@ -40,5 +34,14 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
       }
     }
   );
+
+  $scope.logout = function() {
+    authSvc.logout()
+    .then(
+      function(response) {
+        $scope.updateCurrUserData();
+      }
+    );
+  };
 
 });

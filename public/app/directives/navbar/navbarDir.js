@@ -4,7 +4,8 @@ repApp.directive('navBar', function() {
     controller: 'navbarCtrl',
     restrict: 'E',
     scope: {
-      currAuth: '='
+      currAuth: '=',
+      currStatus: '='
     }
   };
 });
