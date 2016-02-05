@@ -1,4 +1,4 @@
-repApp.controller('navbarCtrl', function($scope, $state) {
+repApp.controller('navbarCtrl', function($scope, $state, authSvc) {
   $scope.test = 'NAVBAR CTRL CONNECT';
   $scope.currState = $state.current.name;
   if($scope.currState === 'rep') {
@@ -6,4 +6,8 @@ repApp.controller('navbarCtrl', function($scope, $state) {
   } else if ($scope.currState === 'newq') {
     $scope.newqState = true;
   }
+
+  $scope.logoutUser = function() {
+    authSvc.logout();
+  };
 });

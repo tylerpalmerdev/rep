@@ -13,7 +13,7 @@
       <div ng-show="{{currAuth.role === 'rep'}}" class="nav-icon" ng-class="{'active-icon': newqState}">
         <a ui-sref="newq({repId:currAuth.repId})"><i class="fa fa-pencil-square-o"></i></a>
       </div>
-      <div class="nav-icon"><a ui-sref="settings"><i class="fa fa-cog"></i></a></div>
+      <div class="nav-icon"><a ng-click="logoutUser()"><i class="fa fa-sign-out"></i></a></div>
     </nav>
     <div ng-hide="currAuth.auth" class="signup-link">
       <a ui-sref="login">LOGIN</a> or <a ui-sref="register">REGISTER</a>

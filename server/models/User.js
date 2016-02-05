@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var UserSchema = mongoose.Schema({
   email: {type: String, required: true},
-  hash: {type: String, required: true},
+  password: {type: String, required: true},
   role: {type: String, required: true, enum: [
     'rep',
     'voter',
@@ -11,7 +11,8 @@ var UserSchema = mongoose.Schema({
   ]},
   name: {type: String, required: true},
   addressData: {type: Object},
-  district: {type: Object}
+  district: {type: Object},
+  bioguide_id: {type: String} // only for reps, bioguide_id
   // questions_asked: [
   //   {
   //     question_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Question'}
@@ -25,17 +26,41 @@ var UserSchema = mongoose.Schema({
   // ]
 });
 
-UserSchema.methods.generateHash = function(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
 
+// this middleware to has pws will run before any user save of occurs
 UserSchema.pre('save', function(next) {
   var user = this;
+
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified('password')) {
+    return next();
+  }
+
+  // generate salt to encrypt password with
+  bcrypt.genSalt(10, function(err, salt) {
+    // if salt generation fails
+    if (err) {
+      return next(err);
+    }
+    // if not, generate hash and save to user
+    bcrypt.hash(user.password, salt, null, function(err, hash) {
+      user.password = hash;
+      next();
+    });
+  });
 });
 
 // checking if password is valid
-UserSchema.methods.validPassword = function(password) {
-    return bcrypt.compareSync(password, this.password);
+UserSchema.methods.verifyPassword = function(password, callback) {
+    // compare password provided with stored password for user
+    bcrypt.compare(password, this.password, function(err, isMatch) {
+      // if error, callback error
+      if (err) {
+        console.log('error comparing password.');
+        return callback(err);
+      }
+      callback(null, isMatch);
+    });
 };
 
 module.exports = mongoose.model('User', UserSchema);

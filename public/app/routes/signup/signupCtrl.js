@@ -34,6 +34,7 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
   });
 
   $scope.register = function(newUserObj) {
+    // console.log(newUserObj);
     authSvc.registerNewUser(newUserObj)
     .then(
       function(response) {

@@ -5,11 +5,11 @@ module.exports = {
   register: function(req, res, next) {
     console.log('registering user');
     var newUser = new User(req.body);
-    newUser.save(function(err, saved) {
+    newUser.save(function(err, user) {
       if (err) {
         res.sendStatus(500, 'Registration failed');
       }
-      res.send('Registration successful');
+      res.send(user);
     });
   }
 };

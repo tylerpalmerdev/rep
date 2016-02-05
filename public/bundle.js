@@ -37,19 +37,70 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
   .otherwise('/login');
 });
 
-repApp.service('authSvc', function($http) {
+repApp.service('authSvc', function($http, $state) {
+
+  var goToHomePage = function(responseObj) {
+    var role = responseObj.data.role;
+    if (role === 'voter') {
+      $state.go('voter', {voterId: responseObj.data._id});
+    } else if (role === 'rep') {
+      $state.go('rep', {repId: responseObj.data.bioguide_id});
+    }
+  };
+
   this.registerNewUser = function(userObj) {
     return $http({
       method: 'POST',
-      url: '/register',
+      url: '/signup',
       data: userObj
     })
     .then(
       function(response) {
-        return response;
+        goToHomePage(response);
       },
       function(err) {
         console.log(err);
+      }
+    );
+  };
+
+  this.loginUser = function(userObj) {
+    return $http({
+      method: 'POST',
+      url: '/login',
+      data: userObj
+    })
+    .then(
+      function(response) {
+        goToHomePage(response);
+      },
+      function(err) {
+        console.log('login failed', err);
+      }
+    );
+  };
+
+  this.logout = function() {
+    return $http({
+      method: 'GET',
+      url: '/logout'
+    })
+    .then(
+      function(response) {
+        console.log('user logged out');
+        $state.go('login');
+      }
+    );
+  };
+
+  this.getCurrUser = function() {
+    return $http({
+      method: 'GET',
+      url: '/currUser'
+    })
+    .then(
+      function(response) {
+        console.log(response);
       }
     );
   };
@@ -260,7 +311,7 @@ repApp.controller('addressSearchCtrl', function($scope) {
     $scope.addressData = {};
 
     var rawPlaceData = autocomplete.getPlace();
-    console.log(rawPlaceData);
+    // console.log(rawPlaceData);
 
     // extract state data
     var state = rawPlaceData.address_components[rawPlaceData.address_components.length - 4];
@@ -348,7 +399,7 @@ repApp.directive('dualToggle', function() {
   };
 });
 
-repApp.controller('navbarCtrl', function($scope, $state) {
+repApp.controller('navbarCtrl', function($scope, $state, authSvc) {
   $scope.test = 'NAVBAR CTRL CONNECT';
   $scope.currState = $state.current.name;
   if($scope.currState === 'rep') {
@@ -356,6 +407,10 @@ repApp.controller('navbarCtrl', function($scope, $state) {
   } else if ($scope.currState === 'newq') {
     $scope.newqState = true;
   }
+
+  $scope.logoutUser = function() {
+    authSvc.logout();
+  };
 });
 
 repApp.directive('navBar', function() {
@@ -404,7 +459,7 @@ repApp.directive('repSelect', function() {
   };
 });
 
-repApp.controller('loginCtrl', function($scope, $state, repSvc) {
+repApp.controller('loginCtrl', function($scope, $state, repSvc, authSvc) {
   $scope.test = 'Login CTRL connect';
   repSvc.getAllReps()
   .then(
@@ -412,6 +467,21 @@ repApp.controller('loginCtrl', function($scope, $state, repSvc) {
       $scope.repData = response;
     }
   );
+
+  $scope.loginUser = function(userObj) {
+    authSvc.loginUser(userObj)
+    .then(
+      function(response) {
+        console.log(response);
+      },
+      function(err) {
+        console.log(err);
+      }
+    )
+  };
+
+  authSvc.getCurrUser();
+
 });
 
 repApp.controller('myrepsCtrl', function($scope) {
@@ -523,6 +593,7 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
   });
 
   $scope.register = function(newUserObj) {
+    // console.log(newUserObj);
     authSvc.registerNewUser(newUserObj)
     .then(
       function(response) {

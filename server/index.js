@@ -5,8 +5,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     expressSession = require('express-session'),
     passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy;
-    cookieParser = require('cookie-parser'),
+    LocalStrategy = require('passport-local').Strategy,
     logger = require('morgan');
 
 // internal modules
@@ -60,8 +59,8 @@ passport.deserializeUser(function(id, done) {
     });
 });
 
-// set up local signup
-passport.use(new LocalStrategy(
+// set up local login
+passport.use('local-login', new LocalStrategy(
   {
     usernameField: 'email',
     passwordField: 'password',
@@ -71,7 +70,6 @@ passport.use(new LocalStrategy(
     User.findOne({'email': email}, function(err, user) {
       // if server error
       if (err) {
-        console.log(err);
         return done(err);
       }
       // if user not found
@@ -79,19 +77,59 @@ passport.use(new LocalStrategy(
         return done('user not found', false);
       }
       // if user found, verify password
-      user.verifyPassword(password)
-      .then(
-        function(isMatch) {
-          if (!isMatch) {
-            return done('Credentials invalid.', false);
-          }
-          return done(null, user);
+      user.verifyPassword(password, function(err, isMatch) {
+        if (err) {
+          return done('password verify failed', false);
         }
-      )
-    })
-  }
+        if (!isMatch) {
+          return done('wrong pw', false);
+        }
+        // if match: delete pw from user obj, return user object
+        delete user.password;
+        return done(null, user);
+      });
+  });
+}));
 
-));
+// set up local signup
+passport.use('local-signup', new LocalStrategy(
+  {
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true // passes entire request to callback
+  },
+  function(req, email, password, done) {
+    // search for user
+    User.findOne({$or: [{'email': email}, {'bioguide_id': req.body.bioguide_id}]}, function(err, user) {
+      // if server error
+      if (err) {
+        console.log(err);
+        return done(err);
+      }
+      // if user already exists
+      if (user) {
+        if (user.bioguide_id === req.body.bioguide_id) {
+          return done('Rep already has an account.', false);
+        } else {
+          return done('User already registered.', false);
+        }
+      }
+      // if not, create new user from req.body:
+      var newUser = new User(req.body);
+      newUser.save(function(err, saved) {
+        if (err) {
+          return done('new user creation failed', false);
+        }
+        // auto log in new user if reg successful
+        req.login(newUser, function(err) {
+          if (err) {
+            return done('User reg, but no login', saved);
+          }
+          return done(null, saved);
+        });
+      });
+  });
+}));
 
 // start app listening
 app.listen(port, function() {
@@ -105,15 +143,31 @@ mongoose.connection.once('open', function() {
   console.log('MongoDB connected.');
 });
 
+// signup endpoint
+app.post('/signup', passport.authenticate('local-signup'), function(req, res) {
+  res.send(req.user);
+});
 
-// auth endpoint
-app.post('/auth', passport.authenticate('local-signup', {
-  successRedirect: '/rep',
-  failureRedirect: '/login'
-}));
+// auth endpoints
+app.post('/login', passport.authenticate('local-login'), function(req, res) {
+  res.send(req.user);
+});
 
 // register endpoints
 app.post('/register', userCtrl.register);
+
+// get current user Data
+app.get('/currUser', function(req, res) {
+  console.log(req.user);
+  res.send(req.user);
+});
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  req.session.destroy(function(err) {
+    res.send('user logged out.');
+  });
+});
 
 // reps endpoints
 app.get('/reps', repCtrl.read);

@@ -25,7 +25,7 @@ repApp.controller('addressSearchCtrl', function($scope) {
     $scope.addressData = {};
 
     var rawPlaceData = autocomplete.getPlace();
-    console.log(rawPlaceData);
+    // console.log(rawPlaceData);
 
     // extract state data
     var state = rawPlaceData.address_components[rawPlaceData.address_components.length - 4];
