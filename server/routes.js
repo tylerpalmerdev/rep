@@ -1,6 +1,7 @@
 var passport = require('passport'),
     userCtrl = require('./controllers/userCtrl'),
-    repCtrl = require('./controllers/repCtrl');
+    repCtrl = require('./controllers/repCtrl'),
+    questionCtrl = require('./controllers/questionCtrl');
 
 require('./config/passport')(passport);
 
@@ -30,4 +31,7 @@ module.exports = function(app) {
   app.get('/reps', repCtrl.read);
   app.get('/reps/:repId', repCtrl.map);
   app.put('/reps', repCtrl.update);
+
+  // question endpoints
+  app.post('/questions', questionCtrl.create);
 };
