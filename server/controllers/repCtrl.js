@@ -1,16 +1,10 @@
 var mongoose = require('mongoose');
 var Rep = require('./../models/Rep');
 
-var resFunc = function(err, result) {
-  if (err) {
-    res.sendStatus(500, err);
-  }
-  res.send(result);
-};
-
 module.exports = {
   read: function(req, res) {
     Rep.find({})
+    .select('bioguide_id _id title state first_name last_name')
     .exec(function(err, result) {
       if (err) {
         res.sendStatus(500, err);
@@ -35,5 +29,21 @@ module.exports = {
       }
       res.send(result);
     });
+  },
+  getRepsForDist: function(distObj) {
+    return Rep.find({state: distObj.state})
+    .or([
+      { $and: [{title: 'Rep'}, {district: distObj.district}]},
+      {title: 'Sen'}
+    ])
+    .select('_id')
+    .exec(
+      function(err, results) {
+        if (err) {
+          return err;
+        }
+        return results;
+      }
+    );
   }
 };

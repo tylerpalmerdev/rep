@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-    bcrypt = require('bcrypt-nodejs');
+    bcrypt = require('bcrypt-nodejs'),
+    repCtrl = require('./../controllers/repCtrl');
 
 var UserSchema = mongoose.Schema({
   email: {type: String, required: true},
@@ -10,9 +11,13 @@ var UserSchema = mongoose.Schema({
     'admin'
   ]},
   name: {type: String, required: true},
+  // voter data
   addressData: {type: Object},
   district: {type: Object},
-  bioguide_id: {type: String} // only for reps, bioguide_id
+  reps: [{type: mongoose.Schema.Types.ObjectId, ref: 'Rep'}],
+  //rep data
+  rep_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Rep'},
+  bioguide_id: {type: String} // only for reps, denorm
   // questions_asked: [
   //   {
   //     question_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Question'}
@@ -26,8 +31,7 @@ var UserSchema = mongoose.Schema({
   // ]
 });
 
-
-// this middleware to has pws will run before any user save of occurs
+// this middleware to hash pws will run before any user save of occurs
 UserSchema.pre('save', function(next) {
   var user = this;
 
@@ -35,7 +39,6 @@ UserSchema.pre('save', function(next) {
   if (!user.isModified('password')) {
     return next();
   }
-
   // generate salt to encrypt password with
   bcrypt.genSalt(10, function(err, salt) {
     // if salt generation fails
@@ -49,6 +52,24 @@ UserSchema.pre('save', function(next) {
     });
   });
 });
+
+// before saving user, if voter role, get reps for user
+UserSchema.pre('save', function(next) {
+  var user = this;
+  // if rep role or address has not been modified, skip.
+  if (user.role === 'rep') {
+    return next();
+  } else if (!user.isModified('addressData')) {
+    return next();
+  };
+  repCtrl.getRepsForDist(user.district)
+  .then(
+    function(response) {
+      user.reps = response;
+      return next();
+    }
+  )
+})
 
 // checking if password is valid
 UserSchema.methods.verifyPassword = function(password, callback) {

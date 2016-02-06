@@ -66,30 +66,6 @@ repApp.service('authSvc', function($http, $state, $stateParams, $q) {
     );
   };
 
-  // this.repRouteCheck = function(repRouteId) {
-  //   var def = $q.defer();
-  //   $http({
-  //     method: 'GET',
-  //     url: '/currUser'
-  //   })
-  //   .then(
-  //     function(response) {
-  //       // if user going to page is authed as that rep
-  //       if (response.data) {
-  //         // resolve promise with that user's rep data
-  //         def.resolve(response.data);
-  //       } else {
-  //         def.resolve("");
-  //       }
-  //
-  //       }
-  //       // if no auth (response.data = "")
-  //
-  //     }
-  //   )
-  //   return def.promise;
-  // }
-
   this.voterRouteCheck = function(voterPageId) {
     var def = $q.defer();
     // var voterPageId = $stateParams.voterId;

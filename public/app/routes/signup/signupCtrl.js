@@ -35,10 +35,19 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
   });
 
   $scope.register = function(newUserObj) {
+
+    if (newUserObj.role === 'rep') {
+      var repInfo = JSON.parse($scope.chosenRepInfo);
+      newUserObj.bioguide_id = repInfo.bioguide_id;
+      newUserObj.rep_id = repInfo._id;
+    }
+
+    // console.log(newUserObj);
+
     authSvc.registerNewUser(newUserObj)
     .then(
       function(response) {
-        $scope.updateCurrUserData();
+        console.log('User reg success, from signupCtrl');
       },
       function(err) {
         console.log(err);

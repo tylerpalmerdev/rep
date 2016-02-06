@@ -122,30 +122,6 @@ repApp.service('authSvc', function($http, $state, $stateParams, $q) {
     );
   };
 
-  // this.repRouteCheck = function(repRouteId) {
-  //   var def = $q.defer();
-  //   $http({
-  //     method: 'GET',
-  //     url: '/currUser'
-  //   })
-  //   .then(
-  //     function(response) {
-  //       // if user going to page is authed as that rep
-  //       if (response.data) {
-  //         // resolve promise with that user's rep data
-  //         def.resolve(response.data);
-  //       } else {
-  //         def.resolve("");
-  //       }
-  //
-  //       }
-  //       // if no auth (response.data = "")
-  //
-  //     }
-  //   )
-  //   return def.promise;
-  // }
-
   this.voterRouteCheck = function(voterPageId) {
     var def = $q.defer();
     // var voterPageId = $stateParams.voterId;
@@ -359,65 +335,6 @@ repApp.service('repSvc', function($http, constants) {
 
 }); // END
 
-repApp.controller('addressSearchCtrl', function($scope) {
-
-  // set bounds of search to the whole world
-  var bounds = new google.maps.LatLngBounds(
-    new google.maps.LatLng(-90, -180),
-    new google.maps.LatLng(90, 180)
-  );
-
-  // get place search input element (only one on page at a time, because ID)
-  var input = document.getElementById('address-search-input');
-
-  // create options object
-  var options = {
-    bounds: bounds,
-    types: ['geocode'],
-    componentRestrictions: {country: 'us'}
-  };
-
-  // new autocomplete object that will actually initialize autocomplete
-  var autocomplete = new google.maps.places.Autocomplete(input, options);
-
-  var getPlaceDetails = function() {
-    // raw address data from autocomplete, returned after city selected
-    // create addressData obj
-    $scope.addressData = {};
-
-    var rawPlaceData = autocomplete.getPlace();
-    // console.log(rawPlaceData);
-
-    // extract state data
-    var state = rawPlaceData.address_components[rawPlaceData.address_components.length - 4];
-
-    // add to addressData object from raw place data
-    $scope.addressData.address_string = rawPlaceData.formatted_address;
-    $scope.addressData.state_short = state.short_name;
-    $scope.addressData.state_long = state.long_name;
-    $scope.addressData.place_id = rawPlaceData.place_id;
-    $scope.addressData.lat = rawPlaceData.geometry.location.lat();
-    $scope.addressData.lng = rawPlaceData.geometry.location.lng();
-    $scope.addressData.map_url = rawPlaceData.url;
-    $scope.$apply(); // update scope
-  };
-
-  // when new place is selected, log results obj of place
-  autocomplete.addListener('place_changed', getPlaceDetails);
-
-});
-
-repApp.directive('addressSearch', function() {
-  return {
-    templateUrl: 'app/directives/addressSearch/addressSearchTmpl.html',
-    restrict: 'E',
-    scope: {
-      addressData: '='
-    },
-    controller: 'addressSearchCtrl'
-  };
-});
-
 repApp.controller('dualToggleCtrl', function($scope) {
 
   // used to apply/remove active-toggle class for styling
@@ -618,7 +535,8 @@ repApp.controller('settingsCtrl', function($scope, authSvc) {
     authSvc.logout()
     .then(
       function(response) {
-        $scope.updateCurrUserData();
+        console.log('user logged out!');
+        // $scope.updateCurrUserData();
       }
     );
   };
@@ -661,10 +579,19 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
   });
 
   $scope.register = function(newUserObj) {
+
+    if (newUserObj.role === 'rep') {
+      var repInfo = JSON.parse($scope.chosenRepInfo);
+      newUserObj.bioguide_id = repInfo.bioguide_id;
+      newUserObj.rep_id = repInfo._id;
+    }
+
+    // console.log(newUserObj);
+
     authSvc.registerNewUser(newUserObj)
     .then(
       function(response) {
-        // $scope.updateCurrUserData();
+        console.log('User reg success, from signupCtrl');
       },
       function(err) {
         console.log(err);
@@ -686,5 +613,64 @@ repApp.controller('voterCtrl', function($scope, voterData, authSvc) {
         // $scope.updateCurrUserData();
       }
     );
+  };
+});
+
+repApp.controller('addressSearchCtrl', function($scope) {
+
+  // set bounds of search to the whole world
+  var bounds = new google.maps.LatLngBounds(
+    new google.maps.LatLng(-90, -180),
+    new google.maps.LatLng(90, 180)
+  );
+
+  // get place search input element (only one on page at a time, because ID)
+  var input = document.getElementById('address-search-input');
+
+  // create options object
+  var options = {
+    bounds: bounds,
+    types: ['geocode'],
+    componentRestrictions: {country: 'us'}
+  };
+
+  // new autocomplete object that will actually initialize autocomplete
+  var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+  var getPlaceDetails = function() {
+    // raw address data from autocomplete, returned after city selected
+    // create addressData obj
+    $scope.addressData = {};
+
+    var rawPlaceData = autocomplete.getPlace();
+    // console.log(rawPlaceData);
+
+    // extract state data
+    var state = rawPlaceData.address_components[rawPlaceData.address_components.length - 4];
+
+    // add to addressData object from raw place data
+    $scope.addressData.address_string = rawPlaceData.formatted_address;
+    $scope.addressData.state_short = state.short_name;
+    $scope.addressData.state_long = state.long_name;
+    $scope.addressData.place_id = rawPlaceData.place_id;
+    $scope.addressData.lat = rawPlaceData.geometry.location.lat();
+    $scope.addressData.lng = rawPlaceData.geometry.location.lng();
+    $scope.addressData.map_url = rawPlaceData.url;
+    $scope.$apply(); // update scope
+  };
+
+  // when new place is selected, log results obj of place
+  autocomplete.addListener('place_changed', getPlaceDetails);
+
+});
+
+repApp.directive('addressSearch', function() {
+  return {
+    templateUrl: 'app/directives/addressSearch/addressSearchTmpl.html',
+    restrict: 'E',
+    scope: {
+      addressData: '='
+    },
+    controller: 'addressSearchCtrl'
   };
 });

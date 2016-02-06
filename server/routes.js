@@ -15,9 +15,6 @@ module.exports = function(app) {
     res.send(req.user);
   });
 
-  // register endpoints
-  app.post('/register', userCtrl.register);
-
   // get current user Data
   app.get('/currUser', function(req, res) {
     res.send(req.user);

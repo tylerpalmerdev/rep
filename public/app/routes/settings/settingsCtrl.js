@@ -4,7 +4,8 @@ repApp.controller('settingsCtrl', function($scope, authSvc) {
     authSvc.logout()
     .then(
       function(response) {
-        $scope.updateCurrUserData();
+        console.log('user logged out!');
+        // $scope.updateCurrUserData();
       }
     );
   };
