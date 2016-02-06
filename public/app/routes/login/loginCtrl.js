@@ -11,12 +11,12 @@ repApp.controller('loginCtrl', function($scope, $state, repSvc, authSvc) {
     authSvc.loginUser(userObj)
     .then(
       function(response) {
-        $scope.updateCurrUserData();
+        console.log('User logged in, loginCtrl');
       },
       function(err) {
         console.log(err);
       }
-    )
+    );
   };
 
 });

@@ -5,27 +5,23 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
   .state('rep', {
     url: '/rep/:repId',
     templateUrl: 'app/routes/rep/repTmpl.html',
-    controller: 'repCtrl'
-  })
-  .state('newq', {
-    url: '/newq/:repId',
-    templateUrl: 'app/routes/newQ/newQTmpl.html',
-    controller: 'newQCtrl'
+    controller: 'repCtrl',
+    resolve: {
+      resolveCurrUser: function(authSvc) {
+        return authSvc.getCurrUser();
+      }
+    }
   })
   .state('voter', {
     url: '/voter/:voterId',
     templateUrl: 'app/routes/voter/voterTmpl.html',
-    controller: 'voterCtrl'
-  })
-  .state('myreps', {
-    url: '/myreps/:voterId',
-    templateUrl: 'app/routes/myreps/myrepsTmpl.html',
-    controller: 'myrepsCtrl'
-  })
-  .state('settings', {
-    url: '/settings',
-    templateUrl: 'app/routes/settings/settingsTmpl.html',
-    controller: 'settingsCtrl'
+    controller: 'voterCtrl',
+    resolve: {
+      voterData: function(authSvc, $stateParams) {
+        var targetVoterId = $stateParams.voterId;
+        return authSvc.voterRouteCheck(targetVoterId);
+      }
+    }
   })
   .state('login', {
     url: '/login',
@@ -58,7 +54,7 @@ repApp.controller('repAppCtrl', function($scope, authSvc) {
 
 });
 
-repApp.service('authSvc', function($http, $state) {
+repApp.service('authSvc', function($http, $state, $stateParams, $q) {
 
   var goToHomePage = function(responseObj) {
     var role = responseObj.data.role;
@@ -124,6 +120,64 @@ repApp.service('authSvc', function($http, $state) {
         return response.data;
       }
     );
+  };
+
+  // this.repRouteCheck = function(repRouteId) {
+  //   var def = $q.defer();
+  //   $http({
+  //     method: 'GET',
+  //     url: '/currUser'
+  //   })
+  //   .then(
+  //     function(response) {
+  //       // if user going to page is authed as that rep
+  //       if (response.data) {
+  //         // resolve promise with that user's rep data
+  //         def.resolve(response.data);
+  //       } else {
+  //         def.resolve("");
+  //       }
+  //
+  //       }
+  //       // if no auth (response.data = "")
+  //
+  //     }
+  //   )
+  //   return def.promise;
+  // }
+
+  this.voterRouteCheck = function(voterPageId) {
+    var def = $q.defer();
+    // var voterPageId = $stateParams.voterId;
+    console.log('Voter Id passed in:', voterPageId);
+    $http({
+      method: 'GET',
+      url: '/currUser'
+    })
+    .then(
+      function(response) {
+        // if curr auth user_id is same as voter page id
+
+        var authedVoterId = response.data._id;
+        console.log('Authed voter id:', authedVoterId);
+        console.log('Authed voter id:', voterPageId);
+        // def.resolve(response.data);
+        if (authedVoterId) {
+          if (authedVoterId === voterPageId) {
+            def.resolve(response.data); // allow access
+          } else {
+            console.log('Authed user not allowed to other private user page. Rerouting to the authed users page.');
+            $state.go('voter', {voterId: authedVoterId});
+            def.reject(response.data);
+          }
+        } else {
+          console.log('user not logged in, rerouting to login page.');
+          $state.go('login');
+          def.reject('User not logged in.');
+        }
+      }
+    );
+    return def.promise;
   };
 });
 
@@ -498,42 +552,20 @@ repApp.controller('loginCtrl', function($scope, $state, repSvc, authSvc) {
     authSvc.loginUser(userObj)
     .then(
       function(response) {
-        $scope.updateCurrUserData();
+        console.log('User logged in, loginCtrl');
       },
       function(err) {
         console.log(err);
       }
-    )
+    );
   };
 
 });
 
-repApp.controller('myrepsCtrl', function($scope) {
-  
-});
-
-repApp.controller('newQCtrl', function($scope, $stateParams) {
-
-  // declare now so options can be added to array
-  $scope.newQObj = {
-    options: []
-  };
-
-  $scope.qTypes = [
-    {
-      label: 'Yes/No',
-      value: 'yn'
-    },
-    {
-      label: 'Multiple Choice',
-      value: 'mc'
-    }
-  ];
-});
-
-repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc) {
+repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc, resolveCurrUser) {
 
   $scope.status = 'rep-home'; // default
+  $scope.currUserData = resolveCurrUser;
 
   $scope.newQObj = {
     options: []
@@ -551,6 +583,7 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
 
   $scope.repQs = questionSvc.getQsForRep('aoku78asd');
 
+  // function to manipulate titles based on
   $scope.isSen = true;
   repSvc.getRepInfo($stateParams.repId)
   .then(
@@ -572,7 +605,7 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
     authSvc.logout()
     .then(
       function(response) {
-        $scope.updateCurrUserData();
+        // $scope.updateCurrUserData();
       }
     );
   };
@@ -631,7 +664,7 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
     authSvc.registerNewUser(newUserObj)
     .then(
       function(response) {
-        $scope.updateCurrUserData();
+        // $scope.updateCurrUserData();
       },
       function(err) {
         console.log(err);
@@ -641,7 +674,17 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
 
 }); // END
 
-repApp.controller('voterCtrl', function($scope, repSvc) {
+repApp.controller('voterCtrl', function($scope, voterData, authSvc) {
   $scope.test = 'voter ctrl connect';
   $scope.status = 'voter-home';
+  $scope.voterData = voterData;
+
+  $scope.logout = function() {
+    authSvc.logout()
+    .then(
+      function(response) {
+        // $scope.updateCurrUserData();
+      }
+    );
+  };
 });

@@ -1,6 +1,7 @@
-repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc) {
+repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc, resolveCurrUser) {
 
   $scope.status = 'rep-home'; // default
+  $scope.currUserData = resolveCurrUser;
 
   $scope.newQObj = {
     options: []
@@ -18,6 +19,7 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
 
   $scope.repQs = questionSvc.getQsForRep('aoku78asd');
 
+  // function to manipulate titles based on
   $scope.isSen = true;
   repSvc.getRepInfo($stateParams.repId)
   .then(
@@ -39,7 +41,7 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
     authSvc.logout()
     .then(
       function(response) {
-        $scope.updateCurrUserData();
+        // $scope.updateCurrUserData();
       }
     );
   };

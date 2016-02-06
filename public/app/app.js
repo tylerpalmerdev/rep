@@ -5,27 +5,23 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
   .state('rep', {
     url: '/rep/:repId',
     templateUrl: 'app/routes/rep/repTmpl.html',
-    controller: 'repCtrl'
-  })
-  .state('newq', {
-    url: '/newq/:repId',
-    templateUrl: 'app/routes/newQ/newQTmpl.html',
-    controller: 'newQCtrl'
+    controller: 'repCtrl',
+    resolve: {
+      resolveCurrUser: function(authSvc) {
+        return authSvc.getCurrUser();
+      }
+    }
   })
   .state('voter', {
     url: '/voter/:voterId',
     templateUrl: 'app/routes/voter/voterTmpl.html',
-    controller: 'voterCtrl'
-  })
-  .state('myreps', {
-    url: '/myreps/:voterId',
-    templateUrl: 'app/routes/myreps/myrepsTmpl.html',
-    controller: 'myrepsCtrl'
-  })
-  .state('settings', {
-    url: '/settings',
-    templateUrl: 'app/routes/settings/settingsTmpl.html',
-    controller: 'settingsCtrl'
+    controller: 'voterCtrl',
+    resolve: {
+      voterData: function(authSvc, $stateParams) {
+        var targetVoterId = $stateParams.voterId;
+        return authSvc.voterRouteCheck(targetVoterId);
+      }
+    }
   })
   .state('login', {
     url: '/login',
