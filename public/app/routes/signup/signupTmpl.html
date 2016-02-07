@@ -11,7 +11,7 @@
 
     <div ng-show="newUserObj.role === 'rep'" class="form-group">
       <label>Representative: </label>
-      <rep-select rep-id="chosenRepInfo"></rep-select>
+      <rep-select rep-info="chosenRepInfo"></rep-select>
     </div>
 
     <div class="form-group">
@@ -39,9 +39,6 @@
     </div>
     <button ng-click="register(newUserObj, chosenRepInfo)" type="button" name="button">Sign Up</button>
   </form>
-
-  {{chosenRepInfo}}
-  {{newUserObj}}
 
   <div class="">
     Already signed up? <a ui-sref="login">Log in</a> here.

@@ -3,9 +3,7 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
   $scope.status = 'rep-home'; // default
   $scope.currUserData = resolveCurrUser;
 
-  $scope.newQObj = {
-    options: []
-  };
+  $scope.newQObj = {options: []}; // set now so options can be pushed
 
   $scope.filterOptions = [
     {label: 'Active', value: 'active', defaultOption: true},
@@ -38,12 +36,7 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
   );
 
   $scope.logout = function() {
-    authSvc.logout()
-    .then(
-      function(response) {
-        // $scope.updateCurrUserData();
-      }
-    );
+    authSvc.logout();
   };
 
 });

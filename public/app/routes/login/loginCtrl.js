@@ -1,5 +1,4 @@
 repApp.controller('loginCtrl', function($scope, $state, repSvc, authSvc) {
-  $scope.test = 'Login CTRL connect';
   repSvc.getAllReps()
   .then(
     function(response) {

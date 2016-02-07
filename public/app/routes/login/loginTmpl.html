@@ -18,15 +18,10 @@
     <p>
       Or, go to a representative's public page:
     </p>
-    <rep-select rep-id="repId"></rep-select>
-    <button ui-sref="rep({repId: repId})" type="button" name="button">Go to page</button>
+    <rep-select rep-info="chosenRepInfo"></rep-select>
+    <button ui-sref="rep({repId: chosenRepInfo.bioguide_id})" type="button" name="button">Go to page</button>
   </div>
   <div class="">
     No account? <a ui-sref="signup">Sign Up</a> here.
   </div>
 </div>
-
-
-
-
-<button ui-sref="rep({repId: repId})" type="button" name="button">GO TO PAGE</button>

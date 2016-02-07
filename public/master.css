@@ -218,6 +218,46 @@ nav-bar header nav .active-icon {
   font-style: italic;
 }
 
-.voter-content {
-  padding-top: 60px;
+.voter-content-wrapper {
+  padding-top: 75px;
+}
+
+.voter-content-wrapper .voter-home {
+  padding: 0 15px;
+}
+
+.voter-content-wrapper .my-reps h3 {
+  text-align: center;
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+.voter-content-wrapper .my-reps .rep-box-container {
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.voter-content-wrapper .my-reps .rep-box-container .voter-rep-box {
+  padding: 15px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  border-top: 1px solid gray;
+}
+
+.voter-content-wrapper .my-reps .rep-box-container .voter-rep-box img {
+  width: 25%;
+  height: auto;
+}
+
+.voter-content-wrapper .my-reps .rep-box-container .voter-rep-box .voter-rep-text {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  margin-left: 15px;
+}
+
+.voter-content-wrapper .my-reps .rep-box-container .voter-rep-box:last-of-type {
+  border-bottom: 1px solid gray;
 }

@@ -4,7 +4,7 @@ repApp.directive('repSelect', function() {
     controller: 'repSelectCtrl',
     restrict: 'E',
     scope: {
-      repId: '='
+      repInfo: '='
     }
   };
 });

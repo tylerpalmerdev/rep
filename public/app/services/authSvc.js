@@ -68,7 +68,6 @@ repApp.service('authSvc', function($http, $state, $stateParams, $q) {
 
   this.voterRouteCheck = function(voterPageId) {
     var def = $q.defer();
-    // var voterPageId = $stateParams.voterId;
     console.log('Voter Id passed in:', voterPageId);
     $http({
       method: 'GET',
@@ -77,21 +76,15 @@ repApp.service('authSvc', function($http, $state, $stateParams, $q) {
     .then(
       function(response) {
         // if curr auth user_id is same as voter page id
-
         var authedVoterId = response.data._id;
-        console.log('Authed voter id:', authedVoterId);
-        console.log('Authed voter id:', voterPageId);
-        // def.resolve(response.data);
         if (authedVoterId) {
           if (authedVoterId === voterPageId) {
             def.resolve(response.data); // allow access
           } else {
-            console.log('Authed user not allowed to other private user page. Rerouting to the authed users page.');
             $state.go('voter', {voterId: authedVoterId});
             def.reject(response.data);
           }
         } else {
-          console.log('user not logged in, rerouting to login page.');
           $state.go('login');
           def.reject('User not logged in.');
         }

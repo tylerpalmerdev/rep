@@ -17,9 +17,7 @@ module.exports = function(app) {
   });
 
   // get current user Data
-  app.get('/currUser', function(req, res) {
-    res.send(req.user);
-  });
+  app.get('/currUser', userCtrl.read);
 
   app.get('/logout', function(req, res) {
     req.session.destroy();
@@ -32,7 +30,10 @@ module.exports = function(app) {
   app.get('/reps/:repId', repCtrl.map);
   app.put('/reps', repCtrl.update);
 
+  // user endpoints
+  app.get('/user/:userId', userCtrl.read);
+
   // question endpoints
   app.post('/questions', questionCtrl.create);
-  app.get('/questions', questionCtrl.retrieve); // extra data in query string
+  app.get('/questions', questionCtrl.read); // extra data in query string
 };
