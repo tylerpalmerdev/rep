@@ -35,8 +35,4 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
     );
   };
 
-  $scope.logout = function() {
-    authSvc.logout();
-  };
-
 });

@@ -4,7 +4,7 @@ repApp.directive('qBox', function() {
     controller: 'qBoxCtrl',
     scope: {
       qInfo: '=',
-      rep: '@'
+      isRep: '@'
     }
   };
 });

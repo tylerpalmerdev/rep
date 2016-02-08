@@ -16,7 +16,6 @@ module.exports = {
 
   read: function(req, res) {
     var query = req.query;
-    console.log(query);
     if (query.role === 'voter') {
       User.findOne({_id: query.voterId})
       .select('reps')
@@ -28,6 +27,7 @@ module.exports = {
         .find({
           'submitted_by.rep_id': {$in: result.reps}
         })
+        .populate('submitted_by.rep_id', 'first_name last_name bioguide_id title district state state_name')
         .exec(function(err, voterQs) {
           if (err) {
             res.sendStatus(500, err);
@@ -43,8 +43,6 @@ module.exports = {
       .exec(function(err, qArr) {
         if (err) {
           res.sendStatus(500, err);
-        } else if (qArr.length === 0) {
-          res.sendStatus(401, 'no questions found for rep');
         } else {
           res.send(qArr);
         }

@@ -35,14 +35,14 @@ nav-bar header {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  background-color: #008f00;
-  box-shadow: 0px 2px 2px #888888;
+  background-color: #d6d6d6;
+  box-shadow: 0px 2px 2px #d6d6d6;
   justify-content: space-between;
 }
 
 nav-bar header h2 {
   margin: 0;
-  color: white;
+  color: #666666;
   font-family: "Josefin Slab", "Arial", sans-serif;
 }
 
@@ -60,7 +60,7 @@ nav-bar header nav .nav-icon {
 }
 
 nav-bar header nav .nav-icon i {
-  color: white;
+  color: #666666;
 }
 
 nav-bar header nav .nav-icon:first-child {
@@ -80,6 +80,10 @@ nav-bar header nav .nav-icon:nth-of-type(3) {
 
 nav-bar header nav .active-icon {
   border-bottom: 2px solid white;
+}
+
+nav-bar header nav .active-icon i {
+  color: white;
 }
 
 .questions-container .question-box {
@@ -216,6 +220,10 @@ nav-bar header nav .active-icon {
 .signup-content .signup-form .form-group .input-text {
   font-size: 10px;
   font-style: italic;
+}
+
+.signup-content .form-group {
+  text-align: center;
 }
 
 .voter-content-wrapper {

@@ -16,14 +16,14 @@
   </div>
 
   <div class="rep-questions">
-    <div>
+    <!-- <div>
       {{currUserData}}
-    </div>
+    </div> -->
     <h4>QUESTIONS ASKED</h4>
     {{qFilter}}
     <dual-toggle options="filterOptions" selected="qFilter"></dual-toggle>
     <div class="questions-container">
-      <q-box ng-repeat="question in repQs" q-info="question" rep="{{true}}">
+      <q-box ng-repeat="question in repQs" q-info="question" isRep="{{true}}">
       </q-box>
     </div>
   </div>
@@ -76,6 +76,3 @@
 
   {{newQObj}}
 </form>
-<div ng-show="status === 'settings'" class="rep-settings rep-content content">
-  <button ng-click="logout()" type="button" name="button">Logout</button>
-</div>

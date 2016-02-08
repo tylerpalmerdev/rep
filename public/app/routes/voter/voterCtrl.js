@@ -9,7 +9,4 @@ repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, a
     return constants.repPhotosBaseUrl + bioguideId + ".jpg";
   };
 
-  $scope.logout = function() {
-    authSvc.logout();
-  };
 });

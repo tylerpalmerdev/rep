@@ -308,68 +308,36 @@ repApp.directive('addressSearch', function() {
   };
 });
 
-repApp.controller('dualToggleCtrl', function($scope) {
+repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc) {
 
-  // used to apply/remove active-toggle class for styling
-  $scope.highlightBox = function(boxIndex) {
-    if (boxIndex === 0) {
-      $scope.first = true;
-      $scope.second = false;
-    } else if (boxIndex === 1) {
-      $scope.second = true;
-      $scope.first = false;
-    }
-  };
-
-  // checks/applies optional 'defaultOption' property on option objects.
-  $scope.options.forEach(function(elem, i, arr) {
-    if (elem.defaultOption) {
-      $scope.selected = elem.value;
-      $scope.highlightBox(i);
-    }
-  });
-
-  // function to select one toggle/ deselect other
-  $scope.select = function(option) {
-    $scope.selected = $scope.options[option].value;
-    $scope.highlightBox(option);
-  };
-});
-
-/*
-Example data:
-$scope.roleOptions = [
-  {
-    label: 'Representative',
-    value: 'rep',
-    defaultOption: true
-  },
-  {
-    label: 'Voter',
-    value: 'voter'
-  }
-];
-*/
-
-repApp.directive('dualToggle', function() {
-  return {
-    templateUrl: 'app/directives/dualToggle/dualToggleTmpl.html',
-    controller: 'dualToggleCtrl',
-    restrict: 'E',
-    scope: {
-      options: '=', // arr with two objects
-      selected: '=', // pass back up to $scope
-      toggleDefualt: '@'
-    }
-  };
-});
-
-repApp.controller('navbarCtrl', function($scope, $state, authSvc) {
-
+  //
   $scope.currState = $state.current.name;
 
-  $scope.changeStatus = function(status) {
-    $scope.currStatus = status;
+  $scope.goHomeVoter = function() {
+    // if voter is in voter area and wants to change to voter-home view
+    if ($scope.currState === 'voter') {
+      $scope.currStatus = 'voter-home';
+    }
+    // if voter is viewing a rep page and wants to go home
+    else if ($scope.currState === 'rep') {
+      $state.go('voter', {voterId: $scope.currAuth._id});
+    }
+  };
+
+  $scope.goHomeRep = function(status) {
+    var authedRep = $scope.currAuth.rep_id._id;
+    // if on own rep page:
+    if ($stateParams.repId === authedRep) {
+      $scope.currStatus = 'rep-home';
+    }
+    // if on another rep page
+    else {
+      $state.go('rep', {repId: authedRep});
+    }
+  };
+
+  $scope.logoutCurrUser = function() {
+    authSvc.logout();
   };
 
   /*
@@ -392,6 +360,63 @@ repApp.directive('navBar', function() {
       currStatus: '='
     }
   };
+});
+
+repApp.controller('qBoxCtrl', function($scope) {
+
+});
+
+repApp.directive('qBox', function() {
+  return {
+    templateUrl: 'app/directives/qBox/qBoxTmpl.html',
+    controller: 'qBoxCtrl',
+    scope: {
+      qInfo: '=',
+      isRep: '@'
+    }
+  };
+});
+
+repApp.controller('repSelectCtrl', function($scope, repSvc) {
+  repSvc.getAllReps()
+  .then(
+    function(response) {
+      $scope.repData = response;
+    }
+  );
+});
+
+repApp.directive('repSelect', function() {
+  return {
+    templateUrl: 'app/directives/repSelect/repSelectTmpl.html',
+    controller: 'repSelectCtrl',
+    restrict: 'E',
+    scope: {
+      repInfo: '='
+    }
+  };
+});
+
+repApp.controller('loginCtrl', function($scope, $state, repSvc, authSvc) {
+  repSvc.getAllReps()
+  .then(
+    function(response) {
+      $scope.repData = response;
+    }
+  );
+
+  $scope.loginUser = function(userObj) {
+    authSvc.loginUser(userObj)
+    .then(
+      function(response) {
+        console.log('User logged in, loginCtrl');
+      },
+      function(err) {
+        console.log(err);
+      }
+    );
+  };
+
 });
 
 repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc, currUser, repData, repQuestions) {
@@ -431,82 +456,18 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
     );
   };
 
+});
+
+repApp.controller('settingsCtrl', function($scope, authSvc) {
+  $scope.test = 'settingsCtrl connect';
   $scope.logout = function() {
-    authSvc.logout();
-  };
-
-});
-
-repApp.controller('qBoxCtrl', function($scope) {
-
-});
-
-repApp.directive('qBox', function() {
-  return {
-    templateUrl: 'app/directives/qBox/qBoxTmpl.html',
-    controller: 'qBoxCtrl',
-    scope: {
-      qInfo: '=',
-      rep: '@'
-    }
-  };
-});
-
-repApp.controller('loginCtrl', function($scope, $state, repSvc, authSvc) {
-  repSvc.getAllReps()
-  .then(
-    function(response) {
-      $scope.repData = response;
-    }
-  );
-
-  $scope.loginUser = function(userObj) {
-    authSvc.loginUser(userObj)
+    authSvc.logout()
     .then(
       function(response) {
-        console.log('User logged in, loginCtrl');
-      },
-      function(err) {
-        console.log(err);
+        console.log('user logged out!');
+        // $scope.updateCurrUserData();
       }
     );
-  };
-
-});
-
-repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, authSvc) {
-
-  // make injected data about authed user available on $scope
-  $scope.status = 'voter-home';
-  $scope.voterData = voterData;
-  $scope.voterQs = voterQs;
-
-  $scope.getRepImgUrl = function(bioguideId) {
-    return constants.repPhotosBaseUrl + bioguideId + ".jpg";
-  };
-
-  $scope.logout = function() {
-    authSvc.logout();
-  };
-});
-
-repApp.controller('repSelectCtrl', function($scope, repSvc) {
-  repSvc.getAllReps()
-  .then(
-    function(response) {
-      $scope.repData = response;
-    }
-  );
-});
-
-repApp.directive('repSelect', function() {
-  return {
-    templateUrl: 'app/directives/repSelect/repSelectTmpl.html',
-    controller: 'repSelectCtrl',
-    restrict: 'E',
-    scope: {
-      repInfo: '='
-    }
   };
 });
 
@@ -566,15 +527,71 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
 
 }); // END
 
-repApp.controller('settingsCtrl', function($scope, authSvc) {
-  $scope.test = 'settingsCtrl connect';
-  $scope.logout = function() {
-    authSvc.logout()
-    .then(
-      function(response) {
-        console.log('user logged out!');
-        // $scope.updateCurrUserData();
-      }
-    );
+repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, authSvc) {
+
+  // make injected data about authed user available on $scope
+  $scope.status = 'voter-home';
+  $scope.voterData = voterData;
+  $scope.voterQs = voterQs;
+
+  $scope.getRepImgUrl = function(bioguideId) {
+    return constants.repPhotosBaseUrl + bioguideId + ".jpg";
+  };
+
+});
+
+repApp.controller('dualToggleCtrl', function($scope) {
+
+  // used to apply/remove active-toggle class for styling
+  $scope.highlightBox = function(boxIndex) {
+    if (boxIndex === 0) {
+      $scope.first = true;
+      $scope.second = false;
+    } else if (boxIndex === 1) {
+      $scope.second = true;
+      $scope.first = false;
+    }
+  };
+
+  // checks/applies optional 'defaultOption' property on option objects.
+  $scope.options.forEach(function(elem, i, arr) {
+    if (elem.defaultOption) {
+      $scope.selected = elem.value;
+      $scope.highlightBox(i);
+    }
+  });
+
+  // function to select one toggle/ deselect other
+  $scope.select = function(option) {
+    $scope.selected = $scope.options[option].value;
+    $scope.highlightBox(option);
+  };
+});
+
+/*
+Example data:
+$scope.roleOptions = [
+  {
+    label: 'Representative',
+    value: 'rep',
+    defaultOption: true
+  },
+  {
+    label: 'Voter',
+    value: 'voter'
+  }
+];
+*/
+
+repApp.directive('dualToggle', function() {
+  return {
+    templateUrl: 'app/directives/dualToggle/dualToggleTmpl.html',
+    controller: 'dualToggleCtrl',
+    restrict: 'E',
+    scope: {
+      options: '=', // arr with two objects
+      selected: '=', // pass back up to $scope
+      toggleDefualt: '@'
+    }
   };
 });

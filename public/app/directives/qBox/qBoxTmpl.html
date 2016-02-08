@@ -1,7 +1,7 @@
 <div class="question-box">
   <div ng-hide="rep" class="rep-tag">
-    Congresswoman Maxine Waters asks:
+    {{qInfo.submitted_by.rep_id.title}} {{qInfo.submitted_by.rep_id.first_name}} {{qInfo.submitted_by.rep_id.last_name}} asks:
   </div>
   <div class="q-text">{{qInfo.text}}</div>
-  <div>{{qInfo.type}} - {{rep}}</div>
+  <div>{{qInfo.kind}}</div>
 </div>

@@ -9,13 +9,13 @@ nav-bar {
       display: flex;
       flex-flow: row nowrap;
       align-items: center;
-      background-color: $navbar-top-color;
-      box-shadow: 0px 2px 2px #888888;
+      background-color: $body-color;
+      box-shadow: 0px 2px 2px $body-color;
       justify-content: space-between;
 
       h2 {
         margin: 0;
-        color: white;
+        color: $header-text-color;
         font-family: $header-font;
       }
 
@@ -31,7 +31,7 @@ nav-bar {
           margin-left: 35px;
 
           i {
-            color: white;
+            color: $header-text-color;
           }
         }
 
@@ -52,6 +52,10 @@ nav-bar {
       }
 
       .active-icon {
+        i {
+          color: white;      
+        }
+
         border-bottom: 2px solid white;
       }
     }

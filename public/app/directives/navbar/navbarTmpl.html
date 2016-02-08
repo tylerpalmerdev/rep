@@ -1,24 +1,24 @@
 <header>
     <h2>REP</h2>
-    {{currStatus}} - {{currAuth.role}} -- {{currState}}
+    <!-- {{currStatus}} - {{currAuth.role}} -- {{currState}} -->
     <nav ng-show="currAuth"> <!-- show menu if currAuth is not empty -->
-      <div class="nav-icon" ng-show="{{currState === 'voter'}}" ng-class="{'active-icon': currStatus === 'voter-home'}">
-        <a ng-click="changeStatus('voter-home')"><i class="fa fa-comments-o"></i></a>
+      <div class="nav-icon" ng-show="{{currAuth.role === 'voter'}}" ng-class="{'active-icon': currStatus === 'voter-home'}">
+        <a ng-click="goHomeVoter()"><i class="fa fa-home"></i></a>
       </div>
-      <div class="nav-icon" ng-show="{{currState === 'voter'}}" ng-class="{'active-icon': currStatus === 'my-reps'}">
+      <div class="nav-icon" ng-show="{{currAuth.role === 'voter'}}" ng-class="{'active-icon': currStatus === 'my-reps'}">
         <a ng-click="changeStatus('my-reps')"><i class="fa fa-institution"></i></a>
       </div>
-      <div class="nav-icon" ng-show="{{currState === 'rep'}}" ng-class="{'active-icon': currStatus === 'rep-home'}">
-        <a ng-click="changeStatus('rep-home')"><i class="fa fa-comments-o"></i></a>
+      <div class="nav-icon" ng-show="{{currAuth.role === 'rep'}}" ng-class="{'active-icon': currStatus === 'rep-home'}">
+        <a ng-click="goHomeRep()"><i class="fa fa-home"></i></a>
       </div>
-      <div class="nav-icon" ng-show="{{currState === 'rep'}}" ng-class="{'active-icon': currStatus === 'new-q'}">
+      <div class="nav-icon" ng-show="{{currAuth.role === 'rep'}}" ng-class="{'active-icon': currStatus === 'new-q'}">
         <a ng-click="changeStatus('new-q')"><i class="fa fa-pencil-square-o"></i></a>
       </div>
       <div class="nav-icon" ng-class="{'active-icon': currStatus === 'settings'}">
-        <a ng-click="changeStatus('settings')"><i class="fa fa-gear"></i></a>
+        <a ng-click="logoutCurrUser()"><i class="fa fa-sign-out"></i></a>
       </div>
     </nav>
-    <div ng-hide="currAuth" class="signup-link">
+    <div ng-hide="currAuth" class="signup-link"> <!--hide if currAuth is not empty -->
       <a ui-sref="login">LOGIN</a> or <a ui-sref="signup">SIGN UP</a>
     </div>
 </header>
