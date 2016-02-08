@@ -53,23 +53,27 @@ UserSchema.pre('save', function(next) {
   });
 });
 
-// before saving user, if voter role, get reps for user
+// before saving user:
 UserSchema.pre('save', function(next) {
   var user = this;
-  // if rep role or address has not been modified, skip.
-  if (user.role === 'rep') {
+  // if rep role and rep is new:
+  if (user.role === 'rep' && user.isNew) {
+    // set rep.active_account to true
+    repCtrl.setRepActiveAccount(user.rep_id, true);
     return next();
-  } else if (!user.isModified('addressData')) {
-    return next();
-  };
-  repCtrl.getRepsForDist(user.district)
-  .then(
-    function(response) {
-      user.reps = response;
+  } else if (user.role === 'voter'){
+    if (!user.isModified('addressData')) {
       return next();
     }
-  )
-})
+    repCtrl.getRepsForDist(user.district)
+    .then(
+      function(response) {
+        user.reps = response;
+        return next();
+      }
+    );
+  }
+});
 
 // checking if password is valid
 UserSchema.methods.verifyPassword = function(password, callback) {

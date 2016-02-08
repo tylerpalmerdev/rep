@@ -5,7 +5,7 @@ repApp.service('authSvc', function($http, $state, $stateParams, $q) {
     if (role === 'voter') {
       $state.go('voter', {voterId: responseObj.data._id});
     } else if (role === 'rep') {
-      $state.go('rep', {repId: responseObj.data.bioguide_id});
+      $state.go('rep', {repId: responseObj.data.rep_id});
     }
   };
 

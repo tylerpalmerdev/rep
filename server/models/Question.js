@@ -6,7 +6,7 @@ var QuestionSchema = mongoose.Schema({
   kind: {type: String, required: true, enum: ['yn', 'mc']},
   submitted_by: { // denormalizing this for easy querying
     rep_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Rep', required: true},
-    user_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Rep', required: true}
+    user_id: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true}
   },
   status: {type: String, required: true, enum: ['active', 'completed'], default: 'active'},
   submit_at: {type: Date, default: moment()},

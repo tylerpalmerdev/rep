@@ -3,7 +3,8 @@ var Rep = require('./../models/Rep');
 
 module.exports = {
   read: function(req, res) {
-    Rep.find({})
+    Rep
+    .find({})
     .select('bioguide_id _id title state first_name last_name')
     .exec(function(err, result) {
       if (err) {
@@ -23,7 +24,8 @@ module.exports = {
   },
   map: function(req, res) {
     var id = req.params.repId;
-    Rep.find({bioguide_id: id}, function(err, result) {
+    Rep
+    .find({_id: id}, function(err, result) {
       if (err) {
         res.sendStatus(500, err);
       }
@@ -45,5 +47,13 @@ module.exports = {
         return results;
       }
     );
+  },
+  setRepActiveAccount: function(repId, bool) {
+    return Rep.findByIdAndUpdate(repId, {$set: {active_account: bool}}, function(err, result) {
+      if (err) {
+        return err;
+      }
+      return result;
+    });
   }
 };

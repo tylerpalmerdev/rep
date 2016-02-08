@@ -1,7 +1,9 @@
-repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc, resolveCurrUser) {
+repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc, currUser, repData, repQuestions) {
 
   $scope.status = 'rep-home'; // default
-  $scope.currUserData = resolveCurrUser;
+  $scope.currUserData = currUser;
+  $scope.repData = repData;
+  $scope.repQs = repQuestions;
 
   $scope.newQObj = {options: []}; // set now so options can be pushed
 
@@ -15,25 +17,23 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
     {label: 'Multiple Choice', value: 'mc'}
   ];
 
-  $scope.repQs = questionSvc.getQsForRep('aoku78asd');
+  $scope.clearQForm = function() {
+    $scope.newQObj = {options: []};
+  };
 
-  // function to manipulate titles based on
-  $scope.isSen = true;
-  repSvc.getRepInfo($stateParams.repId)
-  .then(
-    function(response) {
-      $scope.repData = response;
-      if($scope.repData.title === 'Sen') {
-        $scope.repTitle = 'Senator';
-        $scope.isSen = true;
-      } else if ($scope.repData.title === 'Rep') {
-        $scope.repTitle = 'Representative';
-        $scope.isSen = false;
-      } else {
-        $scope.repTitle = $scope.repData.title + '.';
+  $scope.submitNewQ = function(newQObj) {
+    newQObj.submitted_by = {
+      rep_id: $scope.currUserData.rep_id._id,
+      user_id: $scope.currUserData._id
+    };
+    questionSvc.postNewQ(newQObj)
+    .then(
+      function(response) {
+        $scope.status = 'rep-home';
+        $scope.clearQForm();
       }
-    }
-  );
+    );
+  };
 
   $scope.logout = function() {
     authSvc.logout();

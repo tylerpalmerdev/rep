@@ -19,9 +19,10 @@
       Or, go to a representative's public page:
     </p>
     <rep-select rep-info="chosenRepInfo"></rep-select>
-    <button ui-sref="rep({repId: chosenRepInfo.bioguide_id})" type="button" name="button">Go to page</button>
+    <button ui-sref="rep({repId: chosenRepInfo._id})" type="button" name="button">Go to page</button>
   </div>
   <div class="">
     No account? <a ui-sref="signup">Sign Up</a> here.
   </div>
+  {{loginObj}}
 </div>

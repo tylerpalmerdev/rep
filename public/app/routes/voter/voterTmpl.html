@@ -2,7 +2,12 @@
 <div class="voter-content-wrapper">
   <div ng-show="status === 'voter-home'" class="voter-home voter-content content">
     <h3>VOTER HOME HERE</h3>
-    <!-- {{voterData}} -->
+    <div>
+      <div class="questions-container">
+        <q-box ng-repeat="question in voterQs" q-info="question" rep="{{false}}">
+        </q-box>
+      </div>
+    </div>
   </div>
   <div ng-show="status === 'my-reps'" class="my-reps voter-content content">
     <h3>YOUR REPRESENTATIVES</h3>

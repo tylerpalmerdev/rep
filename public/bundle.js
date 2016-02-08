@@ -7,8 +7,14 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'app/routes/rep/repTmpl.html',
     controller: 'repCtrl',
     resolve: {
-      resolveCurrUser: function(authSvc) {
+      currUser: function(authSvc) {
         return authSvc.getCurrUser();
+      },
+      repData: function(repSvc, $stateParams) {
+        return repSvc.getRepInfo($stateParams.repId);
+      },
+      repQuestions: function(questionSvc, $stateParams) {
+        return questionSvc.getQsForUser($stateParams.repId, 'rep');
       }
     }
   })
@@ -18,8 +24,10 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
     controller: 'voterCtrl',
     resolve: {
       voterData: function(authSvc, $stateParams) {
-        var targetVoterId = $stateParams.voterId;
-        return authSvc.voterRouteCheck(targetVoterId);
+        return authSvc.voterRouteCheck($stateParams.voterId);
+      },
+      voterQs: function(questionSvc, $stateParams) {
+        return questionSvc.getQsForUser($stateParams.voterId, 'voter');
       }
     }
   })
@@ -45,7 +53,7 @@ repApp.service('authSvc', function($http, $state, $stateParams, $q) {
     if (role === 'voter') {
       $state.go('voter', {voterId: responseObj.data._id});
     } else if (role === 'rep') {
-      $state.go('rep', {repId: responseObj.data.bioguide_id});
+      $state.go('rep', {repId: responseObj.data.rep_id});
     }
   };
 
@@ -156,124 +164,54 @@ repApp.service('districtSvc', function($http, constants) {
   };
 });
 
-repApp.service('questionSvc', function() {
-  var dummyQs = [
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'active',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'active',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'active',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'active',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'completed',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'completed',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'completed',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    }
-  ];
+repApp.service('questionSvc', function($http, constants) {
 
-  this.getQsForRep = function(repId) {
-    // GET /questions?repId=repId;
-    return dummyQs;
+  this.getQsForUser = function(id, role) {
+    return $http({
+      method: 'GET',
+      url: '/questions?role=' + role + '&' + role + 'Id=' + id
+    })
+    .then(
+      function(response) {
+        return response.data;
+      }
+    );
   };
 
-  this.postNewQ = function(repId, qObj) {
-    // POST /questions
-    // body: qObj , qObj.repId = repId, qObj.submit_stamp = now, qObj.end_stamp = now + 3 days (or do on server?)
-  }
+  this.getQsForRep = function(repId) {
+    return $http({
+      method: 'GET',
+      url: '/questions?role=rep&repId=' + repId
+    })
+    .then(
+      function(response) {
+        return response.data;
+      }
+    );
+  };
+
+  this.postNewQ = function(qObj) {
+
+    var new_options = []; // blank array to hold final option objects
+    qObj.options.forEach(function(elem, i, arr) {
+      if (elem) { // if option is not blank
+        new_options.push({text: elem}); // add option object to new arr
+      }
+    });
+    qObj.options = new_options;
+
+    return $http({
+      method: 'POST',
+      url: '/questions',
+      data: qObj
+    })
+    .then(
+      function(response) {
+        console.log(response.data);
+        // return response.data;
+      }
+    );
+  };
 });
 
 repApp.service('repSvc', function($http, constants) {
@@ -295,8 +233,7 @@ repApp.service('repSvc', function($http, constants) {
   };
 
   // get single rep info from own db
-  this.getRepInfo = function(repId) { // uses bioguide_id
-
+  this.getRepInfo = function(repId) { // uses rep_id
     return $http({
       method: 'GET',
       url: '/reps/' + repId
@@ -304,7 +241,7 @@ repApp.service('repSvc', function($http, constants) {
     .then(
       function(response) {
         var data = response.data[0];
-        data.photo_url = constants.repPhotosBaseUrl + repId + ".jpg";
+        data.photo_url = constants.repPhotosBaseUrl + data.bioguide_id + ".jpg";
         return data;
       }
     );
@@ -457,6 +394,49 @@ repApp.directive('navBar', function() {
   };
 });
 
+repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc, currUser, repData, repQuestions) {
+
+  $scope.status = 'rep-home'; // default
+  $scope.currUserData = currUser;
+  $scope.repData = repData;
+  $scope.repQs = repQuestions;
+
+  $scope.newQObj = {options: []}; // set now so options can be pushed
+
+  $scope.filterOptions = [
+    {label: 'Active', value: 'active', defaultOption: true},
+    {label: 'Completed', value: 'completed'}
+  ];
+
+  $scope.qTypes = [
+    {label: 'Yes/No', value: 'yn'},
+    {label: 'Multiple Choice', value: 'mc'}
+  ];
+
+  $scope.clearQForm = function() {
+    $scope.newQObj = {options: []};
+  };
+
+  $scope.submitNewQ = function(newQObj) {
+    newQObj.submitted_by = {
+      rep_id: $scope.currUserData.rep_id._id,
+      user_id: $scope.currUserData._id
+    };
+    questionSvc.postNewQ(newQObj)
+    .then(
+      function(response) {
+        $scope.status = 'rep-home';
+        $scope.clearQForm();
+      }
+    );
+  };
+
+  $scope.logout = function() {
+    authSvc.logout();
+  };
+
+});
+
 repApp.controller('qBoxCtrl', function($scope) {
 
 });
@@ -468,26 +448,6 @@ repApp.directive('qBox', function() {
     scope: {
       qInfo: '=',
       rep: '@'
-    }
-  };
-});
-
-repApp.controller('repSelectCtrl', function($scope, repSvc) {
-  repSvc.getAllReps()
-  .then(
-    function(response) {
-      $scope.repData = response;
-    }
-  );
-});
-
-repApp.directive('repSelect', function() {
-  return {
-    templateUrl: 'app/directives/repSelect/repSelectTmpl.html',
-    controller: 'repSelectCtrl',
-    restrict: 'E',
-    scope: {
-      repInfo: '='
     }
   };
 });
@@ -514,59 +474,39 @@ repApp.controller('loginCtrl', function($scope, $state, repSvc, authSvc) {
 
 });
 
-repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc, resolveCurrUser) {
+repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, authSvc) {
 
-  $scope.status = 'rep-home'; // default
-  $scope.currUserData = resolveCurrUser;
+  // make injected data about authed user available on $scope
+  $scope.status = 'voter-home';
+  $scope.voterData = voterData;
+  $scope.voterQs = voterQs;
 
-  $scope.newQObj = {options: []}; // set now so options can be pushed
-
-  $scope.filterOptions = [
-    {label: 'Active', value: 'active', defaultOption: true},
-    {label: 'Completed', value: 'completed'}
-  ];
-
-  $scope.qTypes = [
-    {label: 'Yes/No', value: 'yn'},
-    {label: 'Multiple Choice', value: 'mc'}
-  ];
-
-  $scope.repQs = questionSvc.getQsForRep('aoku78asd');
-
-  // function to manipulate titles based on
-  $scope.isSen = true;
-  repSvc.getRepInfo($stateParams.repId)
-  .then(
-    function(response) {
-      $scope.repData = response;
-      if($scope.repData.title === 'Sen') {
-        $scope.repTitle = 'Senator';
-        $scope.isSen = true;
-      } else if ($scope.repData.title === 'Rep') {
-        $scope.repTitle = 'Representative';
-        $scope.isSen = false;
-      } else {
-        $scope.repTitle = $scope.repData.title + '.';
-      }
-    }
-  );
+  $scope.getRepImgUrl = function(bioguideId) {
+    return constants.repPhotosBaseUrl + bioguideId + ".jpg";
+  };
 
   $scope.logout = function() {
     authSvc.logout();
   };
-
 });
 
-repApp.controller('settingsCtrl', function($scope, authSvc) {
-  $scope.test = 'settingsCtrl connect';
-  $scope.logout = function() {
-    authSvc.logout()
-    .then(
-      function(response) {
-        console.log('user logged out!');
-        // $scope.updateCurrUserData();
-      }
-    );
+repApp.controller('repSelectCtrl', function($scope, repSvc) {
+  repSvc.getAllReps()
+  .then(
+    function(response) {
+      $scope.repData = response;
+    }
+  );
+});
+
+repApp.directive('repSelect', function() {
+  return {
+    templateUrl: 'app/directives/repSelect/repSelectTmpl.html',
+    controller: 'repSelectCtrl',
+    restrict: 'E',
+    scope: {
+      repInfo: '='
+    }
   };
 });
 
@@ -626,17 +566,15 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
 
 }); // END
 
-repApp.controller('voterCtrl', function($scope, constants, voterData, authSvc) {
-  $scope.status = 'voter-home';
-
-  // make injected data about authed user available on $scope
-  $scope.voterData = voterData;
-
-  $scope.getRepImgUrl = function(bioguideId) {
-    return constants.repPhotosBaseUrl + bioguideId + ".jpg";
-  };
-
+repApp.controller('settingsCtrl', function($scope, authSvc) {
+  $scope.test = 'settingsCtrl connect';
   $scope.logout = function() {
-    authSvc.logout();
+    authSvc.logout()
+    .then(
+      function(response) {
+        console.log('user logged out!');
+        // $scope.updateCurrUserData();
+      }
+    );
   };
 });

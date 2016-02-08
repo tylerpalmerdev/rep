@@ -4,13 +4,13 @@
     <img ng-src="{{repData.photo_url}}" class="rep-image"/>
     <div class="rep-text">
       <div class="rep-title">
-        {{repTitle}}
+        {{repData.title}}
       </div>
       <div class="rep-name">
         {{repData.first_name}} {{repData.last_name}}
       </div>
       <div class="electorate-info">
-        {{repData.state_name}} <span ng-hide="isSen">District {{repData.district}}</span>
+        {{repData.state_name}} <span ng-hide="repData.title === 'Senator'">District {{repData.district}}</span>
       </div>
     </div>
   </div>
@@ -32,15 +32,15 @@
   <h3>Ask your voters a new question.</h3>
   <div class="form-group">
     <div class="group-label">Type:</div>
-    <dual-toggle options="qTypes" selected="newQObj.type"></dual-toggle>
+    <dual-toggle options="qTypes" selected="newQObj.kind"></dual-toggle>
   </div>
 
-  <div ng-show="newQObj.type" class="form-group">
+  <div ng-show="newQObj.kind" class="form-group">
     <div class="group-label">Question:</div>
     <textarea ng-model="newQObj.text" name="name" placeholder="Limit 150 characters."></textarea>
   </div>
 
-  <div ng-show="newQObj.type === 'yn'" class="form-group options-input yn-options">
+  <div ng-show="newQObj.kind === 'yn'" class="form-group options-input yn-options">
     Options:
     <div class="input-group">
       Option 1: YES
@@ -50,7 +50,7 @@
     </div>
   </div>
 
-  <div ng-show="newQObj.type === 'mc'" class="form-group options-input mc-options">
+  <div ng-show="newQObj.kind === 'mc'" class="form-group options-input mc-options">
     Options (5 max):
     <div class="input-group">
       Option 1: <input ng-model="newQObj.options[0]" type="text">
@@ -69,9 +69,9 @@
     </div>
   </div>
 
-  <div ng-show="newQObj.type" class="form-group form-buttons">
+  <div ng-show="newQObj.kind" class="form-group form-buttons">
     <button ng-click="clearQForm()" type="button" name="button">CLEAR FORM</button>
-    <button ng-click="postNewQuestion(repId, newQObj)" type="button" name="button">SUBMIT</button>
+    <button ng-click="submitNewQ(newQObj)" type="button" name="button">SUBMIT</button>
   </div>
 
   {{newQObj}}

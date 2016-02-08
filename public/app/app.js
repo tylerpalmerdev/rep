@@ -7,8 +7,14 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'app/routes/rep/repTmpl.html',
     controller: 'repCtrl',
     resolve: {
-      resolveCurrUser: function(authSvc) {
+      currUser: function(authSvc) {
         return authSvc.getCurrUser();
+      },
+      repData: function(repSvc, $stateParams) {
+        return repSvc.getRepInfo($stateParams.repId);
+      },
+      repQuestions: function(questionSvc, $stateParams) {
+        return questionSvc.getQsForUser($stateParams.repId, 'rep');
       }
     }
   })
@@ -18,8 +24,10 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
     controller: 'voterCtrl',
     resolve: {
       voterData: function(authSvc, $stateParams) {
-        var targetVoterId = $stateParams.voterId;
-        return authSvc.voterRouteCheck(targetVoterId);
+        return authSvc.voterRouteCheck($stateParams.voterId);
+      },
+      voterQs: function(questionSvc, $stateParams) {
+        return questionSvc.getQsForUser($stateParams.voterId, 'voter');
       }
     }
   })

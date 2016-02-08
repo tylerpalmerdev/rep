@@ -1,119 +1,49 @@
-repApp.service('questionSvc', function() {
-  var dummyQs = [
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'active',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'active',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'active',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'active',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'completed',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'completed',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    },
-    {
-      text: "Should we throw all puppies in puppy prison?",
-      type: 'Y/N',
-      rep_id: '9jasd8hasd8g',
-      status: 'completed',
-      submit_stamp: '1454370340',
-      end_stamp: '1454586300',
-      possible_answers: ['YES', 'NO', 'NOT SURE'],
-      results: {
-        0: 24010,
-        1: 2309,
-        2: 9092
-      },
-      num_responses: 35415
-    }
-  ];
+repApp.service('questionSvc', function($http, constants) {
 
-  this.getQsForRep = function(repId) {
-    // GET /questions?repId=repId;
-    return dummyQs;
+  this.getQsForUser = function(id, role) {
+    return $http({
+      method: 'GET',
+      url: '/questions?role=' + role + '&' + role + 'Id=' + id
+    })
+    .then(
+      function(response) {
+        return response.data;
+      }
+    );
   };
 
-  this.postNewQ = function(repId, qObj) {
-    // POST /questions
-    // body: qObj , qObj.repId = repId, qObj.submit_stamp = now, qObj.end_stamp = now + 3 days (or do on server?)
-  }
+  this.getQsForRep = function(repId) {
+    return $http({
+      method: 'GET',
+      url: '/questions?role=rep&repId=' + repId
+    })
+    .then(
+      function(response) {
+        return response.data;
+      }
+    );
+  };
+
+  this.postNewQ = function(qObj) {
+
+    var new_options = []; // blank array to hold final option objects
+    qObj.options.forEach(function(elem, i, arr) {
+      if (elem) { // if option is not blank
+        new_options.push({text: elem}); // add option object to new arr
+      }
+    });
+    qObj.options = new_options;
+
+    return $http({
+      method: 'POST',
+      url: '/questions',
+      data: qObj
+    })
+    .then(
+      function(response) {
+        console.log(response.data);
+        // return response.data;
+      }
+    );
+  };
 });

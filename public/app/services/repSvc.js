@@ -17,8 +17,7 @@ repApp.service('repSvc', function($http, constants) {
   };
 
   // get single rep info from own db
-  this.getRepInfo = function(repId) { // uses bioguide_id
-
+  this.getRepInfo = function(repId) { // uses rep_id
     return $http({
       method: 'GET',
       url: '/reps/' + repId
@@ -26,7 +25,7 @@ repApp.service('repSvc', function($http, constants) {
     .then(
       function(response) {
         var data = response.data[0];
-        data.photo_url = constants.repPhotosBaseUrl + repId + ".jpg";
+        data.photo_url = constants.repPhotosBaseUrl + data.bioguide_id + ".jpg";
         return data;
       }
     );
