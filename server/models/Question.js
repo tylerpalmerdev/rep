@@ -17,7 +17,8 @@ var questionSchema = mongoose.Schema({
   status: {type: String, required: true, enum: ['active', 'completed'], default: 'active'},
   submit_at: {type: Date, default: moment()},
   complete_at: {type: Date, default: moment().add(3, 'days').endOf('day')}, // + 3 days
-  options: [optionSchema]
+  options: [optionSchema],
+  total_responses: {type: Number, default: 0, min: 0}
 });
 
 // y/n options hook

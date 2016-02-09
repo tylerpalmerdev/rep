@@ -34,4 +34,24 @@ repApp.service('questionSvc', function($http, constants) {
       }
     );
   };
+
+  this.answerQ = function(answerObj) {
+    /*
+    {
+      question_id: 'asdojkf8jasd98f',
+      answer: 2,
+      user_id: '099asg0asd'
+    }
+    */
+    return $http({
+      method: 'POST',
+      url: '/answers',
+      data: answerObj
+    })
+    .then(
+      function(response) {
+        console.log('answer submitted!');
+      }
+    );
+  };
 });

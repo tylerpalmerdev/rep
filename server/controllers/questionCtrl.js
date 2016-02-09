@@ -29,15 +29,14 @@ module.exports = {
           'submitted_by.rep_id': {$in: result.reps}
         })
         .populate('submitted_by.rep_id', 'first_name last_name bioguide_id title district state state_name')
+        .lean() // this is to add answer data to user's questions data
         .exec(function(err, voterQs) {
           if (err) {
             res.sendStatus(500, err);
           }
-          // for all questions answered by user:
           result.questions_answered.forEach(function(elem, i, arr) {
-            // find that q in voterQs, assign answered bool & ans chosen num
             voterQs.forEach(function(qElem, qI, qArr) {
-              if (qElem._id === elem._id) {
+              if (qElem._id.equals(elem.question_id)) {
                 qElem.answered = true;
                 qElem.answer_chosen = elem.answer_chosen;
               }
@@ -103,18 +102,19 @@ module.exports = {
                 );
 
                 // create dynamic update object before updating question
-                // based on answer chosen. will inc votes accordingly.
-                var updateObj = {$inc: {}};
+                // based on answer chosen. will increment votes accordingly.
+                var updateObj = {$inc: {total_responses: 1}};
                 updateObj.$inc['options.' + answer + '.votes'] = 1;
                 console.log(updateObj);
 
-                // use q to create promise that resolves when both update
+                // use q to create promise that resolves when both resolve
                 q.all([
                   questionResult.update(updateObj).exec(),
                   user.save()
                 ])
                 .then(
                   function(response) {
+                    delete response[1].password;
                     res.send(response);
                   },
                   function(err) {

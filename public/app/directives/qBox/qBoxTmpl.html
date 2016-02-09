@@ -6,10 +6,19 @@
   <div class="">
     <a ng-click="showQModal()">Open Modal</a>
   </div>
-  <dialog-modal show-modal="qBoxModal">
+  <dialog-modal show-modal="qBoxModal" class="q-box-modal">
     <h3>QUESTION</h3>
+    <h5>{{qInfo.submitted_by.rep_id.title}} {{qInfo.submitted_by.rep_id.first_name}} {{qInfo.submitted_by.rep_id.last_name}} asks:</h5>
     <div class="">
-      {{qInfo.text}} - {{qInfo.kind}}
+      {{qInfo.text}}
+    </div>
+    <div ng-repeat="option in qInfo.options" class="answer-box">
+      <input type="radio" name="name" value="">
+      {{option.text}}
+    </div>
+    <div class="submit-answer-controls">
+      <button>Close</button>
+      <button>Submit</button>
     </div>
   </dialog-modal>
 </div>

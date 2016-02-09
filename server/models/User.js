@@ -33,7 +33,7 @@ var userSchema = mongoose.Schema({
 
 });
 
-// this middleware to hash pws will run before any user save of occurs
+// this middleware to hash pws will run before any user save or pw update occurs
 userSchema.pre('save', function(next) {
   var user = this;
 

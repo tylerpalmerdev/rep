@@ -11,6 +11,18 @@ body {
   font-family: "Arial", sans-serif;
 }
 
+body a {
+  cursor: pointer;
+}
+
+body a:hover {
+  color: red;
+}
+
+body a:hover i {
+  color: red;
+}
+
 .modal-wrapper .modal-overlay {
   position: fixed;
   top: 0;
@@ -24,6 +36,7 @@ body {
 .modal-wrapper .modal-dialog {
   position: fixed;
   width: 90%;
+  max-height: 90%;
   z-index: 100;
   background-color: white;
   top: 50%;
@@ -41,6 +54,12 @@ body {
   cursor: pointer;
   display: inline-block;
   font-weight: bold;
+}
+
+@media screen and (min-width: 600px) {
+  .modal-wrapper .modal-dialog {
+    width: 60%;
+  }
 }
 
 dual-toggle .toggle-wrap {
@@ -139,8 +158,8 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box {
 }
 
 nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box img {
-  width: 25%;
-  height: auto;
+  height: 20vh;
+  width: auto;
 }
 
 nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box .voter-rep-text {
@@ -157,6 +176,10 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 .questions-container .question-box {
   height: 80px;
   border-bottom: 1px solid #888888;
+  padding: 15px;
+}
+
+.questions-container .question-box .q-box-modal .modal-wrapper .modal-dialog {
   padding: 15px;
 }
 

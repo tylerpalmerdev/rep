@@ -14,6 +14,7 @@
   .modal-dialog {
     position: fixed;
     width: 90%;
+    max-height: 90%;
     z-index: 100;
     background-color: $form-color;
 
@@ -36,4 +37,11 @@
   }
 }
 
+@media screen and (min-width: 600px) {
+  .modal-wrapper {
+    .modal-dialog {
+      width: 60%;
+    }
+  }
+}
 // add media query to change width of modal on wider screen sizes
