@@ -2,6 +2,14 @@
   <div ng-hide="rep" class="rep-tag">
     {{qInfo.submitted_by.rep_id.title}} {{qInfo.submitted_by.rep_id.first_name}} {{qInfo.submitted_by.rep_id.last_name}} asks:
   </div>
-  <div class="q-text">{{qInfo.text}}</div>
-  <div>{{qInfo.kind}}</div>
+  <div class="q-text">{{qInfo.text}} - {{qInfo.kind}}</div>
+  <div class="">
+    <a ng-click="showQModal()">Open Modal</a>
+  </div>
+  <dialog-modal show-modal="qBoxModal">
+    <h3>QUESTION</h3>
+    <div class="">
+      {{qInfo.text}} - {{qInfo.kind}}
+    </div>
+  </dialog-modal>
 </div>

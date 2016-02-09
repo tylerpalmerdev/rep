@@ -2,19 +2,16 @@
     <h2>REP</h2>
     <!-- {{currStatus}} - {{currAuth.role}} -- {{currState}} -->
     <nav ng-show="currAuth"> <!-- show menu if currAuth is not empty -->
-      <div class="nav-icon" ng-show="{{currAuth.role === 'voter'}}" ng-class="{'active-icon': currStatus === 'voter-home'}">
-        <a ng-click="goHomeVoter()"><i class="fa fa-home"></i></a>
+      <div class="nav-icon">
+        <a ng-click="goHome()"><i class="fa fa-home"></i></a>
       </div>
-      <div class="nav-icon" ng-show="{{currAuth.role === 'voter'}}" ng-class="{'active-icon': currStatus === 'my-reps'}">
-        <a ng-click="changeStatus('my-reps')"><i class="fa fa-institution"></i></a>
+      <div class="nav-icon" ng-show="{{currAuth.role === 'voter'}}">
+        <a ng-click="openMyReps()"><i class="fa fa-institution"></i></a>
       </div>
-      <div class="nav-icon" ng-show="{{currAuth.role === 'rep'}}" ng-class="{'active-icon': currStatus === 'rep-home'}">
-        <a ng-click="goHomeRep()"><i class="fa fa-home"></i></a>
+      <div class="nav-icon" ng-show="{{currAuth.role === 'rep'}}">
+        <a ng-click="openQForm()"><i class="fa fa-pencil-square-o"></i></a>
       </div>
-      <div class="nav-icon" ng-show="{{currAuth.role === 'rep'}}" ng-class="{'active-icon': currStatus === 'new-q'}">
-        <a ng-click="changeStatus('new-q')"><i class="fa fa-pencil-square-o"></i></a>
-      </div>
-      <div class="nav-icon" ng-class="{'active-icon': currStatus === 'settings'}">
+      <div class="nav-icon">
         <a ng-click="logoutCurrUser()"><i class="fa fa-sign-out"></i></a>
       </div>
     </nav>
@@ -22,3 +19,78 @@
       <a ui-sref="login">LOGIN</a> or <a ui-sref="signup">SIGN UP</a>
     </div>
 </header>
+
+<dialog-modal show-modal="newQForm">
+  <form class="new-q-form rep-content content">
+    <h3>Ask your voters a new question.</h3>
+    <div class="form-group">
+      <div class="group-label">Type:</div>
+      <dual-toggle options="qTypes" selected="newQObj.kind"></dual-toggle>
+    </div>
+
+    <div ng-show="newQObj.kind" class="form-group">
+      <div class="group-label">Question:</div>
+      <textarea ng-model="newQObj.text" name="name" placeholder="Limit 150 characters."></textarea>
+    </div>
+
+    <div ng-show="newQObj.kind === 'yn'" class="form-group options-input yn-options">
+      Options:
+      <div class="input-group">
+        Option 1: YES
+      </div>
+      <div class="input-group">
+        Option 2: NO
+      </div>
+    </div>
+
+    <div ng-show="newQObj.kind === 'mc'" class="form-group options-input mc-options">
+      Options (5 max):
+      <div class="input-group">
+        Option 1: <input ng-model="newQObj.options[0]" type="text">
+      </div>
+      <div class="input-group">
+        Option 2: <input ng-model="newQObj.options[1]" type="text">
+      </div>
+      <div class="input-group">
+        Option 3: <input ng-model="newQObj.options[2]" type="text">
+      </div>
+      <div class="input-group">
+        Option 4: <input ng-model="newQObj.options[3]" type="text">
+      </div>
+      <div class="input-group">
+        Option 5: <input ng-model="newQObj.options[4]" type="text">
+      </div>
+    </div>
+
+    <div ng-show="newQObj.kind" class="form-group form-buttons">
+      <button ng-click="clearQForm()" type="button" name="button">CLEAR FORM</button>
+      <button ng-click="submitNewQ(newQObj)" type="button" name="button">SUBMIT</button>
+    </div>
+
+    {{newQObj}}
+  </form>
+</dialog-modal>
+
+<dialog-modal show-modal="myRepsModal">
+  <div class="my-reps voter-content content">
+    <h3>YOUR REPRESENTATIVES</h3>
+    <div class="rep-box-container">
+      <div ng-repeat="rep in currAuth.reps" class="voter-rep-box">
+        <img ng-src="{{getRepImgUrl(rep.bioguide_id)}}" class="voter-rep-img" />
+        <div class="voter-rep-text">
+          <div class="rep-name-title">
+            {{rep.title}} {{rep.first_name}} {{rep.last_name}}
+          </div>
+          <div class="rep-state-district">
+            {{rep.state_name}}
+            <span ng-show="rep.title === 'Rep'">District {{rep.district}}</span>
+          </div>
+          <div class="rep-page-link">
+            <span ng-show="rep.active_account"><a ui-sref="rep({repId: rep._id})">Rep Page</a></span>
+            <span ng-hide="rep.active_account">This representative is not using Rep. <a ui-sref="rep({repId: rep._id})"> Tell them to sign up!</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog-modal>

@@ -14,6 +14,12 @@ var UserSchema = mongoose.Schema({
   // voter data
   addressData: {type: Object},
   district: {type: Object},
+  questions_answered: [
+    {
+      question_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Question'},
+      answer_chosen: {type: Number, enum: [1, 2, 3, 4, 5]}
+    }
+  ],
   reps: [{type: mongoose.Schema.Types.ObjectId, ref: 'Rep'}],
   //rep data
   rep_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Rep'},
@@ -23,12 +29,7 @@ var UserSchema = mongoose.Schema({
   //     question_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Question'}
   //   },
   // ],
-  // questions_answered: [
-  //   {
-  //     question_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Question'},
-  //     answer_chosen: {type: Number, enum: [1, 2, 3, 4, 5]}
-  //   }
-  // ]
+
 });
 
 // this middleware to hash pws will run before any user save of occurs

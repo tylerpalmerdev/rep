@@ -1,4 +1,4 @@
-<nav-bar curr-auth="voterData" curr-status="status"></nav-bar>
+<nav-bar curr-auth="voterData" curr-status="status" modal-open="myRepsModal"></nav-bar>
 <div class="voter-content-wrapper">
   <div ng-show="status === 'voter-home'" class="voter-home voter-content content">
     <h3>WELCOME BACK, {{voterData.name}}</h3>
@@ -8,25 +8,7 @@
         <q-box ng-repeat="question in voterQs" q-info="question" isRep="{{false}}">
         </q-box>
       </div>
-    </div>
-  </div>
-  <div ng-show="status === 'my-reps'" class="my-reps voter-content content">
-    <h3>YOUR REPRESENTATIVES</h3>
-    <div class="rep-box-container">
-      <div ng-repeat="rep in voterData.reps" class="voter-rep-box">
-        <img ng-src="{{getRepImgUrl(rep.bioguide_id)}}" class="voter-rep-img" />
-        <div class="voter-rep-text">
-          <div class="rep-name-title">{{rep.title}}. {{rep.first_name}} {{rep.last_name}}</h3>
-          <div class="rep-state-district">
-            {{rep.state_name}}
-            <span ng-show="rep.title === 'Rep'">District {{rep.district}}</span>
-          </div>
-          <div class="rep-page-link">
-            <span ng-show="rep.active_account"><a ui-sref="rep({repId: rep._id})">Rep Page</a></span>
-            <span ng-hide="rep.active_account">This representative is not using Rep. <a ui-sref="rep({repId: rep._id})"> Tell them to sign up!</a></span>
-          </div>
-        </div>
-      </div>
+      {{voterQs}}
     </div>
   </div>
 </div>

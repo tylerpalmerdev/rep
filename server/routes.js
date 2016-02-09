@@ -35,5 +35,6 @@ module.exports = function(app) {
 
   // question endpoints
   app.post('/questions', questionCtrl.create);
-  app.get('/questions', questionCtrl.read); // extra data in query string
+  app.get('/questions', questionCtrl.map); // extra data in query string
+  app.post('/answers', questionCtrl.answer);
 };

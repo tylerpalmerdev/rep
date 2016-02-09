@@ -12,18 +12,6 @@ repApp.service('questionSvc', function($http, constants) {
     );
   };
 
-  this.getQsForRep = function(repId) {
-    return $http({
-      method: 'GET',
-      url: '/questions?role=rep&repId=' + repId
-    })
-    .then(
-      function(response) {
-        return response.data;
-      }
-    );
-  };
-
   this.postNewQ = function(qObj) {
 
     var new_options = []; // blank array to hold final option objects
