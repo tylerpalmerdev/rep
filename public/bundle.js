@@ -143,8 +143,8 @@ repApp.service('authSvc', function($http, $state, $stateParams, $q) {
 });
 
 repApp.constant('constants', {
-  // sunlightBaseUrl: 'https://congress.api.sunlightfoundation.com',
-  // sunlightApiKey: 'c8b4c2f1a90e4d76adf7c80417b20882',
+  sunlightBaseUrl: 'https://congress.api.sunlightfoundation.com',
+  sunlightApiKey: 'c8b4c2f1a90e4d76adf7c80417b20882',
   repPhotosBaseUrl: 'https://raw.githubusercontent.com/unitedstates/images/gh-pages/congress/225x275/'
 });
 
@@ -518,6 +518,19 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
 
 });
 
+repApp.controller('settingsCtrl', function($scope, authSvc) {
+  $scope.test = 'settingsCtrl connect';
+  $scope.logout = function() {
+    authSvc.logout()
+    .then(
+      function(response) {
+        console.log('user logged out!');
+        // $scope.updateCurrUserData();
+      }
+    );
+  };
+});
+
 repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
 
   // custom options for dual-toggle directive
@@ -573,19 +586,6 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
   };
 
 }); // END
-
-repApp.controller('settingsCtrl', function($scope, authSvc) {
-  $scope.test = 'settingsCtrl connect';
-  $scope.logout = function() {
-    authSvc.logout()
-    .then(
-      function(response) {
-        console.log('user logged out!');
-        // $scope.updateCurrUserData();
-      }
-    );
-  };
-});
 
 repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs) {
 

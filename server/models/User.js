@@ -2,7 +2,13 @@ var mongoose = require('mongoose'),
     bcrypt = require('bcrypt-nodejs'),
     repCtrl = require('./../controllers/repCtrl');
 
-var UserSchema = mongoose.Schema({
+var answeredQSchema = mongoose.Schema(
+  {
+    question_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Question'},
+    answer_chosen: {type: Number, enum: [1, 2, 3, 4, 5]}
+  }, { _id: false });
+
+var userSchema = mongoose.Schema({
   email: {type: String, required: true},
   password: {type: String, required: true},
   role: {type: String, required: true, enum: [
@@ -14,12 +20,7 @@ var UserSchema = mongoose.Schema({
   // voter data
   addressData: {type: Object},
   district: {type: Object},
-  questions_answered: [
-    {
-      question_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Question'},
-      answer_chosen: {type: Number, enum: [1, 2, 3, 4, 5]}
-    }
-  ],
+  questions_answered: [answeredQSchema],
   reps: [{type: mongoose.Schema.Types.ObjectId, ref: 'Rep'}],
   //rep data
   rep_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Rep'},
@@ -33,7 +34,7 @@ var UserSchema = mongoose.Schema({
 });
 
 // this middleware to hash pws will run before any user save of occurs
-UserSchema.pre('save', function(next) {
+userSchema.pre('save', function(next) {
   var user = this;
 
   // only hash the password if it has been modified (or is new)
@@ -55,7 +56,7 @@ UserSchema.pre('save', function(next) {
 });
 
 // before saving user:
-UserSchema.pre('save', function(next) {
+userSchema.pre('save', function(next) {
   var user = this;
   // if rep role and rep is new:
   if (user.role === 'rep' && user.isNew) {
@@ -77,7 +78,7 @@ UserSchema.pre('save', function(next) {
 });
 
 // checking if password is valid
-UserSchema.methods.verifyPassword = function(password, callback) {
+userSchema.methods.verifyPassword = function(password, callback) {
     // compare password provided with stored password for user
     bcrypt.compare(password, this.password, function(err, isMatch) {
       // if error, callback error
@@ -89,4 +90,4 @@ UserSchema.methods.verifyPassword = function(password, callback) {
     });
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', userSchema);

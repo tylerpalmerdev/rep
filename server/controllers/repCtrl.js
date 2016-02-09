@@ -35,8 +35,8 @@ module.exports = {
   getRepsForDist: function(distObj) {
     return Rep.find({state: distObj.state})
     .or([
-      { $and: [{title: 'Rep'}, {district: distObj.district}]},
-      {title: 'Sen'}
+      { $and: [{title: 'Representative'}, {district: distObj.district}]},
+      {title: 'Senator'}
     ])
     .select('_id')
     .exec(

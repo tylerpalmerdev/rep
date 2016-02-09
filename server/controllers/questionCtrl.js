@@ -68,21 +68,62 @@ module.exports = {
       user_id: '099asg0asd'
     }
     */
-    // var def = q.defer();
-    //
-    // req.send(def.promise);
-    User.findOneAndUpdate({_id: req.body.user_id},
-      {$push: {"questions_answered":
-        {
-          question_id: req.body.question_id,
-          answer_chosen: req.body.answer_chosen
-        }
-      }},
-      function(err, result) {
+
+    // need to make sure user hasn't already answered question AND answer is in range before saving/ updating either
+    User.findOne(
+      {
+        _id: req.body.user_id,
+        'questions_answered.question_id': {$ne: req.body.question_id}
+        // ^^ this should prevent same user from answering same question twice
+      },
+      function(err, user) {
         if (err) {
-          res.sendStatus(500, err);
+          res.send(500).status(err);
+        } else if (!user) { // if question already answered
+          res.status(412).send("user already answered question!");
+        } else {
+          // set up query to find if provided answer exists for question
+          var answer = req.body.answer_chosen;
+          var questionQuery = {_id: req.body.question_id};
+          questionQuery['options.' + answer] = {$exists: true};
+          Question.findOne(questionQuery,
+            function(err, questionResult) {
+              if (err) {
+                res.status(500).send(err);
+              } else if (!questionResult) { // if questionResult index out of range:
+                res.status(412).send("that answer is out of range.");
+              } else {
+                // if it passes all checks, update values and save
+                // add questionResult answered object to user doc
+                user.questions_answered.push(
+                  {
+                    question_id: req.body.question_id,
+                    answer_chosen: req.body.answer_chosen
+                  }
+                );
+
+                // create dynamic update object before updating question
+                // based on answer chosen. will inc votes accordingly.
+                var updateObj = {$inc: {}};
+                updateObj.$inc['options.' + answer + '.votes'] = 1;
+                console.log(updateObj);
+
+                // use q to create promise that resolves when both update
+                q.all([
+                  questionResult.update(updateObj).exec(),
+                  user.save()
+                ])
+                .then(
+                  function(response) {
+                    res.send(response);
+                  },
+                  function(err) {
+                    res.status(500).send("error saving records");
+                  }
+                );
+              }
+          });
         }
-        res.send(result);
       }
     );
   }
