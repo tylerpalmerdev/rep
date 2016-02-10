@@ -5,7 +5,8 @@ repApp.directive('navBar', function() {
     restrict: 'E',
     scope: {
       currAuth: '=',
-      currStatus: '='
+      currStatus: '=',
+      userQs: '='
     }
   };
 });

@@ -1,7 +1,5 @@
 repApp.controller('qFeedCtrl', function($scope, questionSvc) {
 
-  console.log("is rep has a type of:", typeof $scope.isRep, $scope.isRep);
-
   // this will be used to open/close modals for each question box.
   $scope.modalShowObj = {};
 
@@ -14,6 +12,7 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc) {
     $scope.optionChosenIndex = "";
   };
 
+  // DOESN'T UPDATE REP Q DATA IN REAL TIME
   // function to update question data for user and apply to scope
   $scope.updateQuestionData = function() {
     questionSvc.getQsForUser($scope.userData._id, $scope.userData.role)
@@ -24,14 +23,14 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc) {
     );
   };
 
+  // function to hide "rep who asked" info when rep is looking at their own Qs
   $scope.userIsRepWhoAsked = function(currUserObj, idOfRepWhoAsked) {
-    if (!currUserObj) {
+    if (!currUserObj) { // if no authed user
       return false;
-    } else if (currUserObj.role === 'voter') {
+    } else if (currUserObj.role === 'voter') { // if voter
       return false;
     } else if (currUserObj.role === 'rep') {
       if (currUserObj.rep_id._id === idOfRepWhoAsked) {
-        console.log("rep is asking own question");
         return true;
       }
     } else {
@@ -48,17 +47,29 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc) {
     }
   };
 
-  $scope.userCanAnswerQ = function(currUserObj, questionId) {
-    if (!currUserObj) {
-      return false;
-    } else {
-      var role = currUserObj.role;
-      if (role === 'rep') {
-        return false;
-      } else if (role === 'voter') {
-        return true;
-      }
-    }
+  // why doesn't this work?
+  // check to see if user answered question
+  $scope.userHasAnsweredQ = function(userData, qId) {
+    // if (!userData) { // false if not auth'd
+    //   return false;
+    // } else if (userData.role === 'rep') { // false if rep
+    //   return false;
+    // } else if (userData.role === 'voter') {
+    //   // if voter hasn't answered any questions
+    //   if (userData.questions_answered.length === 0) {
+    //     return false;
+    //   } else {
+    //     // search array of questions answerer for the q's ID
+    //     userData.questions_answered.forEach(function(elem, i, arr) {
+    //       if (elem.question_id === qId) { // if match found
+    //         console.log("match!", elem.question_id, qId);
+    //         return true; // return the index of that
+    //       }
+    //     });
+    //   }
+    // }
+    // // if nothing matches
+    // return false;
   };
 
   // only for voters
@@ -68,7 +79,6 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc) {
       answer_chosen: parseInt(answerIndex), // route expects int
       user_id: $scope.userData._id
     };
-    console.log(answerObj);
     questionSvc.answerQ(answerObj)
     .then(
       function(response) {

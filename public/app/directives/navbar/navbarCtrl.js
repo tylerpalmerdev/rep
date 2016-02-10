@@ -29,6 +29,19 @@ repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, 
     $scope.newQObj = {options: []};
   };
 
+  // for reps only
+  $scope.updateQData = function() {
+    // if rep is on own page
+    if ($scope.currAuth.rep_id === $stateParams.repId) {
+      questionSvc.getQsForUser($scope.currAuth._id, 'rep')
+      .then(
+        function(response) {
+          $scope.userQs = response;
+        }
+      );
+    }
+  };
+
   $scope.submitNewQ = function(newQObj) {
     newQObj.submitted_by = {
       rep_id: $scope.currAuth.rep_id._id,
@@ -39,6 +52,7 @@ repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, 
       function(response) {
         $scope.newQForm = false;
         $scope.clearQForm();
+        $scope.updateQData();
       }
     );
   };

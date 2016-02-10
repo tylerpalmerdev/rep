@@ -50,6 +50,7 @@ module.exports = {
       .find(
         {'submitted_by.rep_id': query.repId}
       )
+      .populate('submitted_by.rep_id', 'first_name last_name bioguide_id title district state state_name')
       .exec(function(err, qArr) {
         if (err) {
           res.sendStatus(500, err);
