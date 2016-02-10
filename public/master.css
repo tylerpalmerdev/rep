@@ -8,7 +8,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Arial", sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 body a {
@@ -21,6 +21,21 @@ body a:hover {
 
 body a:hover i {
   color: green;
+}
+
+body button {
+  border: none;
+  outline: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 12px;
+  margin-top: 12px;
+  color: white;
+}
+
+body button:active {
+  box-shadow: none;
 }
 
 .modal-wrapper .modal-overlay {
@@ -72,7 +87,22 @@ dual-toggle .toggle-wrap .toggle {
   align-items: center;
   justify-content: center;
   padding: 10px;
-  border: 1px solid black;
+  background-color: #d6d6d6;
+  color: #a9a9a9;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+dual-toggle .toggle-wrap .active-toggle {
+  color: white;
+}
+
+dual-toggle .toggle-wrap .active-toggle.toggle-1 {
+  border-bottom: 2px solid #ff6961;
+}
+
+dual-toggle .toggle-wrap .active-toggle.toggle-2 {
+  border-bottom: 2px solid #61a8ff;
 }
 
 nav-bar {
@@ -182,6 +212,54 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   padding: 15px;
 }
 
+.signup-content {
+  background-color: #d6d6d6;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-content h3 {
+  margin: 0;
+}
+
+.signup-content .signup-form {
+  width: 90%;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.signup-content .signup-form .form-group {
+  margin-top: 10px;
+}
+
+.signup-content .signup-form .form-group input {
+  display: block;
+  width: 100%;
+  border: 2px solid gray;
+}
+
+.signup-content .signup-form .form-group .input-text {
+  font-size: 10px;
+  font-style: italic;
+}
+
+.signup-content .signup-form button {
+  width: 100%;
+  background-color: #d6d6d6;
+}
+
+.signup-content .form-group {
+  text-align: center;
+}
+
 .new-q-form {
   padding: 15px;
   padding-top: 75px;
@@ -265,55 +343,6 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   text-align: center;
   padding: 10px;
   border: 1px solid #888888;
-}
-
-.settings-content {
-  padding-top: 100px;
-}
-
-.signup-content {
-  background-color: #d6d6d6;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-}
-
-.signup-content .signup-form {
-  width: 90%;
-  background-color: white;
-  border-radius: 5px;
-  padding: 20px;
-}
-
-.signup-content .signup-form dual-toggle .active-toggle {
-  background-color: #d6d6d6;
-  color: white;
-  font-weight: bold;
-}
-
-.signup-content .signup-form .form-group {
-  margin-top: 10px;
-}
-
-.signup-content .signup-form .form-group input {
-  display: block;
-  width: 100%;
-  border: 2px solid gray;
-}
-
-.signup-content .signup-form .form-group .input-text {
-  font-size: 10px;
-  font-style: italic;
-}
-
-.signup-content .form-group {
-  text-align: center;
 }
 
 .voter-content {

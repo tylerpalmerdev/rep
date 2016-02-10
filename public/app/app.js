@@ -34,12 +34,22 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
   .state('login', {
     url: '/login',
     templateUrl: 'app/routes/login/loginTmpl.html',
-    controller: 'loginCtrl'
+    controller: 'loginCtrl',
+    resolve: {
+      userNotLoggedIn: function(authSvc) {
+        return authSvc.userNotLoggedIn();
+      }
+    }
   })
   .state('signup', {
     url: '/signup',
     templateUrl: 'app/routes/signup/signupTmpl.html',
-    controller: 'signupCtrl'
+    controller: 'signupCtrl',
+    resolve: {
+      userNotLoggedIn: function(authSvc) {
+        return authSvc.userNotLoggedIn();
+      }
+    }
   });
 
   $urlRouterProvider

@@ -1,9 +1,24 @@
 // GLOBAL //
 
 // fonts
-$global-font-fam: 'Arial', sans-serif;
+$global-font-fam: 'Open Sans', sans-serif;
 $bold-weight: 600;
 $thin-weight: 200;
+$button-font-size: 12px;
+
+// colors
+$pastel-red: #ff6961;
+$pastel-blue: #61a8ff;
+
+// padding & margin
+$button-padding: 12px;
+
+// shadows
+$level-1-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+$level-2-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+$level-3-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+$level-4-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+$level-5-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 
 // DIRECTIVES //
 
@@ -16,6 +31,9 @@ $navbar-top-color: #008f00;
 
 // question box
 $q-box-height: 80px;
+
+// dual toggle
+$dual-toggle-padding: 10px;
 
 // ROUTES
 

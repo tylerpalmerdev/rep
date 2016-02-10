@@ -9,19 +9,16 @@
   align-items: center;
   justify-content: center;
 
+  h3 {
+    margin: 0;
+  }
+
   .signup-form {
     width: 90%;
     background-color: $form-color;
-    border-radius: $form-border-radius;
+    // border-radius: $form-border-radius;
     padding: $form-padding;
-
-    dual-toggle {
-      .active-toggle {
-        background-color: $body-color;
-        color: $form-color;
-        font-weight: bold;
-      }
-    }
+    box-shadow: $level-2-shadow;
 
     .form-group {
       margin-top: 10px;
@@ -35,6 +32,11 @@
         font-size: 10px;
         font-style: italic;
       }
+    }
+
+    button {
+      width: 100%;
+      background-color: $body-color;
     }
   }
 

@@ -66,30 +66,44 @@ repApp.service('authSvc', function($http, $state, $stateParams, $q) {
     );
   };
 
+  // makes sure that voter pages can only be viewed by the logged in voter
   this.voterRouteCheck = function(voterPageId) {
     var def = $q.defer();
-    console.log('Voter Id passed in:', voterPageId);
-    $http({
-      method: 'GET',
-      url: '/currUser'
-    })
+    this.getCurrUser()
     .then(
       function(response) {
-        // if curr auth user_id is same as voter page id
-        var authedVoterId = response.data._id;
-        if (authedVoterId) {
-          if (authedVoterId === voterPageId) {
-            def.resolve(response.data); // allow access
-          } else {
-            $state.go('voter', {voterId: authedVoterId});
-            def.reject(response.data);
-          }
-        } else {
-          $state.go('login');
+        // if not logged in or rep role, reject promise/block view of voter page
+        if (!response || response.role === 'rep') {
           def.reject('User not logged in.');
+        } else if (response.role === 'voter') { // if voter
+          var authedVoterId = response._id;
+          if (authedVoterId === voterPageId) { // if voter id is same as page
+            def.resolve(response); // allow access
+          } else { // if not
+            $state.go('voter', {voterId: authedVoterId}); // go to auth'd voter's page
+            def.reject(response); // reject
+          }
         }
       }
     );
+    return def.promise;
+  };
+
+  // used to make sure logged in users don't go to login/register page
+  this.userNotLoggedIn = function() {
+    var def = $q.defer();
+
+    this.getCurrUser()
+    .then(
+      function(response) {
+        if(!response) {
+          def.resolve();
+        } else if (response) {
+          def.reject();
+        }
+      }
+    );
+
     return def.promise;
   };
 });

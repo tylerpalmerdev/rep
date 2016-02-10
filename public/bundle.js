@@ -34,12 +34,22 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
   .state('login', {
     url: '/login',
     templateUrl: 'app/routes/login/loginTmpl.html',
-    controller: 'loginCtrl'
+    controller: 'loginCtrl',
+    resolve: {
+      userNotLoggedIn: function(authSvc) {
+        return authSvc.userNotLoggedIn();
+      }
+    }
   })
   .state('signup', {
     url: '/signup',
     templateUrl: 'app/routes/signup/signupTmpl.html',
-    controller: 'signupCtrl'
+    controller: 'signupCtrl',
+    resolve: {
+      userNotLoggedIn: function(authSvc) {
+        return authSvc.userNotLoggedIn();
+      }
+    }
   });
 
   $urlRouterProvider
@@ -114,30 +124,44 @@ repApp.service('authSvc', function($http, $state, $stateParams, $q) {
     );
   };
 
+  // makes sure that voter pages can only be viewed by the logged in voter
   this.voterRouteCheck = function(voterPageId) {
     var def = $q.defer();
-    console.log('Voter Id passed in:', voterPageId);
-    $http({
-      method: 'GET',
-      url: '/currUser'
-    })
+    this.getCurrUser()
     .then(
       function(response) {
-        // if curr auth user_id is same as voter page id
-        var authedVoterId = response.data._id;
-        if (authedVoterId) {
-          if (authedVoterId === voterPageId) {
-            def.resolve(response.data); // allow access
-          } else {
-            $state.go('voter', {voterId: authedVoterId});
-            def.reject(response.data);
-          }
-        } else {
-          $state.go('login');
+        // if not logged in or rep role, reject promise/block view of voter page
+        if (!response || response.role === 'rep') {
           def.reject('User not logged in.');
+        } else if (response.role === 'voter') { // if voter
+          var authedVoterId = response._id;
+          if (authedVoterId === voterPageId) { // if voter id is same as page
+            def.resolve(response); // allow access
+          } else { // if not
+            $state.go('voter', {voterId: authedVoterId}); // go to auth'd voter's page
+            def.reject(response); // reject
+          }
         }
       }
     );
+    return def.promise;
+  };
+
+  // used to make sure logged in users don't go to login/register page
+  this.userNotLoggedIn = function() {
+    var def = $q.defer();
+
+    this.getCurrUser()
+    .then(
+      function(response) {
+        if(!response) {
+          def.resolve();
+        } else if (response) {
+          def.reject();
+        }
+      }
+    );
+
     return def.promise;
   };
 });
@@ -257,6 +281,62 @@ repApp.service('repSvc', function($http, constants) {
 
 }); // END
 
+repApp.controller('dualToggleCtrl', function($scope) {
+
+  // used to apply/remove active-toggle class for styling
+  $scope.highlightBox = function(boxIndex) {
+    if (boxIndex === 0) {
+      $scope.first = true;
+      $scope.second = false;
+    } else if (boxIndex === 1) {
+      $scope.second = true;
+      $scope.first = false;
+    }
+  };
+
+  // checks/applies optional 'defaultOption' property on option objects.
+  $scope.options.forEach(function(elem, i, arr) {
+    if (elem.defaultOption) {
+      $scope.selected = elem.value;
+      $scope.highlightBox(i);
+    }
+  });
+
+  // function to select one toggle/ deselect other
+  $scope.select = function(option) {
+    $scope.selected = $scope.options[option].value;
+    $scope.highlightBox(option);
+  };
+});
+
+/*
+Example data:
+$scope.roleOptions = [
+  {
+    label: 'Representative',
+    value: 'rep',
+    defaultOption: true
+  },
+  {
+    label: 'Voter',
+    value: 'voter'
+  }
+];
+*/
+
+repApp.directive('dualToggle', function() {
+  return {
+    templateUrl: 'app/directives/dualToggle/dualToggleTmpl.html',
+    controller: 'dualToggleCtrl',
+    restrict: 'E',
+    scope: {
+      options: '=', // arr with two objects
+      selected: '=', // pass back up to $scope
+      toggleDefualt: '@'
+    }
+  };
+});
+
 repApp.controller('addressSearchCtrl', function($scope) {
 
   // set bounds of search to the whole world
@@ -313,62 +393,6 @@ repApp.directive('addressSearch', function() {
       addressData: '='
     },
     controller: 'addressSearchCtrl'
-  };
-});
-
-repApp.controller('dualToggleCtrl', function($scope) {
-
-  // used to apply/remove active-toggle class for styling
-  $scope.highlightBox = function(boxIndex) {
-    if (boxIndex === 0) {
-      $scope.first = true;
-      $scope.second = false;
-    } else if (boxIndex === 1) {
-      $scope.second = true;
-      $scope.first = false;
-    }
-  };
-
-  // checks/applies optional 'defaultOption' property on option objects.
-  $scope.options.forEach(function(elem, i, arr) {
-    if (elem.defaultOption) {
-      $scope.selected = elem.value;
-      $scope.highlightBox(i);
-    }
-  });
-
-  // function to select one toggle/ deselect other
-  $scope.select = function(option) {
-    $scope.selected = $scope.options[option].value;
-    $scope.highlightBox(option);
-  };
-});
-
-/*
-Example data:
-$scope.roleOptions = [
-  {
-    label: 'Representative',
-    value: 'rep',
-    defaultOption: true
-  },
-  {
-    label: 'Voter',
-    value: 'voter'
-  }
-];
-*/
-
-repApp.directive('dualToggle', function() {
-  return {
-    templateUrl: 'app/directives/dualToggle/dualToggleTmpl.html',
-    controller: 'dualToggleCtrl',
-    restrict: 'E',
-    scope: {
-      options: '=', // arr with two objects
-      selected: '=', // pass back up to $scope
-      toggleDefualt: '@'
-    }
   };
 });
 
@@ -648,6 +672,14 @@ repApp.controller('settingsCtrl', function($scope, authSvc) {
   };
 });
 
+repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs) {
+
+  // make injected data about authed user available on $scope
+  $scope.voterData = voterData;
+  $scope.voterQs = voterQs;
+
+});
+
 repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
 
   // custom options for dual-toggle directive
@@ -703,11 +735,3 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
   };
 
 }); // END
-
-repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs) {
-
-  // make injected data about authed user available on $scope
-  $scope.voterData = voterData;
-  $scope.voterQs = voterQs;
-
-});
