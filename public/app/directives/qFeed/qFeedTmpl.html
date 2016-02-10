@@ -1,0 +1,57 @@
+<div ng-repeat="question in qData" class="question-box">
+  <div ng-hide="isRep" class="q-box-rep-tag">
+    {{question.submitted_by.rep_id.title}} {{question.submitted_by.rep_id.first_name}} {{question.submitted_by.rep_id.last_name}} asks:
+  </div>
+  <div class="q-box-q-text">{{question.text}} - {{question.kind}}</div>
+  <div class="" ng-show="question.total_responses > 0">
+    {{question.total_responses}} votes so far.
+  </div>
+  <p ng-hide="isInPast(question.complete_at)">
+    ACTIVE. Ends on {{question.complete_at | date}}
+    ISREP: {{isRep}}
+  </p>
+  <div ng-show="isInPast(question.complete_at)">
+    <p>
+      COMPLETED. Ended on {{question.complete_at | date}}
+    </p>
+    <div class="">
+    <a ng-click="showQModal(question._id)">Show Results</a>
+    </div>
+  </div>
+  <div class="">
+    <a ng-click="showQModal(question._id)">Open Modal</a>
+  </div>
+  <dialog-modal show-modal="modalShowObj[question._id]" class="q-box-modal">
+    <h3>QUESTION</h3>
+    <h5 ng-hide="userIsRepWhoAsked(userData, question.submitted_by.rep_id)">{{question.submitted_by.rep_id.title}} {{question.submitted_by.rep_id.first_name}} {{question.submitted_by.rep_id.last_name}} asks:</h5>
+    <div class="">
+      {{question.text}}
+    </div>
+    <!-- Hide if rep/noauth OR if user already answered question/not from their rep-->
+    <form ng-show="userCanAnswerQ(userData, question._id)" class="q-response-form">
+      <div ng-repeat="option in question.options" class="answer-box">
+        <input ng-model="$parent.optionChosenIndex" type="radio" name="name" value="{{$index}}">
+        {{option.text}}
+      </div>
+      <div class="submit-answer-controls">
+        <button ng-click="closeQModal(question._id)">Close</button>
+        <button ng-click="answerQuestion(question._id, optionChosenIndex)">Submit</button>
+      </div>
+    </form>
+    <div class="answer-info-box">
+      <h5>Options:</h5>
+      <div ng-repeat="option in question.options" class="">
+        {{option.text}}
+      </div>
+      <div class="voterChoiceInfo"> <!-- only show if voter and answered question -->
+        Your pick: Yes
+      </div>
+    </div>
+    <!-- only show results when question is completed/ in past -->
+    <div ng-show="isInPast(question.complete_at)" class="question-results">
+      <div ng-repeat="option in question.options" class="result-row">
+        {{option.text}} -- {{option.votes}} votes.
+      </div>
+    </div>
+  </dialog-modal>
+</div>

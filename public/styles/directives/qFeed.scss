@@ -1,0 +1,20 @@
+@import './../_variables.scss';
+
+.content {
+  question-feed {
+    .question-box {
+      // height: $q-box-height;
+      border-bottom: 1px solid #888888;
+      padding: $header-section-padding-mobile;
+
+      .q-box-modal {
+        .modal-wrapper {
+          .modal-dialog {
+            padding: $header-section-padding-mobile;
+          }
+        }
+
+      }
+    }
+  }
+}

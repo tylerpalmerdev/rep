@@ -11,7 +11,7 @@ var path = require('path');
 
 // obj to note paths to js & sass files you want to compile
 var paths = {
-  jsSource: ['./public/app/**/*.js'],
+  jsSource: ['./public/app/**/*', '!./public/app/**/*.html'],
   sassSource: ['./public/styles/**/*.scss'],
   paths: [ path.join(__dirname, 'styles') ]
 };

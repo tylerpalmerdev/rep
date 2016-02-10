@@ -1,11 +1,7 @@
 @import './../_variables.scss';
 
-.voter-content-wrapper {
+.voter-content {
   padding-top: $header-section-height + $header-section-padding-mobile;
-
-  .voter-home {
-    padding: 0 $header-section-padding-mobile;
-  }
 
   .my-reps {
     h3 {

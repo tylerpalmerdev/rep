@@ -105,7 +105,6 @@ module.exports = {
                 // based on answer chosen. will increment votes accordingly.
                 var updateObj = {$inc: {total_responses: 1}};
                 updateObj.$inc['options.' + answer + '.votes'] = 1;
-                console.log(updateObj);
 
                 // use q to create promise that resolves when both resolve
                 q.all([

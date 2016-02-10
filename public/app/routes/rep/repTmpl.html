@@ -1,5 +1,5 @@
 <nav-bar curr-auth="currUserData" curr-status="status"></nav-bar>
-<div class="rep-home rep-content content">
+<div class="rep-content content">
   <div class="rep-info">
     <img ng-src="{{repData.photo_url}}" class="rep-image"/>
     <div class="rep-text">
@@ -14,17 +14,9 @@
       </div>
     </div>
   </div>
-
-  <div class="rep-questions">
-    <!-- <div>
-      {{currUserData}}
-    </div> -->
-    <h4>QUESTIONS ASKED</h4>
-    {{qFilter}}
-    <dual-toggle options="filterOptions" selected="qFilter"></dual-toggle>
-    <div class="questions-container">
-      <q-box ng-repeat="question in repQs" q-info="question" isRep="{{true}}">
-      </q-box>
-    </div>
-  </div>
+  <h4>QUESTIONS ASKED</h4>
+  {{qFilter}}
+  <dual-toggle options="filterOptions" selected="qFilter"></dual-toggle>
+  <question-feed q-data="repQs" user-data="currUserData" is-rep="true">
+  </question-feed>
 </div>

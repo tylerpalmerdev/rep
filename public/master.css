@@ -16,11 +16,11 @@ body a {
 }
 
 body a:hover {
-  color: red;
+  color: green;
 }
 
 body a:hover i {
-  color: red;
+  color: green;
 }
 
 .modal-wrapper .modal-overlay {
@@ -173,13 +173,12 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   border-bottom: 1px solid gray;
 }
 
-.questions-container .question-box {
-  height: 80px;
+.content question-feed .question-box {
   border-bottom: 1px solid #888888;
   padding: 15px;
 }
 
-.questions-container .question-box .q-box-modal .modal-wrapper .modal-dialog {
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog {
   padding: 15px;
 }
 
@@ -317,27 +316,23 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   text-align: center;
 }
 
-.voter-content-wrapper {
+.voter-content {
   padding-top: 75px;
 }
 
-.voter-content-wrapper .voter-home {
-  padding: 0 15px;
-}
-
-.voter-content-wrapper .my-reps h3 {
+.voter-content .my-reps h3 {
   text-align: center;
   margin: 0;
   margin-bottom: 15px;
 }
 
-.voter-content-wrapper .my-reps .rep-box-container {
+.voter-content .my-reps .rep-box-container {
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
 }
 
-.voter-content-wrapper .my-reps .rep-box-container .voter-rep-box {
+.voter-content .my-reps .rep-box-container .voter-rep-box {
   padding: 15px;
   display: flex;
   flex-flow: row nowrap;
@@ -345,18 +340,18 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   border-top: 1px solid gray;
 }
 
-.voter-content-wrapper .my-reps .rep-box-container .voter-rep-box img {
+.voter-content .my-reps .rep-box-container .voter-rep-box img {
   width: 25%;
   height: auto;
 }
 
-.voter-content-wrapper .my-reps .rep-box-container .voter-rep-box .voter-rep-text {
+.voter-content .my-reps .rep-box-container .voter-rep-box .voter-rep-text {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   margin-left: 15px;
 }
 
-.voter-content-wrapper .my-reps .rep-box-container .voter-rep-box:last-of-type {
+.voter-content .my-reps .rep-box-container .voter-rep-box:last-of-type {
   border-bottom: 1px solid gray;
 }
