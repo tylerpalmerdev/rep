@@ -1,7 +1,18 @@
 <div ng-repeat="question in qData" class="question-box">
   <!-- Don't show rep that asked q in feed when on a rep's page. we know which rep!-->
   <div ng-hide="isRep" class="q-box-rep-tag">
-    {{question.submitted_by.rep_id.title}} {{question.submitted_by.rep_id.first_name}} {{question.submitted_by.rep_id.last_name}} asked:
+    <img ng-src="{{getRepImgUrl(question.submitted_by.rep_id.bioguide_id)}}" class="rep-feed-image"/>
+    <div class="q-box-rep-text">
+      <div class="q-box-rep-link">
+        <a ui-sref="rep({repId: question.submitted_by.rep_id._id})">      {{question.submitted_by.rep_id.title}} {{question.submitted_by.rep_id.first_name}} {{question.submitted_by.rep_id.last_name}}
+        </a>
+      </div>
+      <div class="q-box-rep-text-date">
+        {{question.submit_at | date:'MM/dd/yyyy @ h:mma'}}
+      </div>
+
+      <span></span>
+    </div>
   </div>
   <div class="q-box-q-text">{{question.text}} - {{question.kind}}</div>
   <div class="" ng-show="question.total_responses > 0">

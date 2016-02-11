@@ -27,10 +27,11 @@ body {
 	button {
 		border: none;
 		outline: none;
-		box-shadow: $level-1-shadow;
+		box-shadow: $level-2-shadow;
 		text-transform: uppercase;
 		font-size: $button-font-size;
 		padding: $button-padding;
+		background-color: $body-color;
 		color: $form-color;
 	}
 

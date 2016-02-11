@@ -281,6 +281,12 @@ repApp.service('repSvc', function($http, constants) {
 
 }); // END
 
+repApp.service('util', function(constants) {
+  this.getPhotoUrl = function(bioguideId) {
+    return constants.repPhotosBaseUrl + bioguideId + ".jpg";
+  };
+});
+
 repApp.controller('dualToggleCtrl', function($scope) {
 
   // used to apply/remove active-toggle class for styling
@@ -396,7 +402,6 @@ repApp.directive('addressSearch', function() {
   };
 });
 
-
 repApp.directive('dialogModal', function() {
   return {
     restrict: 'E',
@@ -413,7 +418,7 @@ repApp.directive('dialogModal', function() {
   };
 });
 
-repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, questionSvc, constants) {
+repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, questionSvc, constants, util) {
 
   /* NAV */
   $scope.goHome = function(status) {
@@ -483,9 +488,7 @@ repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, 
     $scope.myRepsModal = true;
   };
 
-  $scope.getRepImgUrl = function(bioguideId) {
-    return constants.repPhotosBaseUrl + bioguideId + ".jpg";
-  };
+  $scope.getRepImgUrl = util.getPhotoUrl;
 });
 
 repApp.directive('navBar', function() {
@@ -501,7 +504,7 @@ repApp.directive('navBar', function() {
   };
 });
 
-repApp.controller('qFeedCtrl', function($scope, questionSvc) {
+repApp.controller('qFeedCtrl', function($scope, questionSvc, util) {
 
   // this will be used to open/close modals for each question box.
   $scope.modalShowObj = {};
@@ -514,6 +517,8 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc) {
     $scope.modalShowObj[qId] = false;
     $scope.optionChosenIndex = "";
   };
+
+  $scope.getRepImgUrl = util.getPhotoUrl;
 
   // DOESN'T UPDATE REP Q DATA IN REAL TIME
   // function to update question data for user and apply to scope
@@ -604,6 +609,28 @@ repApp.directive('questionFeed', function() {
   };
 });
 
+repApp.directive('repContactBar', function() {
+  return {
+    templateUrl: 'app/directives/repSocialBar/repContactBarTmpl.html',
+    // controller: 'repContactBarCtrl',
+    restrict: 'E',
+    scope: {
+      repData: '='
+    }
+  };
+});
+
+repApp.controller('repContactBarCtrl', function($scope) {
+  $scope.getTwitterLink = function(twitterId) {
+    return "http://twitter.com/" + twitterId;
+  };
+
+  $scope.getFacebookLink = function(facebookId) {
+    return "http://facebook.com/" + facebookId;
+  };
+
+});
+
 repApp.controller('repSelectCtrl', function($scope, repSvc) {
   repSvc.getAllReps()
   .then(
@@ -672,14 +699,6 @@ repApp.controller('settingsCtrl', function($scope, authSvc) {
   };
 });
 
-repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs) {
-
-  // make injected data about authed user available on $scope
-  $scope.voterData = voterData;
-  $scope.voterQs = voterQs;
-
-});
-
 repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
 
   // custom options for dual-toggle directive
@@ -735,3 +754,11 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
   };
 
 }); // END
+
+repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs) {
+
+  // make injected data about authed user available on $scope
+  $scope.voterData = voterData;
+  $scope.voterQs = voterQs;
+
+});

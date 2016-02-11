@@ -1,4 +1,4 @@
-repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, questionSvc, constants) {
+repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, questionSvc, constants, util) {
 
   /* NAV */
   $scope.goHome = function(status) {
@@ -68,7 +68,5 @@ repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, 
     $scope.myRepsModal = true;
   };
 
-  $scope.getRepImgUrl = function(bioguideId) {
-    return constants.repPhotosBaseUrl + bioguideId + ".jpg";
-  };
+  $scope.getRepImgUrl = util.getPhotoUrl;
 });

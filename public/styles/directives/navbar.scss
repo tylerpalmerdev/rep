@@ -13,10 +13,9 @@ nav-bar {
       box-shadow: 0px 2px 2px $body-color;
       justify-content: space-between;
 
-      h2 {
+      .logo-box {
         margin: 0;
-        color: $header-text-color;
-        font-family: $header-font;
+        font-size: $header-logo-font-size;
       }
 
       nav {
@@ -31,7 +30,7 @@ nav-bar {
           margin-left: 35px;
 
           i {
-            color: $header-text-color;
+            color: $form-color;
           }
         }
 

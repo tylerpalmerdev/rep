@@ -1,10 +1,29 @@
 @import './../_variables.scss';
 
 .content {
+  // background-color: $body-color-2;
   question-feed {
     .question-box {
-      // height: $q-box-height;
-      border-bottom: 1px solid #888888;
+      margin-bottom: $q-box-margin-bottom;
+      box-shadow: $level-2-shadow;
+      background-color: $form-color;
+
+      .q-box-rep-tag {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+
+        img {
+          height: 50px;
+          width: auto;
+        }
+
+        .q-box-rep-text {
+          margin-left: $form-text-margin-b;
+        }
+      }
+
+      // border-bottom: 1px solid #888888;
       padding: $header-section-padding-mobile;
 
       .q-box-modal {

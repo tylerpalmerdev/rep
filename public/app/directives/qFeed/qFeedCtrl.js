@@ -1,4 +1,4 @@
-repApp.controller('qFeedCtrl', function($scope, questionSvc) {
+repApp.controller('qFeedCtrl', function($scope, questionSvc, util) {
 
   // this will be used to open/close modals for each question box.
   $scope.modalShowObj = {};
@@ -11,6 +11,8 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc) {
     $scope.modalShowObj[qId] = false;
     $scope.optionChosenIndex = "";
   };
+
+  $scope.getRepImgUrl = util.getPhotoUrl;
 
   // DOESN'T UPDATE REP Q DATA IN REAL TIME
   // function to update question data for user and apply to scope

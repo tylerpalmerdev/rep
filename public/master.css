@@ -26,10 +26,11 @@ body a:hover i {
 body button {
   border: none;
   outline: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   text-transform: uppercase;
   font-size: 16px;
   padding: 10px;
+  background-color: #828282;
   color: white;
 }
 
@@ -146,10 +147,9 @@ nav-bar header {
   justify-content: space-between;
 }
 
-nav-bar header h2 {
+nav-bar header .logo-box {
   margin: 0;
-  color: #666666;
-  font-family: "Josefin Slab", "Arial", sans-serif;
+  font-size: 40px;
 }
 
 nav-bar header nav {
@@ -166,7 +166,7 @@ nav-bar header nav .nav-icon {
 }
 
 nav-bar header nav .nav-icon i {
-  color: #666666;
+  color: white;
 }
 
 nav-bar header nav .nav-icon:first-child {
@@ -229,12 +229,61 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 }
 
 .content question-feed .question-box {
-  border-bottom: 1px solid #888888;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  background-color: white;
   padding: 15px;
+}
+
+.content question-feed .question-box .q-box-rep-tag {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.content question-feed .question-box .q-box-rep-tag img {
+  height: 50px;
+  width: auto;
+}
+
+.content question-feed .question-box .q-box-rep-tag .q-box-rep-text {
+  margin-left: 8px;
 }
 
 .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog {
   padding: 15px;
+}
+
+rep-contact-bar {
+  width: 100%;
+}
+
+rep-contact-bar .contact-bar-wrapper {
+  width: inherit;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box {
+  text-align: center;
+  flex-grow: 1;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a {
+  display: block;
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 10px;
+  background-color: #828282;
+  margin-right: 2px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a i {
+  color: white;
 }
 
 .signup-content {
@@ -262,7 +311,7 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
-.signup-content .signup-form .form-heading, .signup-content .signup-form .form-group, .signup-content .signup-form rep-select, .signup-content .signup-form dual-toggle > .toggle-wrap, .signup-content .signup-form .signup-rep-select-box, .signup-content .signup-form button {
+.signup-content .signup-form .form-heading, .signup-content .signup-form .form-group, .signup-content .signup-form rep-select, .signup-content .signup-form dual-toggle > .toggle-wrap, .signup-content .signup-form .signup-rep-select-box, .signup-content .signup-form .address-form-text, .signup-content .signup-form button {
   margin-bottom: 15px;
 }
 
@@ -319,6 +368,7 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 
 .signup-content .signup-form .address-form-text .form-text {
   text-align: left;
+  font-style: italic;
 }
 
 .signup-content .signup-form .address-form-text .district-text {
@@ -376,34 +426,40 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 
 .rep-content {
   padding-top: 60px;
+  background-color: #d6d6d6;
 }
 
-.rep-content .rep-info {
+.rep-content .rep-top-content {
+  background-color: white;
   padding: 15px;
+}
+
+.rep-content .rep-top-content .rep-info {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  margin-bottom: 15px;
 }
 
-.rep-content .rep-info .rep-image {
+.rep-content .rep-top-content .rep-info .rep-image {
   width: 25%;
   height: auto;
 }
 
-.rep-content .rep-info .rep-text {
+.rep-content .rep-top-content .rep-info .rep-text {
   margin-left: 10px;
 }
 
-.rep-content .rep-info .rep-text .rep-title {
+.rep-content .rep-top-content .rep-info .rep-text .rep-title {
   font-size: 20px;
 }
 
-.rep-content .rep-info .rep-text .rep-name {
+.rep-content .rep-top-content .rep-info .rep-text .rep-name {
   font-size: 24px;
   font-weight: 600;
 }
 
-.rep-content .rep-info .rep-text .electorate-info h5 {
+.rep-content .rep-top-content .rep-info .rep-text .electorate-info h5 {
   margin: 5px auto;
 }
 
@@ -426,6 +482,7 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 
 .voter-content {
   padding-top: 75px;
+  background-color: #d6d6d6;
 }
 
 .voter-content .my-reps h3 {

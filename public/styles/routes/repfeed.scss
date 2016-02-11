@@ -2,36 +2,44 @@
 
 .rep-content {
   padding-top: $header-section-height;
+  background-color: $body-color-2;
 
-  .rep-info {
+  .rep-top-content {
+    background-color: $form-color;
     padding: $header-section-padding-mobile;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
 
-    .rep-image {
-      width: 25%;
-      height: auto;
-    }
+    .rep-info {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      margin-bottom: $header-section-padding-mobile;
 
-    .rep-text {
-      margin-left: $rep-text-marg-l-mob;
-      .rep-title {
-        font-size: $rep-title-font-size-mob;
+      .rep-image {
+        width: 25%;
+        height: auto;
       }
 
-      .rep-name {
-        font-size: $rep-name-font-size-mob;
-        font-weight: $bold-weight;
-      }
+      .rep-text {
+        margin-left: $rep-text-marg-l-mob;
+        .rep-title {
+          font-size: $rep-title-font-size-mob;
+        }
 
-      .electorate-info {
-        h5 {
-          margin: 5px auto;
+        .rep-name {
+          font-size: $rep-name-font-size-mob;
+          font-weight: $bold-weight;
+        }
+
+        .electorate-info {
+          h5 {
+            margin: 5px auto;
+          }
         }
       }
     }
   }
+
+
 
   .rep-questions {
     h4 {

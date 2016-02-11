@@ -20,7 +20,7 @@
     padding: $form-padding;
     box-shadow: $level-2-shadow;
 
-    .form-heading, .form-group, rep-select, dual-toggle > .toggle-wrap,     .signup-rep-select-box, button {
+    .form-heading, .form-group, rep-select, dual-toggle > .toggle-wrap,     .signup-rep-select-box, .address-form-text, button {
       margin-bottom: $form-element-margin-b;
     }
 
@@ -74,6 +74,7 @@
 
       .form-text {
         text-align: left;
+        font-style: italic;
       }
 
       .district-text {
