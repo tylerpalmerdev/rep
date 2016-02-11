@@ -1,28 +1,35 @@
 <div class="signup-content">
-  <h3>REP</h3>
-  <p>
-    Login below.
-  </p>
+  <div class="logo-box">
+    <font class="logo-letter-red">R</font><font class="logo-letter-white">E</font><font class="logo-letter-blue">P</font>
+  </div>
   <form class="signup-form">
-    <div class="form-group">
-      <label>Email: </label>
-      <input ng-model="loginObj.email"></input>
+    <div class="form-heading">
+      Log in to your account.
     </div>
     <div class="form-group">
-      <label>Password: </label>
-      <input ng-model="loginObj.password" type="password"></input>
+      <div class="input-icon-box">
+        <i class="fa fa-envelope input-icon"></i>
+      </div>
+      <input ng-model="loginObj.email" placeholder="Email"></input>
+    </div>
+    <div class="form-group">
+      <div class="input-icon-box">
+        <i class="fa fa-lock input-icon"></i>
+      </div>
+      <input ng-model="loginObj.password" type="password" placeholder="Password"></input>
     </div>
     <button ng-click="loginUser(loginObj)" type="button" name="button">Login</button>
+    <div class="change-page-text form-text">
+      No account? <a ui-sref="signup">Sign Up</a> here.
+    </div>
+    <div class="rep-select-box login-rep-select-box">
+      <div class="form-text">
+        Or, go to a representative's public page:
+      </div>
+      <rep-select rep-info="chosenRepInfo"></rep-select>
+      <div class="form-text">
+        <a ui-sref="rep({repId: chosenRepInfo._id})" type="button" name="button">Go to rep page</a>
+      </div>
+    </div>
   </form>
-  <div class="form-group">
-    <p>
-      Or, go to a representative's public page:
-    </p>
-    <rep-select rep-info="chosenRepInfo"></rep-select>
-    <button ui-sref="rep({repId: chosenRepInfo._id})" type="button" name="button">Go to page</button>
-  </div>
-  <div class="">
-    No account? <a ui-sref="signup">Sign Up</a> here.
-  </div>
-  <!-- {{loginObj}} -->
 </div>

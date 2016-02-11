@@ -28,14 +28,39 @@ body button {
   outline: none;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   text-transform: uppercase;
-  font-size: 12px;
-  padding: 12px;
-  margin-top: 12px;
+  font-size: 16px;
+  padding: 10px;
   color: white;
 }
 
 body button:active {
   box-shadow: none;
+}
+
+body input {
+  outline: none;
+  font-size: 12px;
+}
+
+body .logo-box {
+  font-size: 50px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: -0.05em;
+  margin-bottom: 20px;
+}
+
+body .logo-box .logo-letter-red {
+  color: #ff6961;
+}
+
+body .logo-box .logo-letter-blue {
+  color: #61a8ff;
+}
+
+body .logo-box .logo-letter-white {
+  color: white;
 }
 
 .modal-wrapper .modal-overlay {
@@ -87,8 +112,8 @@ dual-toggle .toggle-wrap .toggle {
   align-items: center;
   justify-content: center;
   padding: 10px;
-  background-color: #d6d6d6;
-  color: #a9a9a9;
+  background-color: #828282;
+  color: #3d3d3d;
   text-transform: uppercase;
   cursor: pointer;
 }
@@ -98,11 +123,11 @@ dual-toggle .toggle-wrap .active-toggle {
 }
 
 dual-toggle .toggle-wrap .active-toggle.toggle-1 {
-  border-bottom: 2px solid #ff6961;
+  border-bottom: 3px solid #ff6961;
 }
 
 dual-toggle .toggle-wrap .active-toggle.toggle-2 {
-  border-bottom: 2px solid #61a8ff;
+  border-bottom: 3px solid #61a8ff;
 }
 
 nav-bar {
@@ -116,8 +141,8 @@ nav-bar header {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  background-color: #d6d6d6;
-  box-shadow: 0px 2px 2px #d6d6d6;
+  background-color: #828282;
+  box-shadow: 0px 2px 2px #828282;
   justify-content: space-between;
 }
 
@@ -213,7 +238,7 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 }
 
 .signup-content {
-  background-color: #d6d6d6;
+  background-color: #828282;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -231,33 +256,87 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 
 .signup-content .signup-form {
   width: 90%;
+  max-width: 700px;
   background-color: white;
   padding: 20px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
+.signup-content .signup-form .form-heading, .signup-content .signup-form .form-group, .signup-content .signup-form rep-select, .signup-content .signup-form dual-toggle > .toggle-wrap, .signup-content .signup-form .signup-rep-select-box, .signup-content .signup-form button {
+  margin-bottom: 15px;
+}
+
+.signup-content .signup-form .form-heading {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.signup-content .signup-form .form-text {
+  text-align: center;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
 .signup-content .signup-form .form-group {
-  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 35px;
+  flex-flow: row nowrap;
+}
+
+.signup-content .signup-form .form-group .input-icon-box {
+  width: 35px;
+  text-align: center;
+}
+
+.signup-content .signup-form .form-group .input-icon-box i {
+  font-size: 18px;
 }
 
 .signup-content .signup-form .form-group input {
-  display: block;
-  width: 100%;
-  border: 2px solid gray;
+  flex-grow: 7;
+  border: 0;
+  border-bottom: 1px solid gray;
 }
 
-.signup-content .signup-form .form-group .input-text {
-  font-size: 10px;
-  font-style: italic;
+.signup-content .signup-form .form-group address-search {
+  flex-grow: 7;
+}
+
+.signup-content .signup-form .form-group address-search input {
+  width: 100%;
+}
+
+.signup-content .signup-form .form-group.address-input, .signup-content .signup-form .change-page-text {
+  margin-bottom: 0;
+}
+
+.signup-content .signup-form .address-form-text {
+  margin-left: 35px;
+}
+
+.signup-content .signup-form .address-form-text .form-text {
+  text-align: left;
+}
+
+.signup-content .signup-form .address-form-text .district-text {
+  font-weight: bold;
 }
 
 .signup-content .signup-form button {
   width: 100%;
-  background-color: #d6d6d6;
+  background-color: #828282;
 }
 
-.signup-content .form-group {
+.signup-content .signup-form .rep-select-box {
+  width: 100%;
   text-align: center;
+}
+
+.signup-content .signup-form .login-rep-select-box {
+  padding-top: 8px;
 }
 
 .new-q-form {

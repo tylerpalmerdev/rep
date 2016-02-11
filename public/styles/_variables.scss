@@ -4,14 +4,30 @@
 $global-font-fam: 'Open Sans', sans-serif;
 $bold-weight: 600;
 $thin-weight: 200;
-$button-font-size: 12px;
+$button-font-size: 16px;
+$form-text-size: 12px;
+$input-text-size: 12px;
+$button-font-weight: 500;
+$form-heading-font-size: 22px;
+$login-logo-font-size: 50px;
+$logo-font-fam: 'Helvetica', 'Arial', sans-serif;
+$logo-letter-spacing: -0.05em;
 
 // colors
+$main-body-font-color: #3d3d3d;
 $pastel-red: #ff6961;
 $pastel-blue: #61a8ff;
+$body-color: #828282;
+$form-color: white;
+$header-text-color: #666666;
 
 // padding & margin
-$button-padding: 12px;
+$button-padding: 10px;
+$input-icon-padding: 5px;
+$form-text-margin-b: 8px;
+
+// dimensions
+$input-icon-width: 35px;
 
 // shadows
 $level-1-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -52,14 +68,12 @@ $rep-q-filter-box-padding: 10px;
 
 // register/ login
 
-// -- colors
-$body-color: #d6d6d6;
-$form-color: white;
-$header-text-color: #666666;
+
 
 // -- borders & border radius
-$form-border-radius: 5px;
 $voter-rep-box-border: 1px solid gray;
 
 // -- padding & margin
 $form-padding: 20px;
+$form-element-margin-b: 15px;
+$login-logo-margin-b: 20px;

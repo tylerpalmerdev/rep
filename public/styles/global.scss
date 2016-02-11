@@ -31,11 +31,36 @@ body {
 		text-transform: uppercase;
 		font-size: $button-font-size;
 		padding: $button-padding;
-		margin-top: $button-padding;
 		color: $form-color;
 	}
 
 	button:active {
 		box-shadow: none;
 	}
+
+	input {
+		outline: none;
+		font-size: $input-text-size;
+	}
+
+	.logo-box {
+		font-size: $login-logo-font-size;
+		font-family: 'Helvetica', 'Arial', sans-serif;
+		font-weight: $bold-weight;
+		font-style: italic;
+		letter-spacing: $logo-letter-spacing;
+		margin-bottom: $login-logo-margin-b;
+		.logo-letter-red {
+			color: $pastel-red;
+		}
+
+		.logo-letter-blue {
+			color: $pastel-blue;
+		}
+
+		.logo-letter-white {
+			color: white;
+		}
+	}
+
 }

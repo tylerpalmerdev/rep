@@ -13,23 +13,22 @@ dual-toggle {
       justify-content: center;
       padding: $dual-toggle-padding;
       background-color: $body-color;
-      color: #a9a9a9;
+      color: $main-body-font-color;
       text-transform: uppercase;
       // font-weight: bold;
       cursor: pointer;
     }
 
     .active-toggle {
-      // background-color: #a9a9a9;
       color: $form-color;
     }
 
     .active-toggle.toggle-1 {
-      border-bottom: 2px solid $pastel-red;
+      border-bottom: 3px solid $pastel-red;
     }
 
     .active-toggle.toggle-2 {
-      border-bottom: 2px solid $pastel-blue;
+      border-bottom: 3px solid $pastel-blue;
     }
   }
 

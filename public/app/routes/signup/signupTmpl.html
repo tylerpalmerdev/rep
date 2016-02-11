@@ -1,46 +1,62 @@
 <div class="signup-content">
-  <h3>REP</h3>
-  <p>
-    Sign up below.
-  </p>
+
+  <div class="logo-box">
+    <font class="logo-letter-red">R</font><font class="logo-letter-white">E</font><font class="logo-letter-blue">P</font>
+  </div>
   <form class="signup-form">
-    <p>
+    <div class="form-heading">
+      Register for a new account.
+    </div>
+    <div class="form-text">
       Select account type:
-    </p>
+    </div>
     <dual-toggle options="roleOptions" selected="newUserObj.role"></dual-toggle>
 
-    <div ng-show="newUserObj.role === 'rep'" class="form-group">
-      <label>Representative: </label>
-      <rep-select rep-info="chosenRepInfo"></rep-select>
+    <div class="form-group">
+      <div class="input-icon-box">
+        <i class="fa fa-user input-icon"></i>
+      </div>
+      <input ng-model="newUserObj.name" type="text" placeholder="Name">
     </div>
 
     <div class="form-group">
-      <label>Name: </label>
-      <input ng-model="newUserObj.name"type="text">
+      <div class="input-icon-box">
+        <i class="fa fa-envelope input-icon"></i>
+      </div>
+      <input ng-model="newUserObj.email" type="text" placeholder="Email">
     </div>
 
-    <div ng-show="newUserObj.role === 'voter'" class="form-group">
-      <label>Address: </label>
+    <div class="form-group">
+      <div class="input-icon-box">
+        <i class="fa fa-lock input-icon"></i>
+      </div>
+      <input ng-model="newUserObj.password" type="password" placeholder="Choose Password">
+    </div>
+
+    <div ng-show="newUserObj.role === 'voter'" class="address-input form-group">
+      <div class="input-icon-box">
+        <i class="fa fa-home input-icon"></i>
+      </div>
       <address-search address-data="newUserObj.addressData"></address-search>
-      <div class="input-text">Used to determine who your representatives are.</div>
+    </div>
+
+    <div class="address-form-text">
+      <div ng-show="newUserObj.role === 'voter'" class="form-text">Determines who your representatives are.</div>
       <div ng-show="addressSelected" class="district-text">
         Your District: {{newUserObj.addressData.state_long}} - {{newUserObj.district.district}}
       </div>
     </div>
 
-    <div class="form-group">
-      <label>Email: </label>
-      <input ng-model="newUserObj.email" type="text">
+    <div ng-show="newUserObj.role === 'rep'" class="rep-select-box signup-rep-select-box">
+      <div class="form-text">
+        Which representative?
+      </div>
+      <rep-select rep-info="chosenRepInfo"></rep-select>
     </div>
 
-    <div class="form-group">
-      <label>Choose Password: </label>
-      <input ng-model="newUserObj.password" type="password">
-    </div>
     <button ng-click="register(newUserObj, chosenRepInfo)" type="button" name="button">Sign Up</button>
+    <div class="change-page-text form-text">
+      Already signed up? <a ui-sref="login">Log in</a> here.
+    </div>
   </form>
-
-  <div class="">
-    Already signed up? <a ui-sref="login">Log in</a> here.
-  </div>
 </div>

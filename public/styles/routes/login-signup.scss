@@ -15,22 +15,69 @@
 
   .signup-form {
     width: 90%;
+    max-width: 700px;
     background-color: $form-color;
-    // border-radius: $form-border-radius;
     padding: $form-padding;
     box-shadow: $level-2-shadow;
 
+    .form-heading, .form-group, rep-select, dual-toggle > .toggle-wrap,     .signup-rep-select-box, button {
+      margin-bottom: $form-element-margin-b;
+    }
+
+    .form-heading {
+      font-size: $form-heading-font-size;
+      font-weight: $bold-weight;
+      text-align: center;
+    }
+
+    .form-text {
+      text-align: center;
+      font-size: $form-text-size;
+      margin-bottom: $form-text-margin-b;
+    }
+
     .form-group {
-      margin-top: 10px;
-      input {
-        display: block;
-        width: 100%;
-        border: 2px solid gray;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      height: 35px;
+      flex-flow: row nowrap;
+
+      .input-icon-box {
+        width: $input-icon-width;
+        text-align: center;
+        i {
+          font-size: 18px;
+        }
       }
 
-      .input-text {
-        font-size: 10px;
-        font-style: italic;
+      input {
+        flex-grow: 7;
+        border: 0;
+        border-bottom: 1px solid gray;
+      }
+
+      address-search {
+        flex-grow: 7;
+        input {
+          width: 100%;
+        }
+      }
+    }
+
+    .form-group.address-input, .change-page-text {
+      margin-bottom: 0;
+    }
+
+    .address-form-text {
+      margin-left: $input-icon-width;
+
+      .form-text {
+        text-align: left;
+      }
+
+      .district-text {
+        font-weight: bold;
       }
     }
 
@@ -38,9 +85,15 @@
       width: 100%;
       background-color: $body-color;
     }
-  }
 
-  .form-group {
-    text-align: center;
+    .rep-select-box {
+      width: 100%;
+      text-align: center;
+    }
+
+    .login-rep-select-box {
+      padding-top: $form-text-margin-b;
+    }
+
   }
 }
