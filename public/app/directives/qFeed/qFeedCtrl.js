@@ -50,7 +50,7 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util) {
   };
 
   // why doesn't this work?
-  // check to see if user answered question
+  // check to see if user answered question, used when they are on rep page
   $scope.userHasAnsweredQ = function(userData, qId) {
     // if (!userData) { // false if not auth'd
     //   return false;

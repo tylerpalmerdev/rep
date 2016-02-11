@@ -40,7 +40,7 @@
       <address-search address-data="newUserObj.addressData"></address-search>
     </div>
 
-    <div class="address-form-text">
+    <div ng-show="newUserObj.role === 'voter'" class="address-form-text">
       <div ng-show="newUserObj.role === 'voter'" class="form-text">Determines who your representatives are.</div>
       <div ng-show="addressSelected" class="district-text">
         Your District: {{newUserObj.addressData.state_long}} - {{newUserObj.district.district}}
@@ -49,7 +49,7 @@
 
     <div ng-show="newUserObj.role === 'rep'" class="rep-select-box signup-rep-select-box">
       <div class="form-text">
-        Which representative?
+        Which representative is this account for?
       </div>
       <rep-select rep-info="chosenRepInfo"></rep-select>
     </div>

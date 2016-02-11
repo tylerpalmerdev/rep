@@ -14,7 +14,7 @@
       <span></span>
     </div>
   </div>
-  <div class="q-box-q-text">{{question.text}} - {{question.kind}}</div>
+  <div class="q-box-q-text">{{question.text}}</div>
   <div class="" ng-show="question.total_responses > 0">
     {{question.total_responses}} total responses.
   </div>
@@ -57,8 +57,8 @@
         {{option.text}} -- {{option.votes}} votes.
       </div>
     </div>
-    <!-- Only show answer form if on voter page and voter has not answered question -->
-    <form ng-show="!isRep && !question.answered" class="q-response-form">
+    <!-- Only show answer form if on voter page and voter has not answered question and question is active-->
+    <form ng-show="!isRep && !question.answered && !isInPast(question.complete_at)" class="q-response-form">
       <div ng-repeat="option in question.options" class="answer-box">
         <input ng-model="$parent.optionChosenIndex" type="radio" name="name" value="{{$index}}">
         {{option.text}}
@@ -71,6 +71,9 @@
     <!-- only show if voter has answered question -->
     <div ng-show="!isRep && question.answered" class="voterChoiceInfo">
       Your pick: {{question.options[question.answer_chosen].text}}
+    </div>
+    <div ng-show="!isRep && !question.answered && isInPast(question.complete_at)" class="voterChoiceInfo">
+      You did not submit an answer.
     </div>
   </dialog-modal>
 </div>

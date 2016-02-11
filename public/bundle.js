@@ -287,62 +287,6 @@ repApp.service('util', function(constants) {
   };
 });
 
-repApp.controller('dualToggleCtrl', function($scope) {
-
-  // used to apply/remove active-toggle class for styling
-  $scope.highlightBox = function(boxIndex) {
-    if (boxIndex === 0) {
-      $scope.first = true;
-      $scope.second = false;
-    } else if (boxIndex === 1) {
-      $scope.second = true;
-      $scope.first = false;
-    }
-  };
-
-  // checks/applies optional 'defaultOption' property on option objects.
-  $scope.options.forEach(function(elem, i, arr) {
-    if (elem.defaultOption) {
-      $scope.selected = elem.value;
-      $scope.highlightBox(i);
-    }
-  });
-
-  // function to select one toggle/ deselect other
-  $scope.select = function(option) {
-    $scope.selected = $scope.options[option].value;
-    $scope.highlightBox(option);
-  };
-});
-
-/*
-Example data:
-$scope.roleOptions = [
-  {
-    label: 'Representative',
-    value: 'rep',
-    defaultOption: true
-  },
-  {
-    label: 'Voter',
-    value: 'voter'
-  }
-];
-*/
-
-repApp.directive('dualToggle', function() {
-  return {
-    templateUrl: 'app/directives/dualToggle/dualToggleTmpl.html',
-    controller: 'dualToggleCtrl',
-    restrict: 'E',
-    scope: {
-      options: '=', // arr with two objects
-      selected: '=', // pass back up to $scope
-      toggleDefualt: '@'
-    }
-  };
-});
-
 repApp.controller('addressSearchCtrl', function($scope) {
 
   // set bounds of search to the whole world
@@ -399,6 +343,62 @@ repApp.directive('addressSearch', function() {
       addressData: '='
     },
     controller: 'addressSearchCtrl'
+  };
+});
+
+repApp.controller('dualToggleCtrl', function($scope) {
+
+  // used to apply/remove active-toggle class for styling
+  $scope.highlightBox = function(boxIndex) {
+    if (boxIndex === 0) {
+      $scope.first = true;
+      $scope.second = false;
+    } else if (boxIndex === 1) {
+      $scope.second = true;
+      $scope.first = false;
+    }
+  };
+
+  // checks/applies optional 'defaultOption' property on option objects.
+  $scope.options.forEach(function(elem, i, arr) {
+    if (elem.defaultOption) {
+      $scope.selected = elem.value;
+      $scope.highlightBox(i);
+    }
+  });
+
+  // function to select one toggle/ deselect other
+  $scope.select = function(option) {
+    $scope.selected = $scope.options[option].value;
+    $scope.highlightBox(option);
+  };
+});
+
+/*
+Example data:
+$scope.roleOptions = [
+  {
+    label: 'Representative',
+    value: 'rep',
+    defaultOption: true
+  },
+  {
+    label: 'Voter',
+    value: 'voter'
+  }
+];
+*/
+
+repApp.directive('dualToggle', function() {
+  return {
+    templateUrl: 'app/directives/dualToggle/dualToggleTmpl.html',
+    controller: 'dualToggleCtrl',
+    restrict: 'E',
+    scope: {
+      options: '=', // arr with two objects
+      selected: '=', // pass back up to $scope
+      toggleDefualt: '@'
+    }
   };
 });
 
@@ -556,7 +556,7 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util) {
   };
 
   // why doesn't this work?
-  // check to see if user answered question
+  // check to see if user answered question, used when they are on rep page
   $scope.userHasAnsweredQ = function(userData, qId) {
     // if (!userData) { // false if not auth'd
     //   return false;
@@ -611,8 +611,8 @@ repApp.directive('questionFeed', function() {
 
 repApp.directive('repContactBar', function() {
   return {
-    templateUrl: 'app/directives/repSocialBar/repContactBarTmpl.html',
-    // controller: 'repContactBarCtrl',
+    templateUrl: 'app/directives/repContactBar/repContactBarTmpl.html',
+    controller: 'repContactBarCtrl',
     restrict: 'E',
     scope: {
       repData: '='
