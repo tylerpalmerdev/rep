@@ -6,7 +6,7 @@ $bold-weight: 600;
 $thin-weight: 200;
 $button-font-size: 16px;
 $form-text-size: 12px;
-$input-text-size: 12px;
+$input-text-size: 14px;
 $button-font-weight: 500;
 $form-heading-font-size: 22px;
 $login-logo-font-size: 50px;
@@ -15,8 +15,8 @@ $logo-letter-spacing: -0.05em;
 
 // colors
 $main-body-font-color: #3d3d3d;
-$pastel-red: #ff6961;
-$pastel-blue: #61a8ff;
+$pastel-red: #AF3E3E;
+$pastel-blue: #3d5280;
 $body-color: #828282;
 $body-color-2: #d6d6d6;
 $form-color: white;
@@ -26,10 +26,14 @@ $header-text-color: #666666;
 $button-padding: 10px;
 $input-icon-padding: 5px;
 $form-text-margin-b: 8px;
+$custom-radio-padding: 2px;
 
 // dimensions
 $input-icon-width: 35px;
 $custom-radio-width: 25px;
+
+// borders
+$custom-radio-border: 2px solid $body-color;
 
 // shadows
 $level-1-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);

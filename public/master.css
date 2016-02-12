@@ -15,14 +15,13 @@ body {
 
 body a {
   cursor: pointer;
+  text-decoration: none;
+  color: #3d5280;
+  font-weight: bold;
 }
 
 body a:hover {
-  color: green;
-}
-
-body a:hover i {
-  color: green;
+  text-decoration: underline;
 }
 
 body a, body i, body input {
@@ -46,7 +45,7 @@ body button:active {
 
 body input {
   outline: none;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body .radio-custom {
@@ -97,11 +96,11 @@ body .logo-box {
 }
 
 body .logo-box .logo-letter-red {
-  color: #ff6961;
+  color: #AF3E3E;
 }
 
 body .logo-box .logo-letter-blue {
-  color: #61a8ff;
+  color: #3d5280;
 }
 
 body .logo-box .logo-letter-white {
@@ -175,11 +174,11 @@ dual-toggle .toggle-wrap .active-toggle {
 }
 
 dual-toggle .toggle-wrap .active-toggle.toggle-1 {
-  border-bottom: 3px solid #ff6961;
+  border-bottom: 3px solid #AF3E3E;
 }
 
 dual-toggle .toggle-wrap .active-toggle.toggle-2 {
-  border-bottom: 3px solid #61a8ff;
+  border-bottom: 3px solid #3d5280;
 }
 
 nav-bar {
@@ -219,6 +218,10 @@ nav-bar header nav .nav-icon {
 
 nav-bar header nav .nav-icon i {
   color: white;
+}
+
+nav-bar header nav .nav-icon:hover {
+  border-bottom: 2px solid white;
 }
 
 nav-bar header nav .nav-icon:first-child {
@@ -265,10 +268,16 @@ nav-bar dialog-modal .new-q-form .form-group .q-type-input input {
 nav-bar dialog-modal .new-q-form .form-group textarea {
   width: 100%;
   height: 15vh;
+  resize: none;
+  outline: none;
 }
 
 nav-bar dialog-modal .new-q-form .form-group .input-group {
   margin-bottom: 10px;
+}
+
+nav-bar dialog-modal .new-q-form .form-group .form-buttons button {
+  width: 48%;
 }
 
 nav-bar dialog-modal .my-reps h3 {
@@ -333,6 +342,17 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   margin-left: 8px;
 }
 
+.content question-feed .question-box .q-box-rep-tag .q-box-rep-text .q-box-rep-link {
+  text-transform: uppercase;
+  font-size: 13px;
+  padding: 4px 0px;
+  color: #3d5280;
+}
+
+.content question-feed .question-box .q-box-rep-tag .q-box-rep-text .q-box-rep-link:hover, .content question-feed .question-box .q-box-rep-tag .q-box-rep-text .q-box-rep-link i:hover {
+  text-decoration: underline;
+}
+
 .content question-feed .question-box .q-box-submit-date {
   font-size: 12px;
 }
@@ -358,7 +378,7 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 }
 
 .content question-feed .question-box .vote-button {
-  background-color: #ff6961;
+  background-color: #AF3E3E;
 }
 
 .content question-feed .question-box .info-button {
@@ -366,7 +386,18 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 }
 
 .content question-feed .question-box .results-button {
-  background-color: #61a8ff;
+  background-color: #3d5280;
+}
+
+.content question-feed .question-box .cancel-button {
+  background-color: #828282;
+}
+
+.content question-feed .question-box .button-inactive {
+  box-shadow: none;
+  cursor: none;
+  background-color: #d6d6d6;
+  opacity: 0.4;
 }
 
 .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog {
@@ -377,12 +408,48 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   margin: 0;
 }
 
-.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog h3, .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog h5, .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-box-modal-text, .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .answer-box {
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog h3, .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog h5, .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-box-modal-text, .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .answer-box, .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-modal-rep-info {
   margin-bottom: 8px;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-modal-rep-info {
+  display: flex;
+  align-items: center;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-modal-rep-info .rep-modal-image {
+  width: 30px;
+  height: auto;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-modal-rep-info .rep-modal-text {
+  margin-left: 10px;
 }
 
 .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-box-modal-text {
   font-size: 18px;
+  font-weight: bold;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .answer-info-box .option-text-box {
+  padding: 7px 10px;
+  text-transform: uppercase;
+  background-color: #d6d6d6;
+  margin-bottom: 8px;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .answer-info-box .selected-option-text-box {
+  background-color: #3d5280;
+  color: white;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .voter-choice-info {
+  text-align: center;
+  font-weight: bold;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .voter-choice-info i {
+  color: #3d5280;
 }
 
 .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-response-form .answer-box-wrapper {
@@ -397,6 +464,10 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 
 .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-response-form .submit-answer-controls button {
   width: 48%;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .modal-response-text {
+  text-align: center;
 }
 
 rep-contact-bar {

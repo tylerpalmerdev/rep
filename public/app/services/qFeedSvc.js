@@ -88,6 +88,16 @@ repApp.service('qFeedSvc', function() {
     return timeLeftStr;
   };
 
+  this.chosenAnswerMatch = function(isRep, option, questionObj) {
+    if (isRep || !questionObj.options[questionObj.answer_chosen]) {
+      return false;
+    } else if (option.text === questionObj.options[questionObj.answer_chosen].text) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   // why doesn't this work?
   // check to see if user answered question, used when they are on rep page
   this.userHasAnsweredQ = function(userData, qId) {

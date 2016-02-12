@@ -35,6 +35,10 @@ nav-bar {
           }
         }
 
+        .nav-icon:hover {
+          border-bottom: 2px solid $form-color;
+        }
+
       // centering adjustments for menu logos
       .nav-icon:first-child {
         padding-bottom: 4px;
@@ -82,10 +86,18 @@ nav-bar {
         textarea {
           width: 100%;
           height: 15vh;
+          resize: none;
+          outline: none;
         }
 
         .input-group {
           margin-bottom: 10px;
+        }
+
+        .form-buttons {
+          button {
+            width: 48%;
+          }
         }
       }
     }

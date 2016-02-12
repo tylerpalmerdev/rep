@@ -23,6 +23,17 @@
 
         .q-box-rep-text {
           margin-left: $form-text-margin-b;
+
+          .q-box-rep-link {
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 4px 0px;
+            color: $pastel-blue;
+          }
+
+            .q-box-rep-link:hover, .q-box-rep-link i:hover {
+              text-decoration: underline;
+            }
         }
       }
 
@@ -64,6 +75,17 @@
         background-color: $pastel-blue;
       }
 
+      .cancel-button {
+        background-color: $body-color;
+      }
+
+      .button-inactive {
+        box-shadow: none;
+        cursor: none;
+        background-color: $body-color-2;
+        opacity: 0.4;
+      }
+
       padding: $header-section-padding-mobile;
 
       .q-box-modal {
@@ -75,17 +97,61 @@
               margin: 0;
             }
 
-            h3, h5, .q-box-modal-text, .answer-box {
+            h3, h5, .q-box-modal-text, .answer-box, .q-modal-rep-info {
               margin-bottom: $form-text-margin-b;
+            }
+
+            .q-modal-rep-info {
+              display: flex;
+              align-items: center;
+
+              .rep-modal-image {
+                width: 30px;
+                height: auto;
+              }
+
+              .rep-modal-text {
+                margin-left: $button-padding;
+              }
             }
 
             .q-box-modal-text {
               font-size: 18px;
+              font-weight: bold;
+            }
+
+            .answer-info-box {
+
+              // background-color: $body-color-2;
+              // color: $form-color;
+
+
+              .option-text-box {
+                padding: 7px 10px;
+                text-transform: uppercase;
+                background-color: $body-color-2;
+                margin-bottom: 8px;
+                // border-bottom: 1px solid $body-color;
+              }
+
+              .selected-option-text-box {
+                background-color: $pastel-blue;
+                color: $form-color;
+              }
+            }
+
+            .voter-choice-info {
+              text-align: center;
+              font-weight: bold;
+
+              i {
+                color: $pastel-blue;
+              }
             }
 
             .q-response-form {
               .answer-box-wrapper {
-                margin-bottom: $form-text-margin-b * 2;  
+                margin-bottom: $form-text-margin-b * 2;
               }
 
               .submit-answer-controls {
@@ -97,6 +163,10 @@
                   width: $q-form-button-width; // leaves a little space in between
                 }
               }
+            }
+
+            .modal-response-text {
+              text-align: center;
             }
           }
         }

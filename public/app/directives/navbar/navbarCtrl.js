@@ -17,7 +17,7 @@ repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, 
   $scope.newQObj = {options: []};
 
   $scope.qTypes = [
-    {label: 'Yes/No', value: 'yn'},
+    {label: 'Yes/No', value: 'yn', defaultOption: true},
     {label: 'Multiple Choice', value: 'mc'}
   ];
 

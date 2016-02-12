@@ -14,15 +14,14 @@ body {
 
 	a {
 		cursor: pointer;
+		text-decoration: none;
 		// outline: none;
+		color: $pastel-blue;
+		font-weight: bold;
 	}
 
 		a:hover {
-			color: green;
-
-			i {
-				color: green;
-			}
+			text-decoration: underline;
 		}
 
 	a, i, input {
@@ -40,9 +39,9 @@ body {
 		color: $form-color;
 	}
 
-	button:active {
-		box-shadow: none;
-	}
+		button:active {
+			box-shadow: none;
+		}
 
 	input {
 		outline: none;
@@ -74,12 +73,12 @@ body {
 
 		.radio-custom + .radio-custom-label:before {
 	    content: '';
-	    border: 2px solid $body-color;
+	    border: $custom-radio-border;
 	    display: inline-block;
 	    vertical-align: middle;
 	    width: $custom-radio-width;
 	    height: $custom-radio-width;
-	    padding: 2px;
+	    padding: $custom-radio-padding;
 	    margin-right: $button-padding;
 	    text-align: center;
 		}

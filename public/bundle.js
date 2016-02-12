@@ -319,6 +319,16 @@ repApp.service('qFeedSvc', function() {
     return timeLeftStr;
   };
 
+  this.chosenAnswerMatch = function(isRep, option, questionObj) {
+    if (isRep || !questionObj.options[questionObj.answer_chosen]) {
+      return false;
+    } else if (option.text === questionObj.options[questionObj.answer_chosen].text) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   // why doesn't this work?
   // check to see if user answered question, used when they are on rep page
   this.userHasAnsweredQ = function(userData, qId) {
@@ -599,7 +609,7 @@ repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, 
   $scope.newQObj = {options: []};
 
   $scope.qTypes = [
-    {label: 'Yes/No', value: 'yn'},
+    {label: 'Yes/No', value: 'yn', defaultOption: true},
     {label: 'Multiple Choice', value: 'mc'}
   ];
 
@@ -677,9 +687,9 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
     $scope.modalShowObj[qId] = true;
   };
 
-  $scope.closeQModal = function(qId) {
-    $scope.modalShowObj[qId] = false;
-    $scope.optionChosenIndex = "";
+  $scope.closeQModal = function(questionObj) {
+    $scope.modalShowObj[questionObj._id] = false;
+    questionObj.optionChosenIndex = null;
   };
 
   $scope.getRepImgUrl = util.getPhotoUrl;
@@ -702,19 +712,19 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
   $scope.userAnsweredQ = qFeedSvc.userAnsweredQ;
   $scope.userDidNotAnswer = qFeedSvc.userDidNotAnswer;
   $scope.getTimeRemaining = qFeedSvc.getTimeRemaining;
-
+  $scope.chosenAnswerMatch = qFeedSvc.chosenAnswerMatch;
 
   // only for voters
-  $scope.answerQuestion = function(questionId, answerIndex) {
+  $scope.answerQuestion = function(userId, questionObj) {
     var answerObj = {
-      question_id: questionId,
-      answer_chosen: parseInt(answerIndex), // route expects int
-      user_id: $scope.userData._id
+      question_id: questionObj._id,
+      answer_chosen: parseInt(questionObj.optionChosenIndex), // route expects int
+      user_id: userId
     };
     questionSvc.answerQ(answerObj)
     .then(
       function(response) {
-        $scope.closeQModal(questionId);
+        $scope.closeQModal(questionObj);
         $scope.updateQuestionData();
       }
     );

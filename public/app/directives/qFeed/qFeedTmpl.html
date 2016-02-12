@@ -1,26 +1,21 @@
 <dual-toggle options="filterOptions" selected="qFilter" class="q-feed-filter"></dual-toggle>
 <div ng-repeat="question in qData | orderBy: complete_at| feedSort:qFilter" class="question-box">
   <!-- Don't show rep that asked q in feed when on a rep's page. we know which rep!-->
-  <div class="q-box-top">
-    <div ng-hide="isRep" class="q-box-rep-tag">
-      <img ng-src="{{getRepImgUrl(question.submitted_by.rep_id.bioguide_id)}}" class="rep-feed-image"/>
-      <div class="q-box-rep-text">
-        <div class="q-box-rep-name">
-          {{question.submitted_by.rep_id.title}} {{question.submitted_by.rep_id.first_name}} {{question.submitted_by.rep_id.last_name}}
-        </div>
-        <div class="q-box-rep-link">
-          <a ui-sref="rep({repId: question.submitted_by.rep_id._id})">Rep Profile</a>
-        </div>
+  <div ng-hide="isRep" class="q-box-rep-tag">
+    <img ng-src="{{getRepImgUrl(question.submitted_by.rep_id.bioguide_id)}}" class="rep-feed-image"/>
+    <div class="q-box-rep-text">
+      <div class="q-box-rep-name">
+        {{question.submitted_by.rep_id.title}} {{question.submitted_by.rep_id.first_name}} {{question.submitted_by.rep_id.last_name}}
       </div>
-    </div>
-    <div ng-show="isRep" class="q-box-submit-date">
-      On {{question.submit_at | date:'MM/dd/yyyy @ h:mma'}}:
+      <a ui-sref="rep({repId: question.submitted_by.rep_id._id})">
+        <div class="q-box-rep-link"><i class="fa fa-user"></i>  Rep Profile</div>
+      </a>
     </div>
   </div>
+  <div ng-show="isRep" class="q-box-submit-date">
+    On {{question.submit_at | date:'MM/dd/yyyy @ h:mma'}}:
+  </div>
   <div class="q-box-q-text">{{question.text}}</div>
-  <!-- <div class="">
-    {{question.kind}}
-  </div> -->
 
   <div class="q-box-text-bar">
     <div ng-hide="isInPast(question)">
@@ -44,15 +39,19 @@
   </div>
 
   <dialog-modal show-modal="modalShowObj[question._id]" class="q-box-modal">
-    <h5 ng-hide="userIsRepWhoAsked(userData, question.submitted_by.rep_id._id)">{{question.submitted_by.rep_id.title_abbrev}} {{question.submitted_by.rep_id.first_name}} {{question.submitted_by.rep_id.last_name}} asked:</h5>
+    <div class="q-modal-rep-info" ng-hide="userIsRepWhoAsked(userData, question.submitted_by.rep_id._id)">
+      <img ng-src="{{getRepImgUrl(question.submitted_by.rep_id.bioguide_id)}}" class="rep-modal-image"/>
+      <span class="rep-modal-text"><a ui-sref="rep({repId: question.submitted_by.rep_id._id})">
+          {{question.submitted_by.rep_id.title_abbrev}} {{question.submitted_by.rep_id.first_name}} {{question.submitted_by.rep_id.last_name}}
+        </a> asked:</span>
+    </div>
     <div class="q-box-modal-text">
       {{question.text}}
     </div>
 
     <!-- Show when question is active, and either the voter has answered the question or the page is rep view -->
     <div ng-show="showInfoOnly(isRep, question)" class="answer-info-box">
-      <h5>Options:</h5>
-      <div ng-repeat="option in question.options" class="">
+      <div ng-repeat="option in question.options" ng-class="{'selected-option-text-box': chosenAnswerMatch(isRep, option, question)}" class="option-text-box">
         {{option.text}}
       </div>
     </div>
@@ -67,22 +66,26 @@
     <form ng-show="qIsAnswerable(isRep, question)" class="q-response-form">
       <div class="answer-box-wrapper">
         <div ng-repeat="option in question.options" class="answer-box">
-          <input ng-model="$parent.optionChosenIndex" type="radio" class="radio-custom" name="name" value="{{$index}}">
+          <input ng-model="$parent.question.optionChosenIndex" type="radio" class="radio-custom" name="name" value="{{$index}}">
           <label class="radio-custom-label">{{option.text}}</label>
         </div>
       </div>
       <div class="submit-answer-controls">
-        <button class="info-button" ng-click="closeQModal(question._id)">Cancel</button>
-        <button class="vote-button" ng-click="answerQuestion(question._id, optionChosenIndex)"><i class="fa fa-check-square-o"></i> Vote</button>
+        <button class="cancel-button" ng-click="closeQModal(question)">Cancel</button>
+        <button class="vote-button" ng-click="answerQuestion(userData._id, question)" ng-class="{'button-inactive': !question.optionChosenIndex}"><i class="fa fa-check-square-o"></i> Vote</button>
       </div>
     </form>
     <!-- only show if voter has answered question -->
-    <div ng-show="userAnsweredQ(isRep, question)" class="voterChoiceInfo">
-      Your pick: {{question.options[question.answer_chosen].text}}
+    <div ng-show="userAnsweredQ(isRep, question)" class="voter-choice-info">
+      <i class="fa fa-circle"></i> = Your pick
     </div>
     <!-- only show is q is complete and voter did not answer -->
-    <div ng-show="userDidNotAnswer(isRep, question)" class="voterChoiceInfo">
+    <div ng-show="userDidNotAnswer(isRep, question)" class="voter-choice-info">
       You did not submit an answer.
+    </div>
+    <div ng-show="isRep && question.total_responses > 0" class="modal-response-text">
+      <span ng-show="question.total_responses === 1">{{question.total_responses}} response</span>
+      <span ng-hide="question.total_responses === 1">{{question.total_responses}} responses</span>
     </div>
   </dialog-modal>
 </div>
