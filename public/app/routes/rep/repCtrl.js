@@ -4,9 +4,4 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
   $scope.repData = repData; // data about current page's rep
   $scope.repQs = repQuestions; // all questions for current page's rep
 
-  $scope.filterOptions = [
-    {label: 'Active', value: 'active', defaultOption: true},
-    {label: 'Completed', value: 'completed'}
-  ];
-
 });

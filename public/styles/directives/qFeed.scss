@@ -50,18 +50,18 @@
         .q-box-button {
           width: 100%;
         }
+      }
 
-        .answer-button {
-          background-color: $pastel-red;
-        }
+      .vote-button {
+        background-color: $pastel-red;
+      }
 
-        .info-button {
-          background-color: $body-color-2;
-        }
+      .info-button {
+        background-color: $body-color-2;
+      }
 
-        .results-button {
-          background-color: $pastel-blue;
-        }
+      .results-button {
+        background-color: $pastel-blue;
       }
 
       padding: $header-section-padding-mobile;
@@ -71,7 +71,23 @@
           .modal-dialog {
             padding: $header-section-padding-mobile;
 
+            h3, h5 {
+              margin: 0;
+            }
+
+            h3, h5, .q-box-modal-text, .answer-box {
+              margin-bottom: $form-text-margin-b;
+            }
+
+            .q-box-modal-text {
+              font-size: 18px;
+            }
+
             .q-response-form {
+              .answer-box-wrapper {
+                margin-bottom: $form-text-margin-b * 2;  
+              }
+
               .submit-answer-controls {
                 display: flex;
                 flex-flow: row nowrap;

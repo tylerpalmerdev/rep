@@ -49,6 +49,50 @@ body {
 		font-size: $input-text-size;
 	}
 
+		/* custom radio inputs! */
+
+		.radio-custom {
+	    opacity: 0;
+	    position: absolute;
+			border: 0px;
+			height: 3em;
+			width: 100%;
+			margin-left: 6px;
+			// margin-top: 6px;
+			z-index: 50;
+		}
+
+		.radio-custom, .radio-custom-label {
+	    display: inline-block;
+	    vertical-align: middle;
+	    cursor: pointer;
+		}
+
+		.radio-custom-label {
+	    position: relative;
+		}
+
+		.radio-custom + .radio-custom-label:before {
+	    content: '';
+	    border: 2px solid $body-color;
+	    display: inline-block;
+	    vertical-align: middle;
+	    width: $custom-radio-width;
+	    height: $custom-radio-width;
+	    padding: 2px;
+	    margin-right: $button-padding;
+	    text-align: center;
+		}
+
+		.radio-custom:checked + .radio-custom-label:before {
+	    content: "\f00c"; // check box icon to fill in when checked
+	    font-family: FontAwesome;
+	    color: $body-color;
+		}
+
+		/* END CUSTOM RADIO INPUTS */
+
+
 	.logo-box {
 		font-size: $login-logo-font-size;
 		font-family: 'Helvetica', 'Arial', sans-serif;

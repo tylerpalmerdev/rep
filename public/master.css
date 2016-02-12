@@ -9,6 +9,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Open Sans", sans-serif;
+  /* custom radio inputs! */
+  /* END CUSTOM RADIO INPUTS */
 }
 
 body a {
@@ -45,6 +47,44 @@ body button:active {
 body input {
   outline: none;
   font-size: 12px;
+}
+
+body .radio-custom {
+  opacity: 0;
+  position: absolute;
+  border: 0px;
+  height: 3em;
+  width: 100%;
+  margin-left: 6px;
+  z-index: 50;
+}
+
+body .radio-custom, body .radio-custom-label {
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+body .radio-custom-label {
+  position: relative;
+}
+
+body .radio-custom + .radio-custom-label:before {
+  content: '';
+  border: 2px solid #828282;
+  display: inline-block;
+  vertical-align: middle;
+  width: 25px;
+  height: 25px;
+  padding: 2px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+body .radio-custom:checked + .radio-custom-label:before {
+  content: "\f00c";
+  font-family: FontAwesome;
+  color: #828282;
 }
 
 body .logo-box {
@@ -317,20 +357,36 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   width: 100%;
 }
 
-.content question-feed .question-box .q-box-buttons .answer-button {
+.content question-feed .question-box .vote-button {
   background-color: #ff6961;
 }
 
-.content question-feed .question-box .q-box-buttons .info-button {
+.content question-feed .question-box .info-button {
   background-color: #d6d6d6;
 }
 
-.content question-feed .question-box .q-box-buttons .results-button {
+.content question-feed .question-box .results-button {
   background-color: #61a8ff;
 }
 
 .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog {
   padding: 15px;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog h3, .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog h5 {
+  margin: 0;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog h3, .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog h5, .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-box-modal-text, .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .answer-box {
+  margin-bottom: 8px;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-box-modal-text {
+  font-size: 18px;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-response-form .answer-box-wrapper {
+  margin-bottom: 16px;
 }
 
 .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-response-form .submit-answer-controls {

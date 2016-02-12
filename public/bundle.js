@@ -803,11 +803,6 @@ repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc,
   $scope.repData = repData; // data about current page's rep
   $scope.repQs = repQuestions; // all questions for current page's rep
 
-  $scope.filterOptions = [
-    {label: 'Active', value: 'active', defaultOption: true},
-    {label: 'Completed', value: 'completed'}
-  ];
-
 });
 
 repApp.controller('settingsCtrl', function($scope, authSvc) {
@@ -884,7 +879,5 @@ repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, u
   // make injected data about authed user available on $scope
   $scope.voterData = voterData;
   $scope.voterQs = voterQs;
-
-  // $scope.filterOptions = util.qFeedFilterOptions;
 
 });

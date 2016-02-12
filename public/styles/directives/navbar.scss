@@ -55,6 +55,7 @@ nav-bar {
 
   dialog-modal {
     /* NEW Q REP FORM -  POPS UP IN MODAL */
+
     .new-q-form {
       padding: $header-section-padding-mobile;
       background-color: $form-color;
@@ -62,6 +63,7 @@ nav-bar {
       h3 {
         margin: 0;
       }
+
 
       .form-group {
         margin-bottom: $header-section-padding-mobile;
