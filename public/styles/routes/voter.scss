@@ -1,45 +1,5 @@
 @import './../_variables.scss';
 
-.voter-content {
-  padding-top: $header-section-height + $header-section-padding-mobile;
-  background-color: $body-color-2;
-
-  .my-reps {
-    h3 {
-      text-align: center;
-      margin: 0;
-      margin-bottom: $header-section-padding-mobile;
-    }
-    .rep-box-container {
-      width: 100%;
-      display: flex;
-      flex-flow: column nowrap;
-
-      .voter-rep-box {
-        padding: $header-section-padding-mobile;
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: center;
-        border-top: $voter-rep-box-border;
-
-        img {
-          width: 25%;
-          height: auto;
-        }
-
-        .voter-rep-text {
-          display: flex;
-          flex-flow: column nowrap;
-          justify-content: center;
-          margin-left: $header-section-padding-mobile;
-        }
-      }
-
-      .voter-rep-box:last-of-type {
-        border-bottom: $voter-rep-box-border;
-      }
-    }
-  }
-
-
+.voter-content > h3 {
+  text-align: center;
 }

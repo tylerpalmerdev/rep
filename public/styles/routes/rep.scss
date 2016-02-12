@@ -1,0 +1,36 @@
+@import './../_variables.scss';
+
+.rep-top-content {
+  background-color: $form-color;
+  padding: $header-section-padding-mobile;
+
+  .rep-info {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin-bottom: $header-section-padding-mobile;
+
+    .rep-image {
+      width: 25%;
+      height: auto;
+    }
+
+    .rep-text {
+      margin-left: $rep-text-marg-l-mob;
+      .rep-title {
+        font-size: $rep-title-font-size-mob;
+      }
+
+      .rep-name {
+        font-size: $rep-name-font-size-mob;
+        font-weight: $bold-weight;
+      }
+
+      .electorate-info {
+        h5 {
+          margin: 5px auto;
+        }
+      }
+    }
+  }
+}

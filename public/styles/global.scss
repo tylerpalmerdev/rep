@@ -65,4 +65,11 @@ body {
 		}
 	}
 
+	.q-feed-header {
+		padding: $header-section-padding-mobile;
+		background-color: $form-color;
+		text-align: center;
+		margin-bottom: 0;
+	}
+
 }

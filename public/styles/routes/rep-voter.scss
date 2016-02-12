@@ -1,0 +1,14 @@
+@import './../_variables.scss';
+
+.content {
+
+  background-color: $body-color-2;
+  padding-top: $header-section-height;
+  padding-bottom: $q-box-margin-bottom;
+
+  dual-toggle.q-feed-filter {
+    .toggle-wrap {
+      margin-bottom: $q-box-margin-bottom;
+    }
+  }
+}

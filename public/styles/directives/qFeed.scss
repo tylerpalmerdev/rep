@@ -1,7 +1,6 @@
 @import './../_variables.scss';
 
 .content {
-  // background-color: $body-color-2;
   question-feed {
     .question-box {
       margin-bottom: $q-box-margin-bottom;
@@ -20,6 +19,24 @@
 
         .q-box-rep-text {
           margin-left: $form-text-margin-b;
+        }
+      }
+
+      .q-box-buttons {
+        .q-box-button {
+          width: 100%;
+        }
+
+        .answer-button {
+          background-color: $pastel-red;
+        }
+
+        .info-button {
+          background-color: $body-color-2;
+        }
+
+        .results-button {
+          background-color: $pastel-blue;
         }
       }
 

@@ -188,6 +188,94 @@ repApp.service('districtSvc', function($http, constants) {
   };
 });
 
+repApp.service('qFeedSvc', function() {
+  // function to hide "rep who asked" info when rep is looking at their own Qs
+  this.userIsRepWhoAsked = function(currUserObj, idOfRepWhoAsked) {
+    if (!currUserObj) { // if no authed user
+      return false;
+    } else if (currUserObj.role === 'voter') { // if voter
+      return false;
+    } else if (currUserObj.role === 'rep') {
+      if (currUserObj.rep_id._id === idOfRepWhoAsked) {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  };
+
+  this.isInPast = function(questionObj) {
+    var endDateMs = +new Date(questionObj.complete_at);
+    if (endDateMs < Date.now()) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  // used to hide/ show answer form and answer question button on card
+  this.qIsAnswerable = function(isRep, questionObj) {
+    if (!isRep && !questionObj.answered && !this.isInPast(questionObj)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  // if neither of above is true, only show info about question (button & box)
+  this.showInfoOnly = function(isRep, questionObj) {
+    if (!this.qIsAnswerable(isRep, questionObj) && !this.isInPast(questionObj)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  this.userAnsweredQ = function(isRep, questionObj) {
+    if (isRep || !questionObj.answered) {
+      return false;
+    } else if (questionObj.answered) {
+      return true;
+    } else { // account for other scenarios
+      return false;
+    }
+  };
+
+  // to show "you did not submit an answer" text
+  this.userDidNotAnswer = function(isRep, questionObj) {
+    if (isRep || questionObj.answered || !this.isInPast(questionObj)) {
+      return false;
+    } else if (!questionObj.answered) {
+      return true;
+    }
+  };
+
+  // why doesn't this work?
+  // check to see if user answered question, used when they are on rep page
+  this.userHasAnsweredQ = function(userData, qId) {
+    // if (!userData) { // false if not auth'd
+    //   return false;
+    // } else if (userData.role === 'rep') { // false if rep
+    //   return false;
+    // } else if (userData.role === 'voter') {
+    //   // if voter hasn't answered any questions
+    //   if (userData.questions_answered.length === 0) {
+    //     return false;
+    //   } else {
+    //     // search array of questions answerer for the q's ID
+    //     userData.questions_answered.forEach(function(elem, i, arr) {
+    //       if (elem.question_id === qId) { // if match found
+    //         console.log("match!", elem.question_id, qId);
+    //         return true; // return the index of that
+    //       }
+    //     });
+    //   }
+    // }
+    // // if nothing matches
+    // return false;
+  };
+});
+
 repApp.service('questionSvc', function($http, constants) {
 
   this.getQsForUser = function(id, role) {
@@ -285,6 +373,67 @@ repApp.service('util', function(constants) {
   this.getPhotoUrl = function(bioguideId) {
     return constants.repPhotosBaseUrl + bioguideId + ".jpg";
   };
+
+  this.qFeedFilterOptions = [
+    {label: 'Active', value: 'active', defaultOption: true},
+    {label: 'Completed', value: 'completed'}
+  ];
+});
+
+repApp.controller('dualToggleCtrl', function($scope) {
+
+  // used to apply/remove active-toggle class for styling
+  $scope.highlightBox = function(boxIndex) {
+    if (boxIndex === 0) {
+      $scope.first = true;
+      $scope.second = false;
+    } else if (boxIndex === 1) {
+      $scope.second = true;
+      $scope.first = false;
+    }
+  };
+
+  // checks/applies optional 'defaultOption' property on option objects.
+  $scope.options.forEach(function(elem, i, arr) {
+    if (elem.defaultOption) {
+      $scope.selected = elem.value;
+      $scope.highlightBox(i);
+    }
+  });
+
+  // function to select one toggle/ deselect other
+  $scope.select = function(option) {
+    $scope.selected = $scope.options[option].value;
+    $scope.highlightBox(option);
+  };
+});
+
+/*
+Example data:
+$scope.roleOptions = [
+  {
+    label: 'Representative',
+    value: 'rep',
+    defaultOption: true
+  },
+  {
+    label: 'Voter',
+    value: 'voter'
+  }
+];
+*/
+
+repApp.directive('dualToggle', function() {
+  return {
+    templateUrl: 'app/directives/dualToggle/dualToggleTmpl.html',
+    controller: 'dualToggleCtrl',
+    restrict: 'E',
+    scope: {
+      options: '=', // arr with two objects
+      selected: '=', // pass back up to $scope
+      toggleDefualt: '@'
+    }
+  };
 });
 
 repApp.controller('addressSearchCtrl', function($scope) {
@@ -343,62 +492,6 @@ repApp.directive('addressSearch', function() {
       addressData: '='
     },
     controller: 'addressSearchCtrl'
-  };
-});
-
-repApp.controller('dualToggleCtrl', function($scope) {
-
-  // used to apply/remove active-toggle class for styling
-  $scope.highlightBox = function(boxIndex) {
-    if (boxIndex === 0) {
-      $scope.first = true;
-      $scope.second = false;
-    } else if (boxIndex === 1) {
-      $scope.second = true;
-      $scope.first = false;
-    }
-  };
-
-  // checks/applies optional 'defaultOption' property on option objects.
-  $scope.options.forEach(function(elem, i, arr) {
-    if (elem.defaultOption) {
-      $scope.selected = elem.value;
-      $scope.highlightBox(i);
-    }
-  });
-
-  // function to select one toggle/ deselect other
-  $scope.select = function(option) {
-    $scope.selected = $scope.options[option].value;
-    $scope.highlightBox(option);
-  };
-});
-
-/*
-Example data:
-$scope.roleOptions = [
-  {
-    label: 'Representative',
-    value: 'rep',
-    defaultOption: true
-  },
-  {
-    label: 'Voter',
-    value: 'voter'
-  }
-];
-*/
-
-repApp.directive('dualToggle', function() {
-  return {
-    templateUrl: 'app/directives/dualToggle/dualToggleTmpl.html',
-    controller: 'dualToggleCtrl',
-    restrict: 'E',
-    scope: {
-      options: '=', // arr with two objects
-      selected: '=', // pass back up to $scope
-      toggleDefualt: '@'
-    }
   };
 });
 
@@ -504,7 +597,7 @@ repApp.directive('navBar', function() {
   };
 });
 
-repApp.controller('qFeedCtrl', function($scope, questionSvc, util) {
+repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
 
   // this will be used to open/close modals for each question box.
   $scope.modalShowObj = {};
@@ -531,54 +624,13 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util) {
     );
   };
 
-  // function to hide "rep who asked" info when rep is looking at their own Qs
-  $scope.userIsRepWhoAsked = function(currUserObj, idOfRepWhoAsked) {
-    if (!currUserObj) { // if no authed user
-      return false;
-    } else if (currUserObj.role === 'voter') { // if voter
-      return false;
-    } else if (currUserObj.role === 'rep') {
-      if (currUserObj.rep_id._id === idOfRepWhoAsked) {
-        return true;
-      }
-    } else {
-      return false;
-    }
-  };
+  $scope.userIsRepWhoAsked = qFeedSvc.userIsRepWhoAsked;
+  $scope.isInPast = qFeedSvc.isInPast;
+  $scope.qIsAnswerable = qFeedSvc.qIsAnswerable;
+  $scope.showInfoOnly = qFeedSvc.showInfoOnly;
+  $scope.userAnsweredQ = qFeedSvc.userAnsweredQ;
+  $scope.userDidNotAnswer = qFeedSvc.userDidNotAnswer;
 
-  $scope.isInPast = function(endDate) {
-    var endDateMs = +new Date(endDate);
-    if (endDateMs < Date.now()) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  // why doesn't this work?
-  // check to see if user answered question, used when they are on rep page
-  $scope.userHasAnsweredQ = function(userData, qId) {
-    // if (!userData) { // false if not auth'd
-    //   return false;
-    // } else if (userData.role === 'rep') { // false if rep
-    //   return false;
-    // } else if (userData.role === 'voter') {
-    //   // if voter hasn't answered any questions
-    //   if (userData.questions_answered.length === 0) {
-    //     return false;
-    //   } else {
-    //     // search array of questions answerer for the q's ID
-    //     userData.questions_answered.forEach(function(elem, i, arr) {
-    //       if (elem.question_id === qId) { // if match found
-    //         console.log("match!", elem.question_id, qId);
-    //         return true; // return the index of that
-    //       }
-    //     });
-    //   }
-    // }
-    // // if nothing matches
-    // return false;
-  };
 
   // only for voters
   $scope.answerQuestion = function(questionId, answerIndex) {
@@ -755,10 +807,12 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
 
 }); // END
 
-repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs) {
+repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, util) {
 
   // make injected data about authed user available on $scope
   $scope.voterData = voterData;
   $scope.voterQs = voterQs;
+
+  $scope.filterOptions = util.qFeedFilterOptions;
 
 });

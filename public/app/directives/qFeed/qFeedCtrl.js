@@ -1,4 +1,4 @@
-repApp.controller('qFeedCtrl', function($scope, questionSvc, util) {
+repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
 
   // this will be used to open/close modals for each question box.
   $scope.modalShowObj = {};
@@ -25,54 +25,13 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util) {
     );
   };
 
-  // function to hide "rep who asked" info when rep is looking at their own Qs
-  $scope.userIsRepWhoAsked = function(currUserObj, idOfRepWhoAsked) {
-    if (!currUserObj) { // if no authed user
-      return false;
-    } else if (currUserObj.role === 'voter') { // if voter
-      return false;
-    } else if (currUserObj.role === 'rep') {
-      if (currUserObj.rep_id._id === idOfRepWhoAsked) {
-        return true;
-      }
-    } else {
-      return false;
-    }
-  };
+  $scope.userIsRepWhoAsked = qFeedSvc.userIsRepWhoAsked;
+  $scope.isInPast = qFeedSvc.isInPast;
+  $scope.qIsAnswerable = qFeedSvc.qIsAnswerable;
+  $scope.showInfoOnly = qFeedSvc.showInfoOnly;
+  $scope.userAnsweredQ = qFeedSvc.userAnsweredQ;
+  $scope.userDidNotAnswer = qFeedSvc.userDidNotAnswer;
 
-  $scope.isInPast = function(endDate) {
-    var endDateMs = +new Date(endDate);
-    if (endDateMs < Date.now()) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  // why doesn't this work?
-  // check to see if user answered question, used when they are on rep page
-  $scope.userHasAnsweredQ = function(userData, qId) {
-    // if (!userData) { // false if not auth'd
-    //   return false;
-    // } else if (userData.role === 'rep') { // false if rep
-    //   return false;
-    // } else if (userData.role === 'voter') {
-    //   // if voter hasn't answered any questions
-    //   if (userData.questions_answered.length === 0) {
-    //     return false;
-    //   } else {
-    //     // search array of questions answerer for the q's ID
-    //     userData.questions_answered.forEach(function(elem, i, arr) {
-    //       if (elem.question_id === qId) { // if match found
-    //         console.log("match!", elem.question_id, qId);
-    //         return true; // return the index of that
-    //       }
-    //     });
-    //   }
-    // }
-    // // if nothing matches
-    // return false;
-  };
 
   // only for voters
   $scope.answerQuestion = function(questionId, answerIndex) {

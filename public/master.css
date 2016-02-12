@@ -65,6 +65,13 @@ body .logo-box .logo-letter-white {
   color: white;
 }
 
+body .q-feed-header {
+  padding: 15px;
+  background-color: white;
+  text-align: center;
+  margin-bottom: 0;
+}
+
 .modal-wrapper .modal-overlay {
   position: fixed;
   top: 0;
@@ -252,6 +259,22 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   margin-left: 8px;
 }
 
+.content question-feed .question-box .q-box-buttons .q-box-button {
+  width: 100%;
+}
+
+.content question-feed .question-box .q-box-buttons .answer-button {
+  background-color: #ff6961;
+}
+
+.content question-feed .question-box .q-box-buttons .info-button {
+  background-color: #d6d6d6;
+}
+
+.content question-feed .question-box .q-box-buttons .results-button {
+  background-color: #61a8ff;
+}
+
 .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog {
   padding: 15px;
 }
@@ -428,99 +451,50 @@ rep-contact-bar .contact-bar-wrapper .contact-icon-box a i {
   margin: 0 auto;
 }
 
-.rep-content {
-  padding-top: 60px;
+.content {
   background-color: #d6d6d6;
+  padding-top: 60px;
+  padding-bottom: 15px;
 }
 
-.rep-content .rep-top-content {
+.content dual-toggle.q-feed-filter .toggle-wrap {
+  margin-bottom: 15px;
+}
+
+.rep-top-content {
   background-color: white;
   padding: 15px;
 }
 
-.rep-content .rep-top-content .rep-info {
+.rep-top-content .rep-info {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   margin-bottom: 15px;
 }
 
-.rep-content .rep-top-content .rep-info .rep-image {
+.rep-top-content .rep-info .rep-image {
   width: 25%;
   height: auto;
 }
 
-.rep-content .rep-top-content .rep-info .rep-text {
+.rep-top-content .rep-info .rep-text {
   margin-left: 10px;
 }
 
-.rep-content .rep-top-content .rep-info .rep-text .rep-title {
+.rep-top-content .rep-info .rep-text .rep-title {
   font-size: 20px;
 }
 
-.rep-content .rep-top-content .rep-info .rep-text .rep-name {
+.rep-top-content .rep-info .rep-text .rep-name {
   font-size: 24px;
   font-weight: 600;
 }
 
-.rep-content .rep-top-content .rep-info .rep-text .electorate-info h5 {
+.rep-top-content .rep-info .rep-text .electorate-info h5 {
   margin: 5px auto;
 }
 
-.rep-content .rep-questions h4 {
+.voter-content > h3 {
   text-align: center;
-  margin: 5px;
-}
-
-.rep-content .rep-questions .question-filter {
-  display: flex;
-  flex-flow: row nowrap;
-}
-
-.rep-content .rep-questions .question-filter .filter-box {
-  width: 50%;
-  text-align: center;
-  padding: 10px;
-  border: 1px solid #888888;
-}
-
-.voter-content {
-  padding-top: 75px;
-  background-color: #d6d6d6;
-}
-
-.voter-content .my-reps h3 {
-  text-align: center;
-  margin: 0;
-  margin-bottom: 15px;
-}
-
-.voter-content .my-reps .rep-box-container {
-  width: 100%;
-  display: flex;
-  flex-flow: column nowrap;
-}
-
-.voter-content .my-reps .rep-box-container .voter-rep-box {
-  padding: 15px;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  border-top: 1px solid gray;
-}
-
-.voter-content .my-reps .rep-box-container .voter-rep-box img {
-  width: 25%;
-  height: auto;
-}
-
-.voter-content .my-reps .rep-box-container .voter-rep-box .voter-rep-text {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  margin-left: 15px;
-}
-
-.voter-content .my-reps .rep-box-container .voter-rep-box:last-of-type {
-  border-bottom: 1px solid gray;
 }

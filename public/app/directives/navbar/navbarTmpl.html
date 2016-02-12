@@ -32,7 +32,7 @@
 
     <div ng-show="newQObj.kind" class="form-group">
       <div class="group-label">Question:</div>
-      <textarea ng-model="newQObj.text" name="name" placeholder="Limit 150 characters."></textarea>
+      <textarea ng-model="newQObj.text" name="name" placeholder="Limit 140 characters." maxlength="140"></textarea>
     </div>
 
     <div ng-show="newQObj.kind === 'yn'" class="form-group options-input yn-options">

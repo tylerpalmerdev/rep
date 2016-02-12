@@ -1,39 +1,45 @@
 <div ng-repeat="question in qData" class="question-box">
   <!-- Don't show rep that asked q in feed when on a rep's page. we know which rep!-->
-  <div ng-hide="isRep" class="q-box-rep-tag">
-    <img ng-src="{{getRepImgUrl(question.submitted_by.rep_id.bioguide_id)}}" class="rep-feed-image"/>
-    <div class="q-box-rep-text">
-      <div class="q-box-rep-link">
-        <a ui-sref="rep({repId: question.submitted_by.rep_id._id})">      {{question.submitted_by.rep_id.title}} {{question.submitted_by.rep_id.first_name}} {{question.submitted_by.rep_id.last_name}}
-        </a>
+  <div class="q-box-top">
+    <div ng-hide="isRep" class="q-box-rep-tag">
+      <img ng-src="{{getRepImgUrl(question.submitted_by.rep_id.bioguide_id)}}" class="rep-feed-image"/>
+      <div class="q-box-rep-text">
+        <div class="q-box-rep-name">
+          {{question.submitted_by.rep_id.title}} {{question.submitted_by.rep_id.first_name}} {{question.submitted_by.rep_id.last_name}}
+        </div>
+        <div class="q-box-rep-link">
+          <a ui-sref="rep({repId: question.submitted_by.rep_id._id})">Rep Profile</a>
+        </div>
       </div>
-      <div class="q-box-rep-text-date">
-        {{question.submit_at | date:'MM/dd/yyyy @ h:mma'}}
-      </div>
-
-      <span></span>
+    </div>
+    <div ng-show="isRep" class="q-box-submit-date">
+      On {{question.submit_at | date:'MM/dd/yyyy @ h:mma'}}:
     </div>
   </div>
   <div class="q-box-q-text">{{question.text}}</div>
-  <div class="" ng-show="question.total_responses > 0">
-    {{question.total_responses}} total responses.
+  <div class="">
+    {{question.kind}}
   </div>
-  <div ng-hide="isInPast(question.complete_at)">
+  <div class="" ng-show="question.total_responses > 0">
+    <span ng-show="question.total_responses === 1">{{question.total_responses}} response.</span>
+    <span ng-hide="question.total_responses === 1">{{question.total_responses}} total responses.</span>
+  </div>
+  <div ng-hide="isInPast(question)">
     <p>
       ACTIVE. Ends on {{question.complete_at | date}}
     </p>
-    <div class="">
-      <a ng-click="showQModal(question._id)">Open Modal</a>
-    </div>
   </div>
 
-  <div ng-show="isInPast(question.complete_at)">
+  <div ng-show="isInPast(question)">
     <p>
       COMPLETED. Ended on {{question.complete_at | date}}
     </p>
-    <div class="">
-      <a ng-click="showQModal(question._id)">Show Results</a>
-    </div>
+  </div>
+
+  <div class="q-box-buttons">
+    <button ng-click="showQModal(question._id)" ng-show="qIsAnswerable(isRep, question)" class="answer-button q-box-button">Vote</button>
+    <button ng-click="showQModal(question._id)"ng-show="showInfoOnly(isRep, question)" class="info-button q-box-button">Info</button>
+    <button ng-click="showQModal(question._id)" ng-show="isInPast(question)" class="results-button q-box-button">Results</button>
   </div>
 
   <dialog-modal show-modal="modalShowObj[question._id]" class="q-box-modal">
@@ -44,21 +50,21 @@
     </div>
 
     <!-- Show when question is active, and either the voter has answered the question or the page is rep view -->
-    <div ng-show="!isInPast(question.complete_at) && (question.answered || isRep)" class="answer-info-box">
+    <div ng-show="showInfoOnly(isRep, question)" class="answer-info-box">
       <h5>Options:</h5>
       <div ng-repeat="option in question.options" class="">
         {{option.text}}
       </div>
     </div>
     <!-- only show results when question is completed/ in past -->
-    <div ng-show="isInPast(question.complete_at)" class="question-results">
+    <div ng-show="isInPast(question)" class="question-results">
       <h5>Results:</h5>
       <div ng-repeat="option in question.options" class="result-row">
         {{option.text}} -- {{option.votes}} votes.
       </div>
     </div>
     <!-- Only show answer form if on voter page and voter has not answered question and question is active-->
-    <form ng-show="!isRep && !question.answered && !isInPast(question.complete_at)" class="q-response-form">
+    <form ng-show="qIsAnswerable(isRep, question)" class="q-response-form">
       <div ng-repeat="option in question.options" class="answer-box">
         <input ng-model="$parent.optionChosenIndex" type="radio" name="name" value="{{$index}}">
         {{option.text}}
@@ -69,10 +75,11 @@
       </div>
     </form>
     <!-- only show if voter has answered question -->
-    <div ng-show="!isRep && question.answered" class="voterChoiceInfo">
+    <div ng-show="userAnsweredQ(isRep, question)" class="voterChoiceInfo">
       Your pick: {{question.options[question.answer_chosen].text}}
     </div>
-    <div ng-show="!isRep && !question.answered && isInPast(question.complete_at)" class="voterChoiceInfo">
+    <!-- only show is q is complete and voter did not answer -->
+    <div ng-show="userDidNotAnswer(isRep, question)" class="voterChoiceInfo">
       You did not submit an answer.
     </div>
   </dialog-modal>
