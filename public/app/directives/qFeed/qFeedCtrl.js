@@ -3,6 +3,8 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
   // this will be used to open/close modals for each question box.
   $scope.modalShowObj = {};
 
+  $scope.filterOptions = util.qFeedFilterOptions;
+
   $scope.showQModal = function(qId) {
     $scope.modalShowObj[qId] = true;
   };
@@ -31,6 +33,7 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
   $scope.showInfoOnly = qFeedSvc.showInfoOnly;
   $scope.userAnsweredQ = qFeedSvc.userAnsweredQ;
   $scope.userDidNotAnswer = qFeedSvc.userDidNotAnswer;
+  $scope.getTimeRemaining = qFeedSvc.getTimeRemaining;
 
 
   // only for voters

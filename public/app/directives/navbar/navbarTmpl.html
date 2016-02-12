@@ -23,7 +23,7 @@
 </header>
 
 <dialog-modal show-modal="newQForm">
-  <form class="new-q-form rep-content content">
+  <form class="new-q-form">
     <h3>Ask your voters a new question.</h3>
     <div class="form-group">
       <div class="group-label">Type:</div>
@@ -31,12 +31,10 @@
     </div>
 
     <div ng-show="newQObj.kind" class="form-group">
-      <div class="group-label">Question:</div>
-      <textarea ng-model="newQObj.text" name="name" placeholder="Limit 140 characters." maxlength="140"></textarea>
+      <textarea ng-model="newQObj.text" name="name" placeholder="Enter question text. Limit 120 characters." maxlength="120"></textarea>
     </div>
 
     <div ng-show="newQObj.kind === 'yn'" class="form-group options-input yn-options">
-      Options:
       <div class="input-group">
         Option 1: YES
       </div>
@@ -46,7 +44,6 @@
     </div>
 
     <div ng-show="newQObj.kind === 'mc'" class="form-group options-input mc-options">
-      Options (5 max):
       <div class="input-group">
         Option 1: <input ng-model="newQObj.options[0]" type="text">
       </div>
@@ -68,8 +65,6 @@
       <button ng-click="clearQForm()" type="button" name="button">CLEAR FORM</button>
       <button ng-click="submitNewQ(newQObj)" type="button" name="button">SUBMIT</button>
     </div>
-
-    {{newQObj}}
   </form>
 </dialog-modal>
 

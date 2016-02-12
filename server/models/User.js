@@ -25,12 +25,6 @@ var userSchema = mongoose.Schema({
   //rep data
   rep_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Rep'},
   bioguide_id: {type: String} // only for reps, denorm
-  // questions_asked: [
-  //   {
-  //     question_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Question'}
-  //   },
-  // ],
-
 });
 
 // this middleware to hash pws will run before any user save or pw update occurs

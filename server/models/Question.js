@@ -8,7 +8,7 @@ var optionSchema = mongoose.Schema(
   }, { _id: false });
 
 var questionSchema = mongoose.Schema({
-  text: {type: String, required: true, maxlength: 150},
+  text: {type: String, required: true, maxlength: 120},
   kind: {type: String, required: true, enum: ['yn', 'mc']},
   submitted_by: { // denormalizing this for easy querying
     rep_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Rep', required: true},
@@ -16,7 +16,7 @@ var questionSchema = mongoose.Schema({
   },
   status: {type: String, required: true, enum: ['active', 'completed'], default: 'active'},
   submit_at: {type: Date, default: moment()},
-  complete_at: {type: Date, default: moment().add(3, 'days').endOf('day')}, // + 3 days
+  complete_at: {type: Date, default: moment().add(3, 'days')}, // + 3 days
   options: [optionSchema],
   total_responses: {type: Number, default: 0, min: 0}
 });

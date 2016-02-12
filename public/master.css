@@ -13,7 +13,6 @@ body {
 
 body a {
   cursor: pointer;
-  outline: 0;
 }
 
 body a:hover {
@@ -22,6 +21,10 @@ body a:hover {
 
 body a:hover i {
   color: green;
+}
+
+body a, body i, body input {
+  outline: 0;
 }
 
 body button {
@@ -142,7 +145,7 @@ dual-toggle .toggle-wrap .active-toggle.toggle-2 {
 nav-bar {
   width: 100%;
   position: fixed;
-  z-index: 100;
+  z-index: 99;
 }
 
 nav-bar header {
@@ -193,12 +196,39 @@ nav-bar header nav .nav-icon:nth-of-type(3) {
   padding-left: 5px;
 }
 
-nav-bar header nav .active-icon {
-  border-bottom: 2px solid white;
+nav-bar dialog-modal {
+  /* NEW Q REP FORM -  POPS UP IN MODAL */
 }
 
-nav-bar header nav .active-icon i {
-  color: white;
+nav-bar dialog-modal .new-q-form {
+  padding: 15px;
+  background-color: white;
+}
+
+nav-bar dialog-modal .new-q-form h3 {
+  margin: 0;
+}
+
+nav-bar dialog-modal .new-q-form .form-group {
+  margin-bottom: 15px;
+}
+
+nav-bar dialog-modal .new-q-form .form-group .group-label {
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+nav-bar dialog-modal .new-q-form .form-group .q-type-input input {
+  margin-right: 15px;
+}
+
+nav-bar dialog-modal .new-q-form .form-group textarea {
+  width: 100%;
+  height: 15vh;
+}
+
+nav-bar dialog-modal .new-q-form .form-group .input-group {
+  margin-bottom: 10px;
 }
 
 nav-bar dialog-modal .my-reps h3 {
@@ -244,6 +274,10 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   padding: 15px;
 }
 
+.content question-feed .question-box .q-box-rep-tag, .content question-feed .question-box .q-box-submit-date, .content question-feed .question-box .q-box-q-text, .content question-feed .question-box .q-box-text-bar {
+  margin-bottom: 7px;
+}
+
 .content question-feed .question-box .q-box-rep-tag {
   display: flex;
   flex-flow: row nowrap;
@@ -268,6 +302,17 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   font-weight: 600;
 }
 
+.content question-feed .question-box .q-box-text-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.content question-feed .question-box .q-box-text-bar .q-box-response-text {
+  font-style: italic;
+}
+
 .content question-feed .question-box .q-box-buttons .q-box-button {
   width: 100%;
 }
@@ -286,6 +331,16 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 
 .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog {
   padding: 15px;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-response-form .submit-answer-controls {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .q-response-form .submit-answer-controls button {
+  width: 48%;
 }
 
 rep-contact-bar {
@@ -423,41 +478,6 @@ rep-contact-bar .contact-bar-wrapper .contact-icon-box a i {
 
 .signup-content .signup-form .login-rep-select-box {
   padding-top: 8px;
-}
-
-.new-q-form {
-  padding: 15px;
-  padding-top: 75px;
-}
-
-.new-q-form h3 {
-  margin: 0;
-}
-
-.new-q-form .form-group {
-  margin-bottom: 15px;
-}
-
-.new-q-form .form-group .group-label {
-  margin-bottom: 15px;
-  font-weight: bold;
-}
-
-.new-q-form .form-group .q-type-input input {
-  margin-right: 15px;
-}
-
-.new-q-form .form-group textarea {
-  width: 100%;
-  height: 15vh;
-}
-
-.new-q-form .form-group .input-group {
-  margin-bottom: 10px;
-}
-
-.new-q-form .form-group .form-buttons button {
-  margin: 0 auto;
 }
 
 .content {

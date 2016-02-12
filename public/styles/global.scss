@@ -14,15 +14,19 @@ body {
 
 	a {
 		cursor: pointer;
-		outline: 0;
+		// outline: none;
 	}
 
-	a:hover {
-		color: green;
-
-		i {
+		a:hover {
 			color: green;
+
+			i {
+				color: green;
+			}
 		}
+
+	a, i, input {
+		outline: 0;
 	}
 
 	button {

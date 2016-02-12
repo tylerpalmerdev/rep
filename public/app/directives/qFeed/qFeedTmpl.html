@@ -1,4 +1,5 @@
-<div ng-repeat="question in qData" class="question-box">
+<dual-toggle options="filterOptions" selected="qFilter" class="q-feed-filter"></dual-toggle>
+<div ng-repeat="question in qData | orderBy: complete_at| feedSort:qFilter" class="question-box">
   <!-- Don't show rep that asked q in feed when on a rep's page. we know which rep!-->
   <div class="q-box-top">
     <div ng-hide="isRep" class="q-box-rep-tag">
@@ -20,26 +21,26 @@
   <!-- <div class="">
     {{question.kind}}
   </div> -->
-  <div class="" ng-show="question.total_responses > 0">
-    <span ng-show="question.total_responses === 1">{{question.total_responses}} response.</span>
-    <span ng-hide="question.total_responses === 1">{{question.total_responses}} total responses.</span>
-  </div>
-  <div ng-hide="isInPast(question)">
-    <p>
-      ACTIVE. Ends on {{question.complete_at | date}}
-    </p>
-  </div>
 
-  <div ng-show="isInPast(question)">
-    <!-- <p>
-      COMPLETED. Ended on {{question.complete_at | date}}
-    </p> -->
+  <div class="q-box-text-bar">
+    <div ng-hide="isInPast(question)">
+        {{getTimeRemaining(question)}} remaining
+    </div>
+
+    <div ng-show="isInPast(question)">
+        Closed on {{question.complete_at | date}}
+    </div>
+
+    <div class="q-box-response-text" ng-show="question.total_responses > 0">
+      <span ng-show="question.total_responses === 1">{{question.total_responses}} response</span>
+      <span ng-hide="question.total_responses === 1">{{question.total_responses}} responses</span>
+    </div>
   </div>
 
   <div class="q-box-buttons">
-    <button ng-click="showQModal(question._id)" ng-show="qIsAnswerable(isRep, question)" class="answer-button q-box-button">Vote</button>
-    <button ng-click="showQModal(question._id)"ng-show="showInfoOnly(isRep, question)" class="info-button q-box-button">Info</button>
-    <button ng-click="showQModal(question._id)" ng-show="isInPast(question)" class="results-button q-box-button">Results</button>
+    <button ng-click="showQModal(question._id)" ng-show="qIsAnswerable(isRep, question)" class="answer-button q-box-button"><i class="fa fa-check-square-o"></i> Vote</button>
+    <button ng-click="showQModal(question._id)" ng-show="showInfoOnly(isRep, question)" class="info-button q-box-button"><i class="fa fa-info-circle"></i> Info</button>
+    <button ng-click="showQModal(question._id)" ng-show="isInPast(question)" class="results-button q-box-button"><i class="fa fa-pie-chart"></i> Results</button>
   </div>
 
   <dialog-modal show-modal="modalShowObj[question._id]" class="q-box-modal">

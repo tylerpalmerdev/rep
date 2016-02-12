@@ -7,13 +7,17 @@
       box-shadow: $level-2-shadow;
       background-color: $form-color;
 
+      .q-box-rep-tag, .q-box-submit-date, .q-box-q-text, .q-box-text-bar {
+        margin-bottom: $q-box-element-spacing;
+      }
+
       .q-box-rep-tag {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
 
         img {
-          height: 50px;
+          height: $q-box-img-height;
           width: auto;
         }
 
@@ -23,12 +27,23 @@
       }
 
       .q-box-submit-date {
-        font-size: 12px;
+        font-size: $q-box-submit-date-font-size;
       }
 
       .q-box-q-text {
-        font-size: 22px;
-        font-weight: 600;
+        font-size: $q-box-q-text-font-size;
+        font-weight: $bold-weight;
+      }
+
+      .q-box-text-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: $q-box-text-bar-font-size;
+
+        .q-box-response-text {
+          font-style: italic;
+        }
       }
 
       .q-box-buttons {
@@ -49,13 +64,24 @@
         }
       }
 
-      // border-bottom: 1px solid #888888;
       padding: $header-section-padding-mobile;
 
       .q-box-modal {
         .modal-wrapper {
           .modal-dialog {
             padding: $header-section-padding-mobile;
+
+            .q-response-form {
+              .submit-answer-controls {
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: space-between;
+
+                button {
+                  width: $q-form-button-width; // leaves a little space in between
+                }
+              }
+            }
           }
         }
 

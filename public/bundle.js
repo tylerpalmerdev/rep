@@ -188,6 +188,47 @@ repApp.service('districtSvc', function($http, constants) {
   };
 });
 
+repApp.filter("feedSort", function() {
+  return function(rawFeedElems, filterBy) { // active/ completed
+    var sortedFeed = [],
+        toVote = [],
+        voted = [];
+
+    var sortAsc = function(a, b) {
+      return new Date(a.complete_at).getTime() - new Date(b.complete_at).getTime();
+    };
+
+    var sortDesc = function(a, b) {
+      return new Date(b.complete_at).getTime() - new Date(a.complete_at).getTime();
+    };
+
+    rawFeedElems.forEach(function(elem, i, arr) {
+      var elemEndDate = +new Date(elem.complete_at);
+      var now = Date.now();
+      if (filterBy === 'active' && elemEndDate > now) {
+        if (elem.answered) { // if user answered question
+          voted.push(elem); // add to voted array
+        } else { // if user did not vote yet
+          toVote.push(elem); // at to toVote arr
+        }
+      } else if (filterBy === 'completed' && elemEndDate < now) {
+        sortedFeed.push(elem);
+      }
+    });
+
+    if (filterBy === 'active') {
+      toVote.sort(sortAsc);
+      voted.sort(sortAsc);
+      sortedFeed = toVote.concat(voted);
+    } else if (filterBy === 'completed') {
+      sortedFeed.sort(sortDesc);
+    }
+
+    return sortedFeed;
+
+  };
+});
+
 repApp.service('qFeedSvc', function() {
   // function to hide "rep who asked" info when rep is looking at their own Qs
   this.userIsRepWhoAsked = function(currUserObj, idOfRepWhoAsked) {
@@ -248,6 +289,34 @@ repApp.service('qFeedSvc', function() {
     } else if (!questionObj.answered) {
       return true;
     }
+  };
+
+  this.getTimeRemaining = function(questionObj) {
+    var timeLeftMs = +new Date(questionObj.complete_at) - Date.now();
+    var msInDay = 24 * 60 * 60 * 1000;
+    var msInHour = msInDay / 24;
+    var msInMinute = msInHour / 60;
+
+    var days = Math.floor(timeLeftMs / msInDay);
+    var hours = Math.floor((timeLeftMs - (days * msInDay)) / msInHour);
+    var minutes = Math.floor((timeLeftMs - (days * msInDay) - (hours * msInHour)) / msInMinute);
+
+    var timeLeftStr;
+
+    if (days > 0) {
+      if (hours === 0) {
+        timeLeftStr = days + ' days';
+      } else {
+        timeLeftStr = days + ' days, ' + hours + ' hours';
+      }
+    } else {
+      if (hours === 0) {
+        timeLeftStr = minutes + ' min';
+      } else {
+        timeLeftStr = hours + ' hours, ' + minutes + ' min';
+      }
+    }
+    return timeLeftStr;
   };
 
   // why doesn't this work?
@@ -380,62 +449,6 @@ repApp.service('util', function(constants) {
   ];
 });
 
-repApp.controller('dualToggleCtrl', function($scope) {
-
-  // used to apply/remove active-toggle class for styling
-  $scope.highlightBox = function(boxIndex) {
-    if (boxIndex === 0) {
-      $scope.first = true;
-      $scope.second = false;
-    } else if (boxIndex === 1) {
-      $scope.second = true;
-      $scope.first = false;
-    }
-  };
-
-  // checks/applies optional 'defaultOption' property on option objects.
-  $scope.options.forEach(function(elem, i, arr) {
-    if (elem.defaultOption) {
-      $scope.selected = elem.value;
-      $scope.highlightBox(i);
-    }
-  });
-
-  // function to select one toggle/ deselect other
-  $scope.select = function(option) {
-    $scope.selected = $scope.options[option].value;
-    $scope.highlightBox(option);
-  };
-});
-
-/*
-Example data:
-$scope.roleOptions = [
-  {
-    label: 'Representative',
-    value: 'rep',
-    defaultOption: true
-  },
-  {
-    label: 'Voter',
-    value: 'voter'
-  }
-];
-*/
-
-repApp.directive('dualToggle', function() {
-  return {
-    templateUrl: 'app/directives/dualToggle/dualToggleTmpl.html',
-    controller: 'dualToggleCtrl',
-    restrict: 'E',
-    scope: {
-      options: '=', // arr with two objects
-      selected: '=', // pass back up to $scope
-      toggleDefualt: '@'
-    }
-  };
-});
-
 repApp.controller('addressSearchCtrl', function($scope) {
 
   // set bounds of search to the whole world
@@ -492,6 +505,62 @@ repApp.directive('addressSearch', function() {
       addressData: '='
     },
     controller: 'addressSearchCtrl'
+  };
+});
+
+repApp.controller('dualToggleCtrl', function($scope) {
+
+  // used to apply/remove active-toggle class for styling
+  $scope.highlightBox = function(boxIndex) {
+    if (boxIndex === 0) {
+      $scope.first = true;
+      $scope.second = false;
+    } else if (boxIndex === 1) {
+      $scope.second = true;
+      $scope.first = false;
+    }
+  };
+
+  // checks/applies optional 'defaultOption' property on option objects.
+  $scope.options.forEach(function(elem, i, arr) {
+    if (elem.defaultOption) {
+      $scope.selected = elem.value;
+      $scope.highlightBox(i);
+    }
+  });
+
+  // function to select one toggle/ deselect other
+  $scope.select = function(option) {
+    $scope.selected = $scope.options[option].value;
+    $scope.highlightBox(option);
+  };
+});
+
+/*
+Example data:
+$scope.roleOptions = [
+  {
+    label: 'Representative',
+    value: 'rep',
+    defaultOption: true
+  },
+  {
+    label: 'Voter',
+    value: 'voter'
+  }
+];
+*/
+
+repApp.directive('dualToggle', function() {
+  return {
+    templateUrl: 'app/directives/dualToggle/dualToggleTmpl.html',
+    controller: 'dualToggleCtrl',
+    restrict: 'E',
+    scope: {
+      options: '=', // arr with two objects
+      selected: '=', // pass back up to $scope
+      toggleDefualt: '@'
+    }
   };
 });
 
@@ -602,6 +671,8 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
   // this will be used to open/close modals for each question box.
   $scope.modalShowObj = {};
 
+  $scope.filterOptions = util.qFeedFilterOptions;
+
   $scope.showQModal = function(qId) {
     $scope.modalShowObj[qId] = true;
   };
@@ -630,6 +701,7 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
   $scope.showInfoOnly = qFeedSvc.showInfoOnly;
   $scope.userAnsweredQ = qFeedSvc.userAnsweredQ;
   $scope.userDidNotAnswer = qFeedSvc.userDidNotAnswer;
+  $scope.getTimeRemaining = qFeedSvc.getTimeRemaining;
 
 
   // only for voters
@@ -813,6 +885,6 @@ repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, u
   $scope.voterData = voterData;
   $scope.voterQs = voterQs;
 
-  $scope.filterOptions = util.qFeedFilterOptions;
+  // $scope.filterOptions = util.qFeedFilterOptions;
 
 });

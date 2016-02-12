@@ -60,6 +60,34 @@ repApp.service('qFeedSvc', function() {
     }
   };
 
+  this.getTimeRemaining = function(questionObj) {
+    var timeLeftMs = +new Date(questionObj.complete_at) - Date.now();
+    var msInDay = 24 * 60 * 60 * 1000;
+    var msInHour = msInDay / 24;
+    var msInMinute = msInHour / 60;
+
+    var days = Math.floor(timeLeftMs / msInDay);
+    var hours = Math.floor((timeLeftMs - (days * msInDay)) / msInHour);
+    var minutes = Math.floor((timeLeftMs - (days * msInDay) - (hours * msInHour)) / msInMinute);
+
+    var timeLeftStr;
+
+    if (days > 0) {
+      if (hours === 0) {
+        timeLeftStr = days + ' days';
+      } else {
+        timeLeftStr = days + ' days, ' + hours + ' hours';
+      }
+    } else {
+      if (hours === 0) {
+        timeLeftStr = minutes + ' min';
+      } else {
+        timeLeftStr = hours + ' hours, ' + minutes + ' min';
+      }
+    }
+    return timeLeftStr;
+  };
+
   // why doesn't this work?
   // check to see if user answered question, used when they are on rep page
   this.userHasAnsweredQ = function(userData, qId) {

@@ -4,6 +4,6 @@ repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, u
   $scope.voterData = voterData;
   $scope.voterQs = voterQs;
 
-  $scope.filterOptions = util.qFeedFilterOptions;
+  // $scope.filterOptions = util.qFeedFilterOptions;
 
 });
