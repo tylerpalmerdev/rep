@@ -259,6 +259,15 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   margin-left: 8px;
 }
 
+.content question-feed .question-box .q-box-submit-date {
+  font-size: 12px;
+}
+
+.content question-feed .question-box .q-box-q-text {
+  font-size: 22px;
+  font-weight: 600;
+}
+
 .content question-feed .question-box .q-box-buttons .q-box-button {
   width: 100%;
 }

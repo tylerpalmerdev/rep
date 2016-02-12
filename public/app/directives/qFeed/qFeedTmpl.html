@@ -17,9 +17,9 @@
     </div>
   </div>
   <div class="q-box-q-text">{{question.text}}</div>
-  <div class="">
+  <!-- <div class="">
     {{question.kind}}
-  </div>
+  </div> -->
   <div class="" ng-show="question.total_responses > 0">
     <span ng-show="question.total_responses === 1">{{question.total_responses}} response.</span>
     <span ng-hide="question.total_responses === 1">{{question.total_responses}} total responses.</span>
@@ -31,9 +31,9 @@
   </div>
 
   <div ng-show="isInPast(question)">
-    <p>
+    <!-- <p>
       COMPLETED. Ended on {{question.complete_at | date}}
-    </p>
+    </p> -->
   </div>
 
   <div class="q-box-buttons">
