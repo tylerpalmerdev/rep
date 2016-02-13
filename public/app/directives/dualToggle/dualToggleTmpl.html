@@ -1,8 +1,8 @@
 <div class="toggle-wrap">
-  <div ng-click="select(0)" ng-class="{'active-toggle': first}" class="toggle toggle-1">
+  <div ng-click="select(0)" ng-class="{'active-toggle': options[0].selected}" class="toggle toggle-1">
     {{options[0].label}}
   </div>
-  <div ng-click="select(1)" ng-class="{'active-toggle': second}" class="toggle toggle-2">
+  <div ng-click="select(1)" ng-class="{'active-toggle': options[1].selected}" class="toggle toggle-2">
     {{options[1].label}}
   </div>
 </div>

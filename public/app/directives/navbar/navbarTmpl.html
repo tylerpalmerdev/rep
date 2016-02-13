@@ -2,7 +2,6 @@
     <div class="logo-box">
       <font class="logo-letter-red">R</font><font class="logo-letter-white">E</font><font class="logo-letter-blue">P</font>
     </div>
-    <!-- {{currStatus}} - {{currAuth.role}} -- {{currState}} -->
     <nav ng-show="currAuth"> <!-- show menu if currAuth is not empty -->
       <div class="nav-icon">
         <a ng-click="goHome()"><i class="fa fa-home"></i></a>
@@ -36,34 +35,32 @@
 
     <div ng-show="newQObj.kind === 'yn'" class="form-group options-input yn-options">
       <div class="input-group">
-        Option 1: YES
-      </div>
-      <div class="input-group">
-        Option 2: NO
+        Options: <span class="bold-option">YES</span> or <span class="bold-option">NO</span>
       </div>
     </div>
 
     <div ng-show="newQObj.kind === 'mc'" class="form-group options-input mc-options">
+      <div class="group-label">Options (max 5):</div>
       <div class="input-group">
-        Option 1: <input ng-model="newQObj.options[0]" type="text">
+        1. <input ng-model="newQObj.options[0]" type="text" placeholder="Required" maxlength="40">
       </div>
       <div class="input-group">
-        Option 2: <input ng-model="newQObj.options[1]" type="text">
+        2. <input ng-model="newQObj.options[1]" type="text" placeholder="Required" maxlength="40">
       </div>
       <div class="input-group">
-        Option 3: <input ng-model="newQObj.options[2]" type="text">
+        3. <input ng-model="newQObj.options[2]" type="text" placeholder="Optional" maxlength="40">
       </div>
       <div class="input-group">
-        Option 4: <input ng-model="newQObj.options[3]" type="text">
+        4. <input ng-model="newQObj.options[3]" type="text" placeholder="Optional" maxlength="40">
       </div>
       <div class="input-group">
-        Option 5: <input ng-model="newQObj.options[4]" type="text">
+        5. <input ng-model="newQObj.options[4]" type="text" placeholder="Optional" maxlength="40">
       </div>
     </div>
 
-    <div ng-show="newQObj.kind" class="form-group form-buttons">
+    <div ng-show="newQObj.kind" class="form-buttons">
       <button ng-click="clearQForm()" type="button" name="button">CLEAR FORM</button>
-      <button ng-click="submitNewQ(newQObj)" type="button" name="button">SUBMIT</button>
+      <button ng-click="submitNewQ(newQObj)" type="button" name="button" class="submit-button">SUBMIT</button>
     </div>
   </form>
 </dialog-modal>

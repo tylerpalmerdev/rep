@@ -454,8 +454,25 @@ repApp.service('util', function(constants) {
   };
 
   this.qFeedFilterOptions = [
-    {label: 'Active', value: 'active', defaultOption: true},
+    {label: 'Active', value: 'active', selected: true},
     {label: 'Completed', value: 'completed'}
+  ];
+
+  this.newQFormOptions = [
+    {label: 'Yes/No', value: 'yn', selected: true}, // sets default
+    {label: 'Multiple Choice', value: 'mc'}
+  ];
+
+  this.signupRoleOptions = [
+    {
+      label: 'Representative',
+      value: 'rep',
+      selected: true
+    },
+    {
+      label: 'Voter',
+      value: 'voter'
+    }
   ];
 });
 
@@ -521,45 +538,24 @@ repApp.directive('addressSearch', function() {
 repApp.controller('dualToggleCtrl', function($scope) {
 
   // used to apply/remove active-toggle class for styling
-  $scope.highlightBox = function(boxIndex) {
+  $scope.select = function(boxIndex) {
+    $scope.selected = $scope.options[boxIndex].value;
     if (boxIndex === 0) {
-      $scope.first = true;
-      $scope.second = false;
+      $scope.options[0].selected = true;
+      $scope.options[1].selected = false;
     } else if (boxIndex === 1) {
-      $scope.second = true;
-      $scope.first = false;
+      $scope.options[0].selected = false;
+      $scope.options[1].selected = true;
     }
   };
 
   // checks/applies optional 'defaultOption' property on option objects.
   $scope.options.forEach(function(elem, i, arr) {
-    if (elem.defaultOption) {
+    if (elem.selected) {
       $scope.selected = elem.value;
-      $scope.highlightBox(i);
     }
   });
-
-  // function to select one toggle/ deselect other
-  $scope.select = function(option) {
-    $scope.selected = $scope.options[option].value;
-    $scope.highlightBox(option);
-  };
 });
-
-/*
-Example data:
-$scope.roleOptions = [
-  {
-    label: 'Representative',
-    value: 'rep',
-    defaultOption: true
-  },
-  {
-    label: 'Voter',
-    value: 'voter'
-  }
-];
-*/
 
 repApp.directive('dualToggle', function() {
   return {
@@ -608,17 +604,16 @@ repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, 
   $scope.newQForm = false;
   $scope.newQObj = {options: []};
 
-  $scope.qTypes = [
-    {label: 'Yes/No', value: 'yn', defaultOption: true},
-    {label: 'Multiple Choice', value: 'mc'}
-  ];
+  $scope.qTypes = util.newQFormOptions;
 
   $scope.openQForm = function() {
     $scope.newQForm = true;
   };
 
   $scope.clearQForm = function() {
-    $scope.newQObj = {options: []};
+    $scope.newQObj = {options: [], kind: 'yn'};
+    $scope.qTypes[0].selected = true;
+    $scope.qTypes[1].selected = false;
   };
 
   // for reps only
@@ -828,20 +823,10 @@ repApp.controller('settingsCtrl', function($scope, authSvc) {
   };
 });
 
-repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
+repApp.controller('signupCtrl', function($scope, districtSvc, authSvc, util) {
 
   // custom options for dual-toggle directive
-  $scope.roleOptions = [
-    {
-      label: 'Representative',
-      value: 'rep',
-      defaultOption: true
-    },
-    {
-      label: 'Voter',
-      value: 'voter'
-    }
-  ];
+  $scope.roleOptions = util.signupRoleOptions;
 
   $scope.newUserObj = {}; // declare now to enable $watch
 

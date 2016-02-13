@@ -16,17 +16,16 @@ repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, 
   $scope.newQForm = false;
   $scope.newQObj = {options: []};
 
-  $scope.qTypes = [
-    {label: 'Yes/No', value: 'yn', defaultOption: true},
-    {label: 'Multiple Choice', value: 'mc'}
-  ];
+  $scope.qTypes = util.newQFormOptions;
 
   $scope.openQForm = function() {
     $scope.newQForm = true;
   };
 
   $scope.clearQForm = function() {
-    $scope.newQObj = {options: []};
+    $scope.newQObj = {options: [], kind: 'yn'};
+    $scope.qTypes[0].selected = true;
+    $scope.qTypes[1].selected = false;
   };
 
   // for reps only

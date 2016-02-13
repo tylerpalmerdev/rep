@@ -54,7 +54,7 @@
       input {
         flex-grow: 7;
         border: 0;
-        border-bottom: 1px solid gray;
+        border-bottom: $input-border-bottom;
       }
 
       address-search {

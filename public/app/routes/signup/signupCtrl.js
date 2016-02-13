@@ -1,17 +1,7 @@
-repApp.controller('signupCtrl', function($scope, districtSvc, authSvc) {
+repApp.controller('signupCtrl', function($scope, districtSvc, authSvc, util) {
 
   // custom options for dual-toggle directive
-  $scope.roleOptions = [
-    {
-      label: 'Representative',
-      value: 'rep',
-      defaultOption: true
-    },
-    {
-      label: 'Voter',
-      value: 'voter'
-    }
-  ];
+  $scope.roleOptions = util.signupRoleOptions;
 
   $scope.newUserObj = {}; // declare now to enable $watch
 

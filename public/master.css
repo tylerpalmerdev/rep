@@ -252,32 +252,67 @@ nav-bar dialog-modal .new-q-form h3 {
   margin: 0;
 }
 
+nav-bar dialog-modal .new-q-form h3, nav-bar dialog-modal .new-q-form .form-group, nav-bar dialog-modal .new-q-form .group-label {
+  margin-bottom: 8px;
+}
+
 nav-bar dialog-modal .new-q-form .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 nav-bar dialog-modal .new-q-form .form-group .group-label {
-  margin-bottom: 15px;
-  font-weight: bold;
-}
-
-nav-bar dialog-modal .new-q-form .form-group .q-type-input input {
-  margin-right: 15px;
+  text-align: center;
+  font-style: italic;
+  font-size: 14px;
 }
 
 nav-bar dialog-modal .new-q-form .form-group textarea {
   width: 100%;
-  height: 15vh;
+  height: 12vh;
   resize: none;
   outline: none;
+  padding: 5px;
+  font-size: 14px;
 }
 
 nav-bar dialog-modal .new-q-form .form-group .input-group {
   margin-bottom: 10px;
 }
 
-nav-bar dialog-modal .new-q-form .form-group .form-buttons button {
+nav-bar dialog-modal .new-q-form .yn-options {
+  text-align: center;
+}
+
+nav-bar dialog-modal .new-q-form .yn-options .bold-option {
+  font-weight: 600;
+}
+
+nav-bar dialog-modal .new-q-form .mc-options {
+  margin-bottom: 20px;
+}
+
+nav-bar dialog-modal .new-q-form .mc-options .input-group {
+  display: flex;
+}
+
+nav-bar dialog-modal .new-q-form .mc-options .input-group input {
+  flex-grow: 1;
+  margin-left: 8px;
+  border: 1px solid #828282;
+  padding: 5px;
+}
+
+nav-bar dialog-modal .new-q-form .form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+nav-bar dialog-modal .new-q-form .form-buttons button {
   width: 48%;
+}
+
+nav-bar dialog-modal .new-q-form .form-buttons .submit-button {
+  background-color: #3d5280;
 }
 
 nav-bar dialog-modal .my-reps h3 {
@@ -565,7 +600,7 @@ rep-contact-bar .contact-bar-wrapper .contact-icon-box a i {
 .signup-content .signup-form .form-group input {
   flex-grow: 7;
   border: 0;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #828282;
 }
 
 .signup-content .signup-form .form-group address-search {
