@@ -750,12 +750,13 @@ repApp.directive('repContactBar', function() {
 });
 
 repApp.controller('repContactBarCtrl', function($scope) {
-  $scope.getTwitterLink = function(twitterId) {
-    return "http://twitter.com/" + twitterId;
-  };
 
-  $scope.getFacebookLink = function(facebookId) {
-    return "http://facebook.com/" + facebookId;
+  $scope.showEmailModal = false;
+  $scope.showPhoneModal = false;
+  $scope.showAddressModal = false;
+
+  $scope.showContactModal = function(modalVar) {
+    $scope[modalVar] = true;
   };
 
 });
@@ -776,6 +777,40 @@ repApp.directive('repSelect', function() {
     restrict: 'E',
     scope: {
       repInfo: '='
+    }
+  };
+});
+
+repApp.controller('resultsChartCtrl', function($scope) {
+  $scope.test = 'RESULTS CTRL CONNECT';
+});
+
+repApp.directive('resultsChart', function() {
+  return {
+    templateUrl: 'app/directives/resultsChart/resultsChartTmpl.html',
+    restrict: 'E',
+    scope: {
+      questionData: '='
+    },
+    replace: false,
+    link: function(scope, element, attrs) {
+      var chart = d3.select(element[0]);
+
+      chart.append("div")
+      .attr("class", "chart")
+      .selectAll("div")
+      .data(scope.questionData.options.sort(function(a, b) {
+        return b.votes - a.votes;
+      }))
+      .enter()
+      .append("div")
+      .transition().ease("elastic")
+      .style("width", function (d) {
+        return d.votes + 'px';
+      })
+      .text(function(d) {
+        return d.votes + " votes";
+      });
     }
   };
 });

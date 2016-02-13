@@ -56,12 +56,7 @@
       </div>
     </div>
     <!-- only show results when question is completed/ in past -->
-    <div ng-show="isInPast(question)" class="question-results">
-      <h5>Results:</h5>
-      <div ng-repeat="option in question.options" class="result-row">
-        {{option.text}} -- {{option.votes}} votes.
-      </div>
-    </div>
+    <results-chart question-data="question" class="question-results" ng-if="modalShowObj[question._id]"></results-chart>
     <!-- Only show answer form if on voter page and voter has not answered question and question is active-->
     <form ng-show="qIsAnswerable(isRep, question)" class="q-response-form">
       <div class="answer-box-wrapper">

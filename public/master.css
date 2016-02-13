@@ -16,6 +16,7 @@ body {
 body a {
   cursor: pointer;
   text-decoration: none;
+  outline: none;
   color: #3d5280;
   font-weight: bold;
 }
@@ -513,6 +514,7 @@ rep-contact-bar .contact-bar-wrapper {
   width: inherit;
   display: flex;
   flex-flow: row nowrap;
+  justify-content: space-between;
 }
 
 rep-contact-bar .contact-bar-wrapper .contact-icon-box {
@@ -530,13 +532,94 @@ rep-contact-bar .contact-bar-wrapper .contact-icon-box a {
   bottom: 0;
   padding: 10px;
   background-color: #828282;
-  margin-right: 2px;
+  margin: 0px 2px;
   outline: 0;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border-bottom: 3px solid transparent;
 }
 
 rep-contact-bar .contact-bar-wrapper .contact-icon-box a i {
   color: white;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a.twitter-link:hover, rep-contact-bar .contact-bar-wrapper .contact-icon-box a.twitter-link:active {
+  border-bottom: 3px solid #00aced;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a.twitter-link:hover i, rep-contact-bar .contact-bar-wrapper .contact-icon-box a.twitter-link:active i {
+  color: #00aced;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a.facebook-link:hover, rep-contact-bar .contact-bar-wrapper .contact-icon-box a.facebook-link:active {
+  border-bottom: 3px solid #3b5998;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a.facebook-link:hover i, rep-contact-bar .contact-bar-wrapper .contact-icon-box a.facebook-link:active i {
+  color: #3b5998;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a.email-link:hover, rep-contact-bar .contact-bar-wrapper .contact-icon-box a.email-link:active {
+  border-bottom: 3px solid #dd4b39;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a.email-link:hover i, rep-contact-bar .contact-bar-wrapper .contact-icon-box a.email-link:active i {
+  color: #dd4b39;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a.phone-link:hover, rep-contact-bar .contact-bar-wrapper .contact-icon-box a.phone-link:active {
+  border-bottom: 3px solid green;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a.phone-link:hover i, rep-contact-bar .contact-bar-wrapper .contact-icon-box a.phone-link:active i {
+  color: green;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a.address-link:hover, rep-contact-bar .contact-bar-wrapper .contact-icon-box a.address-link:active {
+  border-bottom: 3px solid orange;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box a.address-link:hover i, rep-contact-bar .contact-bar-wrapper .contact-icon-box a.address-link:active i {
+  color: orange;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box:first-child a {
+  margin-left: 0;
+}
+
+rep-contact-bar .contact-bar-wrapper .contact-icon-box:last-child a {
+  margin-right: 0;
+}
+
+rep-contact-bar .contact-info-modal .modal-wrapper .modal-dialog {
+  padding: 20px;
+  font-size: 16px;
+}
+
+rep-contact-bar .contact-info-modal .modal-wrapper .modal-dialog .contact-modal-name {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.chart {
+  background: #eee;
+  padding: 3px;
+}
+
+.chart div {
+  width: 0;
+  transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -webkit-transition: all 1s ease-out;
+}
+
+.chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 5px;
+  color: white;
+  box-shadow: 2px 2px 2px #666;
 }
 
 .signup-content {

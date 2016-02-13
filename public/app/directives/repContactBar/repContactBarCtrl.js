@@ -1,10 +1,11 @@
 repApp.controller('repContactBarCtrl', function($scope) {
-  $scope.getTwitterLink = function(twitterId) {
-    return "http://twitter.com/" + twitterId;
-  };
 
-  $scope.getFacebookLink = function(facebookId) {
-    return "http://facebook.com/" + facebookId;
+  $scope.showEmailModal = false;
+  $scope.showPhoneModal = false;
+  $scope.showAddressModal = false;
+
+  $scope.showContactModal = function(modalVar) {
+    $scope[modalVar] = true;
   };
 
 });

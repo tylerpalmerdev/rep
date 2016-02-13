@@ -1,24 +1,52 @@
 <div class="contact-bar-wrapper">
-  <!-- {{repData.twitter_id}}-->
-  <!-- {{repData.facebook_id}}-->
-  <!-- {{repData.youtube_id}}-->
-  <!-- {{repData.phone}}-->
-  <!-- {{repData.office}}-->
-
-  <div class="contact-icon-box">
+  <div class="contact-icon-box" ng-if="repData.twitter_id">
     <a ng-href="{{'http://twitter.com/' + repData.twitter_id}}" class="twitter-link" target="_blank"><i class="fa fa-twitter contact-icon"></i></a>
   </div>
-  <div class="contact-icon-box">
+  <div class="contact-icon-box" ng-if="repData.facebook_id">
     <a ng-href="{{'http://facebook.com/' + repData.facebook_id}}" class="facebook-link" target="_blank"><i class="fa fa-facebook contact-icon"></i></a>
   </div>
-  <div class="contact-icon-box">
-    <a href="#" class="email-link"><i class="fa fa-envelope contact-icon"></i></a>
+  <div class="contact-icon-box" ng-if="repData.oc_email">
+    <a ng-click="showContactModal('showEmailModal')" class="email-link"><i class="fa fa-envelope contact-icon"></i></a>
   </div>
-  <div class="contact-icon-box">
-    <a href="#" class="phone-link"><i class="fa fa-phone contact-icon"></i></a>
+  <div class="contact-icon-box" ng-if="repData.phone">
+    <a ng-click="showContactModal('showPhoneModal')" class="phone-link"><i class="fa fa-phone contact-icon"></i></a>
   </div>
-  <div class="contact-icon-box">
-    <a href="#" class="address-link"><i class="fa fa-institution contact-icon"></i></a>
+  <div class="contact-icon-box" ng-if="repData.office">
+    <a ng-click="showContactModal('showAddressModal')" class="address-link"><i class="fa fa-institution contact-icon"></i></a>
   </div>
-
 </div>
+
+<dialog-modal show-modal="showEmailModal" class="contact-info-modal email-modal">
+  <div class="contact-modal-name">
+    {{repData.title_abbrev}} {{repData.first_name}} {{repData.last_name}}
+  </div>
+  <div class="contact-modal-content">
+    <i class="fa fa-envelope contact-modal-icon"></i>
+    <span class="contact-modal-text">
+      <a href="mailto:{{repData.oc_email}}?Subject=Hello%20{{repData.title}}%20{{repData.last_name}}" target="_top">{{repData.oc_email}}</a>
+    </span>
+  </div>
+</dialog-modal>
+
+<dialog-modal show-modal="showPhoneModal" class="contact-info-modal phone-modal">
+  <div class="contact-modal-name">
+    {{repData.title_abbrev}} {{repData.first_name}} {{repData.last_name}}
+  </div>
+  <div class="contact-modal-content">
+    <i class="fa fa-phone contact-modal-icon"></i>
+    <span class="contact-modal-text">{{repData.phone}}</span>
+  </div>
+</dialog-modal>
+
+<dialog-modal show-modal="showAddressModal" class="contact-info-modal address-modal">
+  <div class="contact-modal-name">
+    {{repData.title_abbrev}} {{repData.first_name}} {{repData.last_name}}
+  </div>
+  <div class="contact-modal-content">
+    <span class="contact-modal-text">
+      <div class="address-line">{{repData.office}}</div>
+      <div ng-show="repData.title === 'Senator'" class="address-line">Washington, DC, 20002 </div>
+      <div ng-show="repData.title === 'Representative'"class="address-line">Washington, DC, 20515</div>
+    </span>
+  </div>
+</dialog-modal>

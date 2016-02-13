@@ -6,8 +6,11 @@ rep-contact-bar {
     width: inherit;
     display: flex;
     flex-flow: row nowrap;
+    justify-content: space-between;
 
+    // default to hidden, display if data exists
     .contact-icon-box {
+      // display: none;
       text-align: center;
       flex-grow: 1;
       outline: 0;
@@ -19,57 +22,76 @@ rep-contact-bar {
         left: 0; right: 0; top: 0; bottom: 0;
         padding: $button-padding;
         background-color: $body-color;
-        margin-right: 2px;
+        margin: 0px $box-margin-lr;
         outline: 0;
-        // border: 1px solid $body-color;
         box-shadow: $level-2-shadow;
+        border-bottom: $highlight-bottom-border rgba(0,0,0,0);
 
         i {
           color: $form-color;
-          // color: $body-color;
         }
       }
 
-      // a.twitter-link {
-      //   border-bottom: 3px solid #00aced;
-      // }
-      //
-      // a.facebook-link {
-      //   border-bottom: 3px solid #3b5998;
-      // }
-      //
-      // a.email-link {
-      //   border-bottom: 3px solid #dd4b39;
-      // }
-      //
-      // a.phone-link {
-      //   border-bottom: 3px solid #00aced;
-      // }
-      //
-      // a.address-link {
-      //   border-bottom: 3px solid #00aced;
-      // }
+      // on hover or click (for mobile), add color accents to links
+      a.twitter-link:hover, a.twitter-link:active,  {
+        i {
+          color: $twitter-color;
+        }
+        border-bottom: $highlight-bottom-border $twitter-color;
+      }
 
-      // a.twitter-link {
-      //   background-color: #00aced;
-      // }
-      //
-      // a.facebook-link {
-      //   background-color: #3b5998;
-      // }
-      //
-      // a.email-link {
-      //   background-color: #dd4b39;
-      // }
-      //
-      // a.phone-link {
-      //   background-color: #00aced;
-      // }
-      //
-      // a.address-link {
-      //   background-color: #00aced;
-      // }
+      a.facebook-link:hover, a.facebook-link:active,  {
+        i {
+          color: $facebook-color;
+        }
+        border-bottom: $highlight-bottom-border $facebook-color;
+      }
 
+      a.email-link:hover, a.email-link:active,  {
+        i {
+          color: $email-color;
+        }
+        border-bottom: $highlight-bottom-border $email-color;
+      }
+
+      a.phone-link:hover, a.phone-link:active,  {
+        i {
+          color: $phone-color;
+        }
+        border-bottom: $highlight-bottom-border $phone-color;
+      }
+
+      a.address-link:hover, a.address-link:active,  {
+        i {
+          color: $address-color;
+        }
+        border-bottom: $highlight-bottom-border $address-color;
+      }
+    }
+
+    // eliminate outer margins for outer boxes
+    .contact-icon-box:first-child a {
+      margin-left: 0;
+    }
+
+    .contact-icon-box:last-child a {
+      margin-right: 0;
+    }
+  }
+
+  .contact-info-modal {
+    .modal-wrapper {
+      .modal-dialog {
+        padding: $form-padding;
+        font-size: $button-font-size;
+
+        .contact-modal-name {
+          font-weight: $bold-weight;
+          margin-bottom: $button-padding;
+        }
+
+
+      }
     }
   }
 }
