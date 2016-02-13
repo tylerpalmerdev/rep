@@ -601,8 +601,8 @@ rep-contact-bar .contact-info-modal .modal-wrapper .modal-dialog .contact-modal-
 }
 
 .chart {
-  background: #eee;
-  padding: 3px;
+  background: #d6d6d6;
+  padding: 5px 10px;
 }
 
 .chart div {
@@ -614,12 +614,13 @@ rep-contact-bar .contact-info-modal .modal-wrapper .modal-dialog .contact-modal-
 
 .chart div {
   font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 5px;
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 5px;
+  margin: 5px 0;
   color: white;
-  box-shadow: 2px 2px 2px #666;
 }
 
 .signup-content {

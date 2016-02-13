@@ -1,6 +1,8 @@
+@import './../_variables.scss';
+
 .chart {
-    background: #eee;
-    padding: 3px;
+  background: $body-color-2;
+  padding: 5px 10px;
 }
 
 .chart div {
@@ -12,10 +14,12 @@
 
 .chart div {
   font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 5px;
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  // background-color: steelblue;
+  padding: 5px;
+  margin: 5px 0;
   color: white;
-  box-shadow: 2px 2px 2px #666;
 }
