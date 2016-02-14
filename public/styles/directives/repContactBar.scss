@@ -10,10 +10,10 @@ rep-contact-bar {
 
     // default to hidden, display if data exists
     .contact-icon-box {
-      // display: none;
       text-align: center;
       flex-grow: 1;
       outline: 0;
+      min-width: 48px;
 
       a {
         // this makes link fill box

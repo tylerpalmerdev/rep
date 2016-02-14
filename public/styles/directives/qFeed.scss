@@ -143,6 +143,7 @@
             .voter-choice-info {
               text-align: center;
               font-weight: bold;
+              margin-top: $form-text-margin-b;
 
               i {
                 color: $pastel-blue;
@@ -171,6 +172,49 @@
           }
         }
 
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .content {
+    question-feed {
+      .question-box {
+        margin-left: $q-box-lr-margin-tab;
+        margin-right: $q-box-lr-margin-tab;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .content {
+    question-feed {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      justify-content: space-around;
+
+      dual-toggle {
+        width: 100%;
+      }
+
+      .question-box {
+        width: 45%;
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .content {
+    question-feed {
+
+      .question-box {
+        width: 30%;
       }
     }
   }

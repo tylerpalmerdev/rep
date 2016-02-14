@@ -3,23 +3,55 @@
 .chart {
   background: $body-color-2;
   padding: 5px 10px;
-}
 
-.chart div {
-  width: 0;
-  transition: all 1s ease-out;
-  -moz-transition: all 1s ease-out;
-  -webkit-transition: all 1s ease-out;
-}
+  .option-wrapper {
+    padding: 3px 5px;
 
-.chart div {
-  font: 10px sans-serif;
-  height: 5vh;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  // background-color: steelblue;
-  padding: 5px;
-  margin: 5px 0;
-  color: white;
+    .option-text {
+      color: black;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+
+    .answer-chosen {
+      position: relative;
+    }
+
+    .answer-chosen:after {
+      content: " ";
+      display: inline-block;
+      background-color: $pastel-blue;
+      height: 14px; width: 14px;
+      border-radius: 50%;
+      margin-left: 5px;
+    }
+
+    .chart-bar {
+      width: 0;
+      height: 5vh;
+      transition: all 1s ease-out;
+      -moz-transition: all 1s ease-out;
+      -webkit-transition: all 1s ease-out;
+
+      .bar-text-wrapper {
+        color: white;
+        width: 150px;
+        font-weight: bold;
+        font-size: 14px;
+        text-shadow: 1px 1px $body-color;
+        padding-left: 10px;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+    }
+  }
+
+  .response-count-wrapper {
+    text-align: center;
+    margin: 8px 0;
+  }
 }

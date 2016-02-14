@@ -1,5 +1,12 @@
 var repApp = angular.module('repApp', ['ui.router', 'ngAnimate']);
 
+// add this to run block to fix scroll to top error when changing stateParams
+repApp.run(function($rootScope) {
+  $rootScope.$on('$stateChangeSuccess', function() {
+   document.body.scrollTop = document.documentElement.scrollTop = 0;
+  });
+});
+
 repApp.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
   .state('rep', {

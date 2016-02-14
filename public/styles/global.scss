@@ -15,7 +15,6 @@ body {
 	a {
 		cursor: pointer;
 		text-decoration: none;
-		outline: none;
 		color: $pastel-blue;
 		font-weight: bold;
 	}
@@ -24,8 +23,8 @@ body {
 			text-decoration: underline;
 		}
 
-	a, i, input {
-		outline: 0;
+	a, a:active, a:focus, i, input {
+		outline: none;
 	}
 
 	button {

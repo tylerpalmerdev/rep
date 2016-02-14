@@ -6,9 +6,10 @@ $bold-weight: 600;
 $thin-weight: 200;
 $button-font-size: 16px;
 $form-text-size: 12px;
-$input-text-size: 14px;
+$input-text-size: 12px;
+$input-text-size-tab: 14px;
 $button-font-weight: 500;
-$form-heading-font-size: 22px;
+$form-heading-font-size: 18px;
 $login-logo-font-size: 50px;
 $logo-font-fam: 'Helvetica', 'Arial', sans-serif;
 $logo-letter-spacing: -0.05em;
@@ -27,6 +28,8 @@ $button-padding: 10px;
 $input-icon-padding: 5px;
 $form-text-margin-b: 8px;
 $custom-radio-padding: 2px;
+$form-padding: 20px;
+$form-padding-tab: 30px 50px;
 
 // dimensions
 $input-icon-width: 35px;
@@ -64,6 +67,7 @@ $q-box-height: 80px;
 $q-box-margin-bottom: 15px;
 $q-box-element-spacing: 7px;
 $q-box-img-height: 50px;
+$q-box-lr-margin-tab: 40px;
 
 // dual toggle
 $dual-toggle-padding: 10px;
@@ -78,29 +82,34 @@ $address-color: orange;
 $box-margin-lr: 2px;
 
 
-// ROUTES
+// -- ROUTES -- //
 
-// rep
+// REP
 
 // -- fonts
 
 $rep-title-font-size-mob: 20px;
 $rep-name-font-size-mob: 24px;
+$rep-name-font-size-tab: 28px;
+$electorate-font-size-tab: 24px;
 
 // -- margin & padding
 
 $rep-text-marg-l-mob: 10px;
 $req-q-h4-marg: 5px;
 $rep-q-filter-box-padding: 10px;
+$rep-electorate-info-margin-b-tab: 10px;
 
-// register/ login
-
+// REGISTER/ LOGIN
+$dual-toggle-font-size-mob: 13px;
+$dual-toggle-font-size-tab: 16px;
+$login-form-heading-size-mob: 22px;
 
 
 // -- borders & border radius
 $voter-rep-box-border: 1px solid gray;
 
 // -- padding & margin
-$form-padding: 20px;
+
 $form-element-margin-b: 15px;
 $login-logo-margin-b: 20px;

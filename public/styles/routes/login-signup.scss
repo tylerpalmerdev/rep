@@ -36,6 +36,12 @@
       margin-bottom: $form-text-margin-b;
     }
 
+    dual-toggle {
+      .toggle-wrap {
+        font-size: $dual-toggle-font-size-mob;
+      }
+    }
+
     .form-group {
       width: 100%;
       display: flex;
@@ -96,5 +102,35 @@
       padding-top: $form-text-margin-b;
     }
 
+  }
+}
+
+@media screen and (min-width: 450px) {
+  .signup-content {
+    .signup-form {
+      .form-heading {
+        font-size: $login-form-heading-size-mob;
+      }
+
+      dual-toggle {
+        .toggle-wrap {
+          font-size: $dual-toggle-font-size-tab;
+        }
+      }
+
+      .form-group {
+        input {
+          font-size: $input-text-size-tab;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .signup-content {
+    .signup-form {
+      padding: $form-padding-tab;
+    }
   }
 }

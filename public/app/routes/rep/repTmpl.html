@@ -2,20 +2,26 @@
 <div class="rep-content content">
   <div class="rep-top-content">
     <div class="rep-info">
-      <img ng-src="{{repData.photo_url}}" class="rep-image"/>
+      <div class="rep-image-wrapper">
+        <img ng-src="{{repData.photo_url}}" class="rep-image"/>
+      </div>
       <div class="rep-text">
-        <div class="rep-title">
+        <div class="rep-title rep-title-mobile">
           {{repData.title}}
         </div>
         <div class="rep-name">
-          {{repData.first_name}} {{repData.last_name}} <a href="{{repData.website}}" target="_blank"><i class="fa fa-external-link"></i></a>
+          <span class="rep-title-desktop">{{repData.title}}</span> {{repData.first_name}} {{repData.last_name}}
         </div>
         <div class="electorate-info">
           {{repData.state_name}} <span ng-hide="repData.title === 'Senator'">District {{repData.district}}</span>
         </div>
+        <a href="{{repData.website}}" target="_blank">
+          <div class="rep-website-link"><i class="fa fa-external-link"></i>  Rep Website</div>
+        </a>
+        <rep-contact-bar rep-data="repData" class="desktop-contact-bar"></rep-contact-bar>
       </div>
     </div>
-    <rep-contact-bar rep-data="repData"></rep-contact-bar>
+    <rep-contact-bar rep-data="repData" class="mobile-contact-bar"></rep-contact-bar>
   </div>
   <!-- {{repData}} -->
   <h4 class="q-feed-header">QUESTIONS ASKED</h4>

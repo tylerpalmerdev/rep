@@ -11,7 +11,8 @@ repApp.directive('resultsChart', function() {
           options = scope.questionData.options,
           totalVotes = 0,
           highestVal = 0,
-          lowestVal = 0;
+          lowestVal = 0,
+          answerChosen;
 
       // get total votes for %s and highest/lowest vote counts
       options.forEach(function(elem, i, arr) {
@@ -27,7 +28,13 @@ repApp.directive('resultsChart', function() {
         }
       });
 
-      var parDiv = chart.append("div")
+      // see if an answer has been chosen by user; assign if so
+      if (scope.questionData.answered) {
+        answerChosen = scope.questionData.options[scope.questionData.answer_chosen];
+      }
+
+      // create chart div to hold all the things
+      var chartDiv = chart.append("div")
       .attr("class", "chart")
       .selectAll("div")
       .data(options.sort(function(a, b) {
@@ -35,33 +42,66 @@ repApp.directive('resultsChart', function() {
       }))
       .enter()
       .append("div")
+      .attr("class", "option-wrapper")
       .style("width","100%");
 
-      parDiv.append("div").text(function(d){
+      // add div to contain text for each option & add option text
+      chartDiv.append("div")
+      .attr("class", function(d, i) {
+        if (!answerChosen) {
+          return "option-text";
+        } else {
+          if (d.text === answerChosen.text) {
+            return "option-text answer-chosen";
+          } else {
+            return "option-text";
+          }
+        }
+      })
+      .text(function(d){
         return d.text;
       });
-      parDiv.append("div").attr("class", "chart-bar")
+
+      // add bars for each option, width/color based on # votes
+      chartDiv.append("div")
+      .attr("class", "chart-bar")
       .transition().ease("elastic")
       .style("background-color", function(d) {
-        var maxRgb = 255,
+        var maxRgb = 230,
             minRgb = 75,
             valRange = (highestVal - lowestVal),
             basePct = 1 - ((highestVal - d.votes) / valRange),
             baseRgb = maxRgb * basePct,
             colorVal = baseRgb + (1 - basePct) * minRgb;
 
-        return "rgb(0, 0, " + colorVal + ")";
+        return "rgb(0, " + colorVal + ", 150)";
       })
       .style("width", function (d) {
-        var pctOfHighest = ((d.votes / highestVal) * 100);
-        return pctOfHighest+ '%';
-      })
-      .text(function(d) {
-        var pct = ((d.votes / totalVotes) * 100).toFixed(1);
-        return pct + "% (" + d.votes + " votes)";
+        if (d.votes === 0) {
+          return '1px';
+        } else {
+          var pctOfHighest = ((d.votes / highestVal) * 100);
+          return pctOfHighest+ '%';
+        }
       });
 
+      // adds child div to each bar div to hold text + add text
+      chartDiv.selectAll("div.chart-bar")
+      .append("div")
+      .attr("class", "bar-text-wrapper")
+      .text(function(d) {
+        if (d.votes === 0) {
+          return "0% (0 votes)";
+        }
+        var pct = ((d.votes / totalVotes) * 100).toFixed(1);
+        return pct + "% (" + d.votes.toLocaleString() + " votes)";
+      });
 
+      // adds total votes div to bottom of chart div
+      d3.select(".chart")
+      .append("div")
+      .attr("class", "response-count-wrapper")
+      .text(totalVotes.toLocaleString() + " total votes");
 
     }
   };

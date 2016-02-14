@@ -16,7 +16,6 @@ body {
 body a {
   cursor: pointer;
   text-decoration: none;
-  outline: none;
   color: #3d5280;
   font-weight: bold;
 }
@@ -25,8 +24,8 @@ body a:hover {
   text-decoration: underline;
 }
 
-body a, body i, body input {
-  outline: 0;
+body a, body a:active, body a:focus, body i, body input {
+  outline: none;
 }
 
 body button {
@@ -46,7 +45,7 @@ body button:active {
 
 body input {
   outline: none;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 body .radio-custom {
@@ -273,7 +272,7 @@ nav-bar dialog-modal .new-q-form .form-group textarea {
   resize: none;
   outline: none;
   padding: 5px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 nav-bar dialog-modal .new-q-form .form-group .input-group {
@@ -482,6 +481,7 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
 .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .voter-choice-info {
   text-align: center;
   font-weight: bold;
+  margin-top: 8px;
 }
 
 .content question-feed .question-box .q-box-modal .modal-wrapper .modal-dialog .voter-choice-info i {
@@ -506,6 +506,36 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
   text-align: center;
 }
 
+@media screen and (min-width: 500px) {
+  .content question-feed .question-box {
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .content question-feed {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .content question-feed dual-toggle {
+    width: 100%;
+  }
+  .content question-feed .question-box {
+    width: 45%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .content question-feed .question-box {
+    width: 30%;
+  }
+}
+
 rep-contact-bar {
   width: 100%;
 }
@@ -521,6 +551,7 @@ rep-contact-bar .contact-bar-wrapper .contact-icon-box {
   text-align: center;
   flex-grow: 1;
   outline: 0;
+  min-width: 48px;
 }
 
 rep-contact-bar .contact-bar-wrapper .contact-icon-box a {
@@ -605,22 +636,55 @@ rep-contact-bar .contact-info-modal .modal-wrapper .modal-dialog .contact-modal-
   padding: 5px 10px;
 }
 
-.chart div {
+.chart .option-wrapper {
+  padding: 3px 5px;
+}
+
+.chart .option-wrapper .option-text {
+  color: black;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.chart .option-wrapper .answer-chosen {
+  position: relative;
+}
+
+.chart .option-wrapper .answer-chosen:after {
+  content: " ";
+  display: inline-block;
+  background-color: #3d5280;
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  margin-left: 5px;
+}
+
+.chart .option-wrapper .chart-bar {
   width: 0;
+  height: 5vh;
   transition: all 1s ease-out;
   -moz-transition: all 1s ease-out;
   -webkit-transition: all 1s ease-out;
 }
 
-.chart div {
-  font: 10px sans-serif;
-  height: 5vh;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 5px;
-  margin: 5px 0;
+.chart .option-wrapper .chart-bar .bar-text-wrapper {
   color: white;
+  width: 150px;
+  font-weight: bold;
+  font-size: 14px;
+  text-shadow: 1px 1px #828282;
+  padding-left: 10px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.chart .response-count-wrapper {
+  text-align: center;
+  margin: 8px 0;
 }
 
 .signup-content {
@@ -653,7 +717,7 @@ rep-contact-bar .contact-info-modal .modal-wrapper .modal-dialog .contact-modal-
 }
 
 .signup-content .signup-form .form-heading {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
   text-align: center;
 }
@@ -662,6 +726,10 @@ rep-contact-bar .contact-info-modal .modal-wrapper .modal-dialog .contact-modal-
   text-align: center;
   font-size: 12px;
   margin-bottom: 8px;
+}
+
+.signup-content .signup-form dual-toggle .toggle-wrap {
+  font-size: 13px;
 }
 
 .signup-content .signup-form .form-group {
@@ -726,6 +794,24 @@ rep-contact-bar .contact-info-modal .modal-wrapper .modal-dialog .contact-modal-
   padding-top: 8px;
 }
 
+@media screen and (min-width: 450px) {
+  .signup-content .signup-form .form-heading {
+    font-size: 22px;
+  }
+  .signup-content .signup-form dual-toggle .toggle-wrap {
+    font-size: 16px;
+  }
+  .signup-content .signup-form .form-group input {
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .signup-content .signup-form {
+    padding: 30px 50px;
+  }
+}
+
 .content {
   background-color: #d6d6d6;
   padding-top: 60px;
@@ -744,17 +830,25 @@ rep-contact-bar .contact-info-modal .modal-wrapper .modal-dialog .contact-modal-
 .rep-top-content .rep-info {
   display: flex;
   flex-flow: row nowrap;
-  align-items: center;
+  align-items: stretch;
   margin-bottom: 15px;
 }
 
-.rep-top-content .rep-info .rep-image {
+.rep-top-content .rep-info .rep-image-wrapper {
   width: 25%;
+  max-width: 130px;
+}
+
+.rep-top-content .rep-info .rep-image {
+  width: 100%;
   height: auto;
 }
 
 .rep-top-content .rep-info .rep-text {
   margin-left: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
 }
 
 .rep-top-content .rep-info .rep-text .rep-title {
@@ -766,8 +860,54 @@ rep-contact-bar .contact-info-modal .modal-wrapper .modal-dialog .contact-modal-
   font-weight: 600;
 }
 
+.rep-top-content .rep-info .rep-text .rep-name .rep-title-desktop {
+  display: none;
+}
+
 .rep-top-content .rep-info .rep-text .electorate-info h5 {
   margin: 5px auto;
+}
+
+.rep-top-content .rep-info .rep-text .rep-website-link {
+  display: block;
+  text-transform: uppercase;
+  font-size: 13px;
+  padding: 4px 0px;
+  color: #AF3E3E;
+}
+
+.rep-top-content .rep-info .rep-text .desktop-contact-bar {
+  display: none;
+}
+
+@media screen and (min-width: 600px) {
+  .rep-top-content .rep-info {
+    margin-bottom: 0;
+    justify-content: center;
+  }
+  .rep-top-content .rep-info .rep-text {
+    justify-content: space-between;
+  }
+  .rep-top-content .rep-info .rep-text .rep-title-mobile {
+    display: none;
+  }
+  .rep-top-content .rep-info .rep-text .rep-name {
+    font-size: 28px;
+    line-height: 28px;
+  }
+  .rep-top-content .rep-info .rep-text .rep-name .rep-title-desktop {
+    display: inline;
+  }
+  .rep-top-content .rep-info .rep-text .electorate-info {
+    font-size: 24px;
+  }
+  .rep-top-content .rep-info .rep-text .desktop-contact-bar {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .rep-top-content .mobile-contact-bar {
+    display: none;
+  }
 }
 
 .voter-content > h3 {
