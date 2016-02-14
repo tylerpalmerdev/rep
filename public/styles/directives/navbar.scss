@@ -134,13 +134,21 @@ nav-bar {
     }
 
     .my-reps {
-      h3 {
+      background-color: $body-color-2;
+
+      .my-reps-header {
         text-align: center;
-        margin: 0;
-        margin-bottom: $header-section-padding-mobile;
+        padding: $my-reps-header-margin-tb 0;
       }
+
+      .my-reps-header, .voter-rep-box {
+        margin-bottom: $my-reps-header-margin-tb;
+        background-color: $form-color;
+      }
+
       .rep-box-container {
-        width: 100%;
+        width: 90%;
+        margin: 0 auto;
         display: flex;
         flex-flow: column nowrap;
 
@@ -149,10 +157,10 @@ nav-bar {
           display: flex;
           flex-flow: row nowrap;
           align-items: center;
-          border-top: $voter-rep-box-border;
+          box-shadow: $level-2-shadow;
 
           img {
-            height: 20vh;
+            height: 18vh;
             width: auto;
           }
 
@@ -161,12 +169,23 @@ nav-bar {
             flex-flow: column nowrap;
             justify-content: center;
             margin-left: $header-section-padding-mobile;
+
+            .rep-title {
+              font-size: 14px;
+              text-transform: uppercase;
+            }
+
+            .rep-name {
+              font-weight: $bold-weight;
+              font-size: 16px;
+            }
           }
         }
 
-        .voter-rep-box:last-of-type {
-          border-bottom: $voter-rep-box-border;
-        }
+
+        // .voter-rep-box:last-of-type {
+        //   border-bottom: $voter-rep-box-border;
+        // }
       }
     }
 

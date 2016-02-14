@@ -67,21 +67,28 @@
 
 <dialog-modal show-modal="myRepsModal">
   <div class="my-reps">
-    <h3>YOUR REPRESENTATIVES</h3>
+    <div class="my-reps-header">
+      YOUR REPRESENTATIVES
+    </div>
     <div class="rep-box-container">
       <div ng-repeat="rep in currAuth.reps" class="voter-rep-box">
         <img ng-src="{{getRepImgUrl(rep.bioguide_id)}}" class="voter-rep-img" />
         <div class="voter-rep-text">
-          <div class="rep-name-title">
-            {{rep.title}} {{rep.first_name}} {{rep.last_name}}
+          <div class="rep-title">
+            {{rep.title}}
           </div>
-          <div class="rep-state-district">
-            {{rep.state_name}}
-            <span ng-show="rep.title === 'Rep'">District {{rep.district}}</span>
+          <div class="rep-name">
+            {{rep.first_name}} {{rep.last_name}}
           </div>
           <div class="rep-page-link">
-            <span ng-show="rep.active_account"><a ui-sref="rep({repId: rep._id})">Rep Page</a></span>
-            <span ng-hide="rep.active_account">This representative is not using Rep. <a ui-sref="rep({repId: rep._id})"> Tell them to sign up!</a></span>
+            <span ng-show="rep.active_account"><a ui-sref="rep({repId: rep._id})"><i class="fa fa-user"></i> Rep Page</a></span>
+            <div ng-hide="rep.active_account">
+              is not using Rep.
+              <div>
+                <a ui-sref="rep({repId: rep._id})"> Tell them to sign up!</a>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

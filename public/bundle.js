@@ -542,22 +542,6 @@ repApp.directive('addressSearch', function() {
   };
 });
 
-repApp.directive('dialogModal', function() {
-  return {
-    restrict: 'E',
-    templateUrl: 'app/directives/modal/modalTmpl.html',
-    scope: {
-      showModal: '='
-    },
-    transclude: true,
-    link: function(scope, elem, attrs) {
-      scope.hideModal = function() {
-        scope.showModal = false;
-      };
-    }
-  };
-});
-
 repApp.controller('dualToggleCtrl', function($scope) {
 
   // used to apply/remove active-toggle class for styling
@@ -589,6 +573,22 @@ repApp.directive('dualToggle', function() {
       options: '=', // arr with two objects
       selected: '=', // pass back up to $scope
       toggleDefualt: '@'
+    }
+  };
+});
+
+repApp.directive('dialogModal', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'app/directives/modal/modalTmpl.html',
+    scope: {
+      showModal: '='
+    },
+    transclude: true,
+    link: function(scope, elem, attrs) {
+      scope.hideModal = function() {
+        scope.showModal = false;
+      };
     }
   };
 });
@@ -768,101 +768,24 @@ repApp.controller('repContactBarCtrl', function($scope) {
 
 });
 
-repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc, currUser, repData, repQuestions) {
-
-  $scope.currUserData = currUser; // data about current user
-  $scope.repData = repData; // data about current page's rep
-  $scope.repQs = repQuestions; // all questions for current page's rep
-
-});
-
-repApp.controller('settingsCtrl', function($scope, authSvc) {
-  $scope.test = 'settingsCtrl connect';
-  $scope.logout = function() {
-    authSvc.logout()
-    .then(
-      function(response) {
-        console.log('user logged out!');
-        // $scope.updateCurrUserData();
-      }
-    );
-  };
-});
-
-repApp.controller('signupCtrl', function($scope, districtSvc, authSvc, util) {
-
-  // custom options for dual-toggle directive
-  $scope.roleOptions = util.signupRoleOptions;
-
-  $scope.newUserObj = {}; // declare now to enable $watch
-
-  // when newUserObj is updated
-  $scope.$watchCollection('newUserObj', function() {
-    // if it has an addressData prop
-    if ($scope.newUserObj.hasOwnProperty('addressData')) {
-      // get district for new user based on lat/lon
-      var lat = $scope.newUserObj.addressData.lat;
-      var lng = $scope.newUserObj.addressData.lng;
-
-      // pull district data
-      districtSvc.getDistrictByLatLon(lat, lng)
-      .then(
-        function(response) {
-          $scope.newUserObj.district = response;
-          $scope.addressSelected = true;
-        }
-      );
-    }
-  });
-
-  $scope.register = function(newUserObj, repInfo) {
-
-    if (newUserObj.role === 'rep') {
-      newUserObj.bioguide_id = repInfo.bioguide_id;
-      newUserObj.rep_id = repInfo._id;
-    }
-
-    authSvc.registerNewUser(newUserObj)
-    .then(
-      function(response) {
-        console.log('User reg success, from signupCtrl');
-      },
-      function(err) {
-        console.log(err);
-      }
-    );
-  };
-
-}); // END
-
-repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, util) {
-
-  // make injected data about authed user available on $scope
-  $scope.voterData = voterData;
-  $scope.voterQs = voterQs;
-
-});
-
-repApp.controller('loginCtrl', function($scope, $state, repSvc, authSvc) {
+repApp.controller('repSelectCtrl', function($scope, repSvc) {
   repSvc.getAllReps()
   .then(
     function(response) {
       $scope.repData = response;
     }
   );
+});
 
-  $scope.loginUser = function(userObj) {
-    authSvc.loginUser(userObj)
-    .then(
-      function(response) {
-        console.log('User logged in, loginCtrl');
-      },
-      function(err) {
-        console.log(err);
-      }
-    );
+repApp.directive('repSelect', function() {
+  return {
+    templateUrl: 'app/directives/repSelect/repSelectTmpl.html',
+    controller: 'repSelectCtrl',
+    restrict: 'E',
+    scope: {
+      repInfo: '='
+    }
   };
-
 });
 
 repApp.directive('resultsChart', function() {
@@ -974,22 +897,99 @@ repApp.directive('resultsChart', function() {
   };
 });
 
-repApp.controller('repSelectCtrl', function($scope, repSvc) {
+repApp.controller('loginCtrl', function($scope, $state, repSvc, authSvc) {
   repSvc.getAllReps()
   .then(
     function(response) {
       $scope.repData = response;
     }
   );
+
+  $scope.loginUser = function(userObj) {
+    authSvc.loginUser(userObj)
+    .then(
+      function(response) {
+        console.log('User logged in, loginCtrl');
+      },
+      function(err) {
+        console.log(err);
+      }
+    );
+  };
+
 });
 
-repApp.directive('repSelect', function() {
-  return {
-    templateUrl: 'app/directives/repSelect/repSelectTmpl.html',
-    controller: 'repSelectCtrl',
-    restrict: 'E',
-    scope: {
-      repInfo: '='
-    }
+repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc, currUser, repData, repQuestions) {
+
+  $scope.currUserData = currUser; // data about current user
+  $scope.repData = repData; // data about current page's rep
+  $scope.repQs = repQuestions; // all questions for current page's rep
+
+});
+
+repApp.controller('settingsCtrl', function($scope, authSvc) {
+  $scope.test = 'settingsCtrl connect';
+  $scope.logout = function() {
+    authSvc.logout()
+    .then(
+      function(response) {
+        console.log('user logged out!');
+        // $scope.updateCurrUserData();
+      }
+    );
   };
+});
+
+repApp.controller('signupCtrl', function($scope, districtSvc, authSvc, util) {
+
+  // custom options for dual-toggle directive
+  $scope.roleOptions = util.signupRoleOptions;
+
+  $scope.newUserObj = {}; // declare now to enable $watch
+
+  // when newUserObj is updated
+  $scope.$watchCollection('newUserObj', function() {
+    // if it has an addressData prop
+    if ($scope.newUserObj.hasOwnProperty('addressData')) {
+      // get district for new user based on lat/lon
+      var lat = $scope.newUserObj.addressData.lat;
+      var lng = $scope.newUserObj.addressData.lng;
+
+      // pull district data
+      districtSvc.getDistrictByLatLon(lat, lng)
+      .then(
+        function(response) {
+          $scope.newUserObj.district = response;
+          $scope.addressSelected = true;
+        }
+      );
+    }
+  });
+
+  $scope.register = function(newUserObj, repInfo) {
+
+    if (newUserObj.role === 'rep') {
+      newUserObj.bioguide_id = repInfo.bioguide_id;
+      newUserObj.rep_id = repInfo._id;
+    }
+
+    authSvc.registerNewUser(newUserObj)
+    .then(
+      function(response) {
+        console.log('User reg success, from signupCtrl');
+      },
+      function(err) {
+        console.log(err);
+      }
+    );
+  };
+
+}); // END
+
+repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, util) {
+
+  // make injected data about authed user available on $scope
+  $scope.voterData = voterData;
+  $scope.voterQs = voterQs;
+
 });

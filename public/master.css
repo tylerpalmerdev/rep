@@ -315,14 +315,23 @@ nav-bar dialog-modal .new-q-form .form-buttons .submit-button {
   background-color: #3d5280;
 }
 
-nav-bar dialog-modal .my-reps h3 {
+nav-bar dialog-modal .my-reps {
+  background-color: #d6d6d6;
+}
+
+nav-bar dialog-modal .my-reps .my-reps-header {
   text-align: center;
-  margin: 0;
-  margin-bottom: 15px;
+  padding: 10px 0;
+}
+
+nav-bar dialog-modal .my-reps .my-reps-header, nav-bar dialog-modal .my-reps .voter-rep-box {
+  margin-bottom: 10px;
+  background-color: white;
 }
 
 nav-bar dialog-modal .my-reps .rep-box-container {
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
   display: flex;
   flex-flow: column nowrap;
 }
@@ -332,11 +341,11 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  border-top: 1px solid gray;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box img {
-  height: 20vh;
+  height: 18vh;
   width: auto;
 }
 
@@ -347,8 +356,14 @@ nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box .voter-rep-text 
   margin-left: 15px;
 }
 
-nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box:last-of-type {
-  border-bottom: 1px solid gray;
+nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box .voter-rep-text .rep-title {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+nav-bar dialog-modal .my-reps .rep-box-container .voter-rep-box .voter-rep-text .rep-name {
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .content question-feed .question-box {
