@@ -18,4 +18,7 @@ repApp.controller('dualToggleCtrl', function($scope) {
       $scope.selected = elem.value;
     }
   });
+
+  // revert to default when coming back to view
+  $scope.select(0);
 });

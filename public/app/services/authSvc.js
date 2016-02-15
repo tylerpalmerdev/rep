@@ -1,4 +1,4 @@
-repApp.service('authSvc', function($http, $state, $stateParams, $q) {
+repApp.service('authSvc', function($http, $state, $stateParams, $q, questionSvc) {
 
   var goToHomePage = function(responseObj) {
     var role = responseObj.data.role;

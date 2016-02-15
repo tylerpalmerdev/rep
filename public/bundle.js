@@ -63,7 +63,7 @@ repApp.config(function($stateProvider, $urlRouterProvider) {
   .otherwise('/login');
 });
 
-repApp.service('authSvc', function($http, $state, $stateParams, $q) {
+repApp.service('authSvc', function($http, $state, $stateParams, $q, questionSvc) {
 
   var goToHomePage = function(responseObj) {
     var role = responseObj.data.role;
@@ -279,8 +279,9 @@ repApp.service('qFeedSvc', function() {
     }
   };
 
-  this.userAnsweredQ = function(isRep, questionObj) {
-    if (isRep || !questionObj.answered) {
+  // if voter and voter answered q, return true
+  this.userAnsweredQ = function(userData, questionObj) {
+    if (!userData.role || userData.role === 'rep') {
       return false;
     } else if (questionObj.answered) {
       return true;
@@ -290,8 +291,9 @@ repApp.service('qFeedSvc', function() {
   };
 
   // to show "you did not submit an answer" text
-  this.userDidNotAnswer = function(isRep, questionObj) {
-    if (isRep || questionObj.answered || !this.isInPast(questionObj)) {
+  this.userDidNotAnswer = function(userData, questionObj) {
+
+    if (!userData.role || userData.role === 'rep' || questionObj.answered || !this.isInPast(questionObj)) {
       return false;
     } else if (!questionObj.answered) {
       return true;
@@ -336,30 +338,21 @@ repApp.service('qFeedSvc', function() {
     }
   };
 
-  // why doesn't this work?
-  // check to see if user answered question, used when they are on rep page
-  this.userHasAnsweredQ = function(userData, qId) {
-    // if (!userData) { // false if not auth'd
-    //   return false;
-    // } else if (userData.role === 'rep') { // false if rep
-    //   return false;
-    // } else if (userData.role === 'voter') {
-    //   // if voter hasn't answered any questions
-    //   if (userData.questions_answered.length === 0) {
-    //     return false;
-    //   } else {
-    //     // search array of questions answerer for the q's ID
-    //     userData.questions_answered.forEach(function(elem, i, arr) {
-    //       if (elem.question_id === qId) { // if match found
-    //         console.log("match!", elem.question_id, qId);
-    //         return true; // return the index of that
-    //       }
-    //     });
-    //   }
-    // }
-    // // if nothing matches
-    // return false;
+  // compares userData and questionArr, adds answered data to question arr
+  this.getUsersAnsweredQs = function(currUserObj, questionArr) {
+    if (currUserObj.role && currUserObj.role === 'voter') {
+      currUserObj.questions_answered.forEach(function(elem, i, arr) {
+        questionArr.forEach(function(qElem, qI, qArr) {
+          if (qElem._id === elem.question_id) {
+            qElem.answered = true;
+            qElem.answer_chosen = elem.answer_chosen;
+          }
+        });
+      });
+    }
+    return questionArr;
   };
+
 });
 
 repApp.service('questionSvc', function($http, constants) {
@@ -400,13 +393,7 @@ repApp.service('questionSvc', function($http, constants) {
   };
 
   this.answerQ = function(answerObj) {
-    /*
-    {
-      question_id: 'asdojkf8jasd98f',
-      answer: 2,
-      user_id: '099asg0asd'
-    }
-    */
+
     return $http({
       method: 'POST',
       url: '/answers',
@@ -572,6 +559,9 @@ repApp.controller('dualToggleCtrl', function($scope) {
       $scope.selected = elem.value;
     }
   });
+
+  // revert to default when coming back to view
+  $scope.select(0);
 });
 
 repApp.directive('dualToggle', function() {
@@ -587,7 +577,111 @@ repApp.directive('dualToggle', function() {
   };
 });
 
-repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
+repApp.directive('dialogModal', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'app/directives/modal/modalTmpl.html',
+    scope: {
+      showModal: '='
+    },
+    transclude: true,
+    link: function(scope, elem, attrs) {
+      scope.hideModal = function() {
+        scope.showModal = false;
+      };
+    }
+  };
+});
+
+repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, questionSvc, constants, util) {
+
+  /* NAV */
+  $scope.goHome = function(status) {
+    // if voter is viewing a rep page and wants to go home
+    if ($scope.currAuth.role === 'voter' && $state.current.name === 'rep') {
+      $state.go('voter', {voterId: $scope.currAuth._id});
+    }
+    // or, if rep viewing another rep page
+    else if ($scope.currAuth.role === 'rep' && $scope.currAuth.rep_id._id !== $stateParams.rep_id) {
+      $state.go('rep', {repId: $scope.currAuth.rep_id._id});
+    }
+  };
+
+  /* NEW Q - REP ONLY*/
+  $scope.newQForm = false;
+  $scope.newQObj = {options: []};
+
+  $scope.qTypes = util.newQFormOptions;
+
+  $scope.openQForm = function() {
+    $scope.newQForm = true;
+  };
+
+  $scope.clearQForm = function() {
+    $scope.newQObj = {options: [], kind: 'yn'};
+    $scope.qTypes[0].selected = true;
+    $scope.qTypes[1].selected = false;
+  };
+
+  // for reps only
+  $scope.updateQData = function() {
+    // if rep is on own page
+    if ($scope.currAuth.rep_id === $stateParams.repId) {
+      questionSvc.getQsForUser($scope.currAuth._id, 'rep')
+      .then(
+        function(response) {
+          $scope.userQs = response;
+        }
+      );
+    }
+  };
+
+  $scope.submitNewQ = function(newQObj) {
+    newQObj.submitted_by = {
+      rep_id: $scope.currAuth.rep_id._id,
+      user_id: $scope.currAuth._id
+    };
+    questionSvc.postNewQ(newQObj)
+    .then(
+      function(response) {
+        $scope.newQForm = false;
+        $scope.clearQForm();
+        $scope.updateQData();
+      }
+    );
+  };
+
+  $scope.logoutCurrUser = function() {
+    authSvc.logout();
+  };
+
+  /* MYREPS - VOTER ONLY */
+  $scope.myRepsModal = false;
+
+  $scope.openMyReps = function() {
+    $scope.myRepsModal = true;
+  };
+
+  $scope.getRepImgUrl = util.getPhotoUrl;
+});
+
+repApp.directive('navBar', function() {
+  return {
+    templateUrl: 'app/directives/navbar/navbarTmpl.html',
+    controller: 'navbarCtrl',
+    restrict: 'E',
+    scope: {
+      currAuth: '=',
+      currStatus: '=',
+      userQs: '='
+    }
+  };
+});
+
+repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc, $interval) {
+
+  // update $scope.q-data to contain questions answered by user
+  $scope.qData = qFeedSvc.getUsersAnsweredQs($scope.userData, $scope.qData);
 
   // this will be used to open/close modals for each question box.
   $scope.modalShowObj = {};
@@ -611,7 +705,7 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
     questionSvc.getQsForUser($scope.userData._id, $scope.userData.role)
     .then(
       function(response) {
-        $scope.qData = response;
+        $scope.qData = qFeedSvc.getUsersAnsweredQs($scope.userData, response);
       }
     );
   };
@@ -1727,105 +1821,4 @@ repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, u
   $scope.voterData = voterData;
   $scope.voterQs = voterQs;
 
-});
-
-repApp.controller('navbarCtrl', function($scope, $state, $stateParams, authSvc, questionSvc, constants, util) {
-
-  /* NAV */
-  $scope.goHome = function(status) {
-    // if voter is viewing a rep page and wants to go home
-    if ($scope.currAuth.role === 'voter' && $state.current.name === 'rep') {
-      $state.go('voter', {voterId: $scope.currAuth._id});
-    }
-    // or, if rep viewing another rep page
-    else if ($scope.currAuth.role === 'rep' && $scope.currAuth.rep_id._id !== $stateParams.rep_id) {
-      $state.go('rep', {repId: $scope.currAuth.rep_id._id});
-    }
-  };
-
-  /* NEW Q - REP ONLY*/
-  $scope.newQForm = false;
-  $scope.newQObj = {options: []};
-
-  $scope.qTypes = util.newQFormOptions;
-
-  $scope.openQForm = function() {
-    $scope.newQForm = true;
-  };
-
-  $scope.clearQForm = function() {
-    $scope.newQObj = {options: [], kind: 'yn'};
-    $scope.qTypes[0].selected = true;
-    $scope.qTypes[1].selected = false;
-  };
-
-  // for reps only
-  $scope.updateQData = function() {
-    // if rep is on own page
-    if ($scope.currAuth.rep_id === $stateParams.repId) {
-      questionSvc.getQsForUser($scope.currAuth._id, 'rep')
-      .then(
-        function(response) {
-          $scope.userQs = response;
-        }
-      );
-    }
-  };
-
-  $scope.submitNewQ = function(newQObj) {
-    newQObj.submitted_by = {
-      rep_id: $scope.currAuth.rep_id._id,
-      user_id: $scope.currAuth._id
-    };
-    questionSvc.postNewQ(newQObj)
-    .then(
-      function(response) {
-        $scope.newQForm = false;
-        $scope.clearQForm();
-        $scope.updateQData();
-      }
-    );
-  };
-
-  $scope.logoutCurrUser = function() {
-    authSvc.logout();
-  };
-
-  /* MYREPS - VOTER ONLY */
-  $scope.myRepsModal = false;
-
-  $scope.openMyReps = function() {
-    $scope.myRepsModal = true;
-  };
-
-  $scope.getRepImgUrl = util.getPhotoUrl;
-});
-
-repApp.directive('navBar', function() {
-  return {
-    templateUrl: 'app/directives/navbar/navbarTmpl.html',
-    controller: 'navbarCtrl',
-    restrict: 'E',
-    scope: {
-      currAuth: '=',
-      currStatus: '=',
-      userQs: '='
-    }
-  };
-});
-
-repApp.directive('dialogModal', function() {
-  return {
-    restrict: 'E',
-    templateUrl: 'app/directives/modal/modalTmpl.html',
-    scope: {
-      showModal: '='
-    },
-    transclude: true,
-    link: function(scope, elem, attrs) {
-      scope.hideModal = function() {
-        scope.showModal = false;
-      };
-    }
-  };
 });

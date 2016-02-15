@@ -29,19 +29,10 @@ module.exports = {
           'submitted_by.rep_id': {$in: result.reps}
         })
         .populate('submitted_by.rep_id', 'first_name last_name bioguide_id title title_abbrev district state state_name')
-        .lean() // this is to add answer data to user's questions data
         .exec(function(err, voterQs) {
           if (err) {
             res.sendStatus(500, err);
           }
-          result.questions_answered.forEach(function(elem, i, arr) {
-            voterQs.forEach(function(qElem, qI, qArr) {
-              if (qElem._id.equals(elem.question_id)) {
-                qElem.answered = true;
-                qElem.answer_chosen = elem.answer_chosen;
-              }
-            });
-          });
           res.send(voterQs);
         });
       });

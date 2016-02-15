@@ -71,11 +71,11 @@
       </div>
     </form>
     <!-- only show if voter has answered question -->
-    <div ng-show="userAnsweredQ(isRep, question)" class="voter-choice-info">
+    <div ng-show="userAnsweredQ(userData, question)" class="voter-choice-info">
       <i class="fa fa-circle"></i> = Your pick
     </div>
     <!-- only show is q is complete and voter did not answer -->
-    <div ng-show="userDidNotAnswer(isRep, question)" class="voter-choice-info">
+    <div ng-show="userDidNotAnswer(userData, question)" class="voter-choice-info">
       You did not submit an answer.
     </div>
     <div ng-show="isRep && question.total_responses > 0 && !isInPast(question)" class="modal-response-text">

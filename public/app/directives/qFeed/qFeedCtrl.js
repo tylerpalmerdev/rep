@@ -1,4 +1,7 @@
-repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
+repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc, $interval) {
+
+  // update $scope.q-data to contain questions answered by user
+  $scope.qData = qFeedSvc.getUsersAnsweredQs($scope.userData, $scope.qData);
 
   // this will be used to open/close modals for each question box.
   $scope.modalShowObj = {};
@@ -22,7 +25,7 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc) {
     questionSvc.getQsForUser($scope.userData._id, $scope.userData.role)
     .then(
       function(response) {
-        $scope.qData = response;
+        $scope.qData = qFeedSvc.getUsersAnsweredQs($scope.userData, response);
       }
     );
   };

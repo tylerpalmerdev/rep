@@ -41,8 +41,9 @@ repApp.service('qFeedSvc', function() {
     }
   };
 
-  this.userAnsweredQ = function(isRep, questionObj) {
-    if (isRep || !questionObj.answered) {
+  // if voter and voter answered q, return true
+  this.userAnsweredQ = function(userData, questionObj) {
+    if (!userData.role || userData.role === 'rep') {
       return false;
     } else if (questionObj.answered) {
       return true;
@@ -52,8 +53,9 @@ repApp.service('qFeedSvc', function() {
   };
 
   // to show "you did not submit an answer" text
-  this.userDidNotAnswer = function(isRep, questionObj) {
-    if (isRep || questionObj.answered || !this.isInPast(questionObj)) {
+  this.userDidNotAnswer = function(userData, questionObj) {
+
+    if (!userData.role || userData.role === 'rep' || questionObj.answered || !this.isInPast(questionObj)) {
       return false;
     } else if (!questionObj.answered) {
       return true;
@@ -98,28 +100,19 @@ repApp.service('qFeedSvc', function() {
     }
   };
 
-  // why doesn't this work?
-  // check to see if user answered question, used when they are on rep page
-  this.userHasAnsweredQ = function(userData, qId) {
-    // if (!userData) { // false if not auth'd
-    //   return false;
-    // } else if (userData.role === 'rep') { // false if rep
-    //   return false;
-    // } else if (userData.role === 'voter') {
-    //   // if voter hasn't answered any questions
-    //   if (userData.questions_answered.length === 0) {
-    //     return false;
-    //   } else {
-    //     // search array of questions answerer for the q's ID
-    //     userData.questions_answered.forEach(function(elem, i, arr) {
-    //       if (elem.question_id === qId) { // if match found
-    //         console.log("match!", elem.question_id, qId);
-    //         return true; // return the index of that
-    //       }
-    //     });
-    //   }
-    // }
-    // // if nothing matches
-    // return false;
+  // compares userData and questionArr, adds answered data to question arr
+  this.getUsersAnsweredQs = function(currUserObj, questionArr) {
+    if (currUserObj.role && currUserObj.role === 'voter') {
+      currUserObj.questions_answered.forEach(function(elem, i, arr) {
+        questionArr.forEach(function(qElem, qI, qArr) {
+          if (qElem._id === elem.question_id) {
+            qElem.answered = true;
+            qElem.answer_chosen = elem.answer_chosen;
+          }
+        });
+      });
+    }
+    return questionArr;
   };
+
 });
