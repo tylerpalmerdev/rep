@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 module.exports = {
   create: function(req, res) {
     var question = new Question(req.body);
-    question.save(function(err, result) {
+    question.save(function(err, result) { // pass result_id to emit function w/ sockets
       if (err) {
         console.log(err);
         res.sendStatus(500, err);
