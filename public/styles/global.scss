@@ -11,6 +11,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: $global-font-fam;
+	height: 100vh;
+	background-color: $body-color-2;
 
 	a {
 		cursor: pointer;

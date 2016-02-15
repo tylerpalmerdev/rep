@@ -1,4 +1,4 @@
-var repApp = angular.module('repApp', ['ui.router', 'ngAnimate']);
+var repApp = angular.module('repApp', ['ui.router', 'ngAnimate', 'angucomplete-alt']);
 
 // add this to run block to fix scroll to top error when changing stateParams
 repApp.run(function($rootScope) {

@@ -1,6 +1,15 @@
 <nav-bar curr-auth="voterData" curr-status="status" modal-open="myRepsModal"></nav-bar>
 <div class="voter-content content">
-  <h3>Welcome back! Logged in as {{voterData.name}}</h3>
+  <div class="voter-top-content">
+    <h3>Welcome back!</h3>
+    <div class="logged-in-user">Logged in as {{voterData.name}}</div>
+    <div class="rep-select-box voter-page-rep-select-box">
+      <div class="rep-select-text">
+        Go to a representative's page:
+      </div>
+      <rep-select rep-info="chosenRepInfo"></rep-select>
+    </div>
+  </div>
   <h4 class="q-feed-header">QUESTIONS FEED</h4>
   <question-feed q-data="voterQs" user-data="voterData" is-rep="false">
   </question-feed>

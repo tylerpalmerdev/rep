@@ -5,7 +5,7 @@ module.exports = {
   read: function(req, res) { // get all reps, primarily for dropdown directive
     Rep
     .find({})
-    .select('bioguide_id title_abbrev state first_name last_name')
+    .select('bioguide_id title_abbrev state state_name first_name last_name')
     .exec(function(err, result) {
       if (err) {
         res.sendStatus(500, err);

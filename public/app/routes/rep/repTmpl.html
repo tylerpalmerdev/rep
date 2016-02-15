@@ -22,11 +22,52 @@
       </div>
     </div>
     <rep-contact-bar rep-data="repData" class="mobile-contact-bar"></rep-contact-bar>
+    <div class="rep-select-box rep-page-rep-select-box">
+      <div class="rep-select-text">
+        Go to another representative's page:
+      </div>
+      <rep-select rep-info="chosenRepInfo"></rep-select>
+    </div>
+  </div>
+  <div ng-show="repData.active_account && repQs.length > 0" class="signed-up-rep">
+    <h4 class="q-feed-header">QUESTIONS ASKED</h4>
+    <question-feed q-data="repQs" user-data="currUserData" is-rep="true">
+    </question-feed>
+  </div>
+  <div class="inactive-card-wrapper">
+    <div ng-show="!repData.active_account" class="no-account-rep inactive-card">
+      <div class="inactive-rep-icon">
+        <i class="fa fa-user-secret"></i>
+      </div>
+      <div class="inactive-rep-heading">
+        {{repData.title}} {{repData.last_name}} has not signed up for a Rep account.
+      </div>
+      <div class="inactive-rep-text">
+        Use the contact links above to tell <span ng-show="repData.gender === 'F'">her</span> <span ng-show="repData.gender === 'M'">him</span> to join.
+      </div>
+    </div>
+    <div ng-show="repData.active_account && repQs.length === 0" class="no-qs-rep inactive-card">
+      <div class="inactive-rep-icon">
+        <i class="fa fa-commenting"></i>
+      </div>
+      <div ng-show="!userIsRepOnOwnPage()" class="no-qs-content-wrapper">
+        <div class="inactive-rep-heading">
+          {{repData.title}} {{repData.last_name}} has not asked any questions yet.
+        </div>
+        <div class="inactive-rep-text">
+          Use the contact links above to tell <span ng-show="repData.gender === 'F'">her</span> <span ng-show="repData.gender === 'M'">him</span> to get started.
+        </div>
+      </div>
+      <div ng-show="userIsRepOnOwnPage()" class="no-qs-content-wrapper">
+        <div class="inactive-rep-heading">
+          You have not asked any questions yet.
+        </div>
+        <div class="inactive-rep-text">
+          Click on the "<i class="fa fa-pencil-square-o"></i>" icon in the menu bar above to get started.
+        </div>
+      </div>
+
+    </div>
   </div>
   <!-- {{repData}} -->
-  <h4 class="q-feed-header">QUESTIONS ASKED</h4>
-  <!-- {{qFilter}} -->
-  <!-- <dual-toggle options="filterOptions" selected="qFilter" class="q-feed-filter"></dual-toggle> -->
-  <question-feed q-data="repQs" user-data="currUserData" is-rep="true">
-  </question-feed>
 </div>

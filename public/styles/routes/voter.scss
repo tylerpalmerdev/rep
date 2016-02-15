@@ -1,5 +1,28 @@
 @import './../_variables.scss';
 
-.voter-content > h3 {
-  text-align: center;
+.voter-content {
+
+  .voter-top-content {
+    padding: 20px;
+    background-color: $form-color;
+
+    h3, .logged-in-user, .rep-select-text {
+      text-align: center;
+    }
+
+    h3 {
+      margin: 0 0 5px 0;
+    }
+
+    .voter-page-rep-select-box {
+      margin: 0 auto;
+      margin-top: $form-text-margin-b;
+      max-width: 450px;
+      .rep-select-text {
+        font-size: $input-text-size-tab;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
 }

@@ -1,2 +1,10 @@
-<select ng-model="repInfo" ng-options="rep as (rep.title_abbrev + ' ' + rep.first_name + ' ' + rep.last_name + ' - ' + rep.state) for rep in repData">
-</select>
+<angucomplete-alt id="rep-search"
+              placeholder="Search rep name or state."
+              pause="100"
+              selected-object="repSelected"
+              local-data="repData"
+              search-fields="first_name,last_name,state_name"
+              title-field="title_abbrev,first_name,last_name"
+              description-field="state_name"
+              minlength="3"
+              input-class="form-control form-control-small"/>
