@@ -43,13 +43,19 @@ repApp.service('qFeedSvc', function() {
 
   // if voter and voter answered q, return true
   this.userAnsweredQ = function(userData, questionObj) {
-    if (!userData.role || userData.role === 'rep') {
-      return false;
-    } else if (questionObj.answered) {
+
+    if (userData.role === 'voter' && questionObj.answered) {
       return true;
-    } else { // account for other scenarios
+    } else {
       return false;
     }
+    // if (!userData.role || userData.role === 'rep') {
+    //   return false;
+    // } else if (questionObj.answered) {
+    //   return true;
+    // } else { // account for other scenarios
+    //   return false;
+    // }
   };
 
   // to show "you did not submit an answer" text
@@ -59,6 +65,15 @@ repApp.service('qFeedSvc', function() {
       return false;
     } else if (!questionObj.answered) {
       return true;
+    }
+  };
+
+  // to show "you have not submitted an answer" text
+  this.userHasNotAnswered = function(userData, questionObj) {
+    if (userData.role === 'voter' && !this.isInPast(questionObj) && !questionObj.answered) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -91,7 +106,7 @@ repApp.service('qFeedSvc', function() {
   };
 
   this.chosenAnswerMatch = function(isRep, option, questionObj) {
-    if (isRep || !questionObj.options[questionObj.answer_chosen]) {
+    if (!questionObj.options[questionObj.answer_chosen]) {
       return false;
     } else if (option.text === questionObj.options[questionObj.answer_chosen].text) {
       return true;

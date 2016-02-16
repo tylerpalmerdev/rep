@@ -29,7 +29,7 @@ repApp.service('questionSvc', function($http, constants) {
     })
     .then(
       function(response) {
-        console.log(response.data);
+        // console.log(response.data);
         // return response.data;
       }
     );

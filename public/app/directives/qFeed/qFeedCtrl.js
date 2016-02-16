@@ -1,7 +1,57 @@
-repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc, $interval) {
+repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc, $interval, socketSvc, $element, $stateParams) {
+
+  var socket = socketSvc.getSocket();
+
+  socket.on('questionAnswered', function(data) {
+    console.log("question just answered!", data);
+
+    // if (question in questionData) > update that question
+    // $scope.$apply();
+  });
+
+  socket.on('newQuestion', function(data) {
+    // console.log("new question submitted!", data);
+    var submittedBy = data.submitted_by.rep_id;
+    // if new question was submitted by current rep, or if question was asked by a voter's rep:
+    var checkIfRep = function(userData, repId) {
+      var isRep = false;
+      if (!$scope.userData.role || $scope.userData.role === 'rep') {
+        return isRep;
+      } else {
+        userData.reps.forEach(function(elem, i, arr) {
+          if (elem._id === repId) {
+            console.log("new q from rep!");
+            isRep = true;
+          }
+        });
+      }
+      return isRep;
+    };
+
+    var repCheck = checkIfRep($scope.userData, submittedBy);
+
+    if (repCheck || (submittedBy === $stateParams.repId)) {
+      $scope.qData.push(data);
+      $scope.getFinalQData($scope.qData);
+      $scope.$apply(function() {
+        console.log("Q feed updated!");
+      });
+    }
+  });
+
+  // $element.on('$destroy', function() {
+  //   socket.off('questionAnswered');
+  //   socket.off('newQuestion');
+  // });
+
 
   // update $scope.q-data to contain questions answered by user
-  $scope.qData = qFeedSvc.getUsersAnsweredQs($scope.userData, $scope.qData);
+  $scope.getFinalQData = function(rawQData) {
+    $scope.qData = qFeedSvc.getUsersAnsweredQs($scope.userData, rawQData);
+  };
+
+  // invoke once right away
+  $scope.getFinalQData($scope.qData);
 
   // this will be used to open/close modals for each question box.
   $scope.modalShowObj = {};
@@ -25,10 +75,12 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc, $in
     questionSvc.getQsForUser($scope.userData._id, $scope.userData.role)
     .then(
       function(response) {
-        $scope.qData = qFeedSvc.getUsersAnsweredQs($scope.userData, response);
+        $scope.getFinalQData(response);
       }
     );
   };
+
+  // $interval($scope.updateQuestionData, 5000, 20);
 
   $scope.userIsRepWhoAsked = qFeedSvc.userIsRepWhoAsked;
   $scope.isInPast = qFeedSvc.isInPast;
@@ -36,6 +88,7 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc, $in
   $scope.showInfoOnly = qFeedSvc.showInfoOnly;
   $scope.userAnsweredQ = qFeedSvc.userAnsweredQ;
   $scope.userDidNotAnswer = qFeedSvc.userDidNotAnswer;
+  $scope.userHasNotAnswered = qFeedSvc.userHasNotAnswered;
   $scope.getTimeRemaining = qFeedSvc.getTimeRemaining;
   $scope.chosenAnswerMatch = qFeedSvc.chosenAnswerMatch;
 
@@ -50,8 +103,10 @@ repApp.controller('qFeedCtrl', function($scope, questionSvc, util, qFeedSvc, $in
     .then(
       function(response) {
         $scope.closeQModal(questionObj);
-        $scope.updateQuestionData();
+        questionObj.answered = true;
+        questionObj.answer_chosen = questionObj.optionChosenIndex;
       }
     );
   };
+
 });

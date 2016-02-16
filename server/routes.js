@@ -5,7 +5,7 @@ var passport = require('passport'),
 
 require('./config/passport')(passport);
 
-module.exports = function(app) {
+module.exports = function(app, io) {
   // signup endpoint
   app.post('/signup', passport.authenticate('local-signup'), function(req, res) {
     res.send(req.user);
@@ -34,7 +34,12 @@ module.exports = function(app) {
   app.get('/user/:userId', userCtrl.read);
 
   // question endpoints
-  app.post('/questions', questionCtrl.create);
+  app.post('/questions', questionCtrl.create, function(req) {
+    io.sockets.emit('newQuestion', req.newQData);
+  });
+  
   app.get('/questions', questionCtrl.map); // extra data in query string
-  app.post('/answers', questionCtrl.answer);
+  app.post('/answers', questionCtrl.answer, function(req) {
+    io.sockets.emit('questionAnswered', req.answerData);
+  });
 };

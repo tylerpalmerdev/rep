@@ -46,49 +46,40 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// start app listening
+var server = app.listen(port, function() {
+  console.log('listening on port', port);
+});
+
 // set up socketio
-var http = require('http').Server(app),
-    io = require('socket.io')(http),
+// var http = require('http').Server(app),
+var io = require('socket.io').listen(server),
     passportSocketIo = require('passport.socketio');
+
+// import endpoints file, initialized to express app
+var routes = require('./routes')(app, io);
 
 io.use(passportSocketIo.authorize({
   cookieParser: cookieParser,
   secret: process.env.SESSION_SECRET,
-  store: sessionStore,
-  success: onAuthorizeSuccess,
-  fail: onAuthorizeFail
+  store: sessionStore
 }));
 
-
-function onAuthorizeSuccess(data, accept){
-  console.log('successful connection to socket.io');
-
-  // If you use socket.io@1.X the callback looks different
-  accept();
-}
-
-function onAuthorizeFail(data, message, error, accept){
-  console.log('successful connection to socket.io');
-
-  if(error)
-    accept(new Error(message));
-}
-
-io.sockets.on('connection', function(socket) {
-  console.log('user connected!');
-  var user = socket.request.user;
-  console.log(user);
-  if (user.role === 'voter') {
-    console.log('Voter made it through!');
-  } else if (user.role === 'rep') {
-    console.log('Rep made it through!');
-  }
+io.use(function(socket, next) {
+  console.log("middleware hit!");
+  next();
 });
 
-// import endpoints file, initialized to express app
-var routes = require('./routes')(app);
-
-// start app listening
-app.listen(port, function() {
-  console.log('listening on port', port);
+io.sockets.on('connection', function(socket) {
+  var user = socket.request.user;
+  if (!user.role) {
+    // console.log("no auth user, connected");
+    io.sockets.emit('authEvent', 'noauth emit');
+  } else if (user.role === 'voter') {
+    // console.log("voter user connected");
+    io.sockets.emit('authEvent', 'voterauth emit');
+  } else if (user.role === 'rep') {
+    // console.log("rep user connected");
+    io.sockets.emit('authEvent', 'repauth emit');
+  }
 });

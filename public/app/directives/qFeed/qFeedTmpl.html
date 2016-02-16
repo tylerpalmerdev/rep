@@ -33,7 +33,7 @@
   </div>
 
   <div class="q-box-buttons">
-    <button ng-click="showQModal(question._id)" ng-show="qIsAnswerable(isRep, question)" class="vote-button q-box-button"><i class="fa fa-check-square-o"></i> Vote</button>
+    <button ng-click="showQModal(question._id)" ng-show="!isRep && !question.answered && !isInPast(question)" class="vote-button q-box-button"><i class="fa fa-check-square-o"></i> Vote</button>
     <button ng-click="showQModal(question._id)" ng-show="showInfoOnly(isRep, question)" class="info-button q-box-button"><i class="fa fa-info-circle"></i> Info</button>
     <button ng-click="showQModal(question._id)" ng-show="isInPast(question)" class="results-button q-box-button"><i class="fa fa-pie-chart"></i> Results</button>
   </div>
@@ -77,6 +77,9 @@
     <!-- only show is q is complete and voter did not answer -->
     <div ng-show="userDidNotAnswer(userData, question)" class="voter-choice-info">
       You did not submit an answer.
+    </div>
+    <div ng-show="userHasNotAnswered(userData, question)" class="voter-choice-info">
+      You have not submitted an answer.
     </div>
     <div ng-show="isRep && question.total_responses > 0 && !isInPast(question)" class="modal-response-text">
       <span ng-show="question.total_responses === 1">{{question.total_responses}} response</span>

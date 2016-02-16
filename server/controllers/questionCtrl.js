@@ -4,14 +4,17 @@ var mongoose = require('mongoose'),
     User = require('./../models/User');
 
 module.exports = {
-  create: function(req, res) {
+  create: function(req, res, next) {
     var question = new Question(req.body);
-    question.save(function(err, result) { // pass result_id to emit function w/ sockets
+    question.save(function(err, result) { 
       if (err) {
         console.log(err);
         res.sendStatus(500, err);
       }
       res.send(result);
+      // delete response[1].password;
+      req.newQData = result;
+      next();
     });
   },
 
@@ -51,7 +54,7 @@ module.exports = {
       });
     }
   },
-  answer: function(req, res) {
+  answer: function(req, res, next) {
     /* BODY:
     {
       question_id: 'asdojkf8jasd98f',
@@ -100,13 +103,17 @@ module.exports = {
 
                 // use q to create promise that resolves when both resolve
                 q.all([
-                  questionResult.update(updateObj).exec(),
-                  user.save()
+                  user.save(),
+                  questionResult.update(updateObj).exec(function(err, result) {
+                    return result;
+                  })
                 ])
                 .then(
                   function(response) {
-                    delete response[1].password;
+                    delete response[0].password;
                     res.send(response);
+                    req.answerData = response[0];
+                    next();
                   },
                   function(err) {
                     res.status(500).send("error saving records");
