@@ -35,9 +35,10 @@ module.exports = function(app, io) {
 
   // question endpoints
   app.post('/questions', questionCtrl.create, function(req) {
+    console.log("new q created with ", req.newQData);
     io.sockets.emit('newQuestion', req.newQData);
   });
-  
+
   app.get('/questions', questionCtrl.map); // extra data in query string
   app.post('/answers', questionCtrl.answer, function(req) {
     io.sockets.emit('questionAnswered', req.answerData);

@@ -6,15 +6,24 @@ var mongoose = require('mongoose'),
 module.exports = {
   create: function(req, res, next) {
     var question = new Question(req.body);
-    question.save(function(err, result) { 
+    question.save(function(err, result) {
       if (err) {
         console.log(err);
         res.sendStatus(500, err);
       }
+      // delete response[0].password;
+      console.log("Initial result:", result);
       res.send(result);
-      // delete response[1].password;
-      req.newQData = result;
-      next();
+      Question.findOne({_id: result._id})
+      .populate('submitted_by.rep_id')
+      .exec(function(newErr, newResult) {
+        if (newErr) {
+          res.status(500).send(err);
+        }
+        console.log("new result:", newResult);
+        req.newQData = newResult;
+        next();
+      });
     });
   },
 
@@ -104,14 +113,13 @@ module.exports = {
                 // use q to create promise that resolves when both resolve
                 q.all([
                   user.save(),
-                  questionResult.update(updateObj).exec(function(err, result) {
-                    return result;
-                  })
+                  questionResult.update(updateObj)
                 ])
                 .then(
                   function(response) {
-                    delete response[0].password;
+                    // delete response[0].password;
                     res.send(response);
+                    delete response[0].password;
                     req.answerData = response[0];
                     next();
                   },

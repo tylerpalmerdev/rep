@@ -113,6 +113,10 @@
         font-size: $login-form-heading-size-mob;
       }
 
+      .form-text {
+        font-size: $input-text-size-tab;
+      }
+
       dual-toggle {
         .toggle-wrap {
           font-size: $dual-toggle-font-size-tab;

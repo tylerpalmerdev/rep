@@ -42,6 +42,7 @@ nav-bar {
       // centering adjustments for menu logos
       .nav-icon:first-child {
         padding-bottom: 4px;
+        margin-right: 5px;
       }
 
       .nav-icon:nth-of-type(2) {
@@ -52,6 +53,10 @@ nav-bar {
 
       .nav-icon:nth-of-type(3) {
         padding-top: 2px;
+        padding-left: 5px;
+      }
+
+      .nav-icon:last-child {
         padding-left: 5px;
       }
     }

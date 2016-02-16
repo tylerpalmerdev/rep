@@ -49,13 +49,6 @@ repApp.service('qFeedSvc', function() {
     } else {
       return false;
     }
-    // if (!userData.role || userData.role === 'rep') {
-    //   return false;
-    // } else if (questionObj.answered) {
-    //   return true;
-    // } else { // account for other scenarios
-    //   return false;
-    // }
   };
 
   // to show "you did not submit an answer" text

@@ -228,6 +228,7 @@ nav-bar header nav .nav-icon:hover {
 
 nav-bar header nav .nav-icon:first-child {
   padding-bottom: 4px;
+  margin-right: 5px;
 }
 
 nav-bar header nav .nav-icon:nth-of-type(2) {
@@ -238,6 +239,10 @@ nav-bar header nav .nav-icon:nth-of-type(2) {
 
 nav-bar header nav .nav-icon:nth-of-type(3) {
   padding-top: 2px;
+  padding-left: 5px;
+}
+
+nav-bar header nav .nav-icon:last-child {
   padding-left: 5px;
 }
 
@@ -878,6 +883,9 @@ rep-contact-bar .contact-info-modal .modal-wrapper .modal-dialog .contact-modal-
 @media screen and (min-width: 450px) {
   .signup-content .signup-form .form-heading {
     font-size: 22px;
+  }
+  .signup-content .signup-form .form-text {
+    font-size: 14px;
   }
   .signup-content .signup-form dual-toggle .toggle-wrap {
     font-size: 16px;
