@@ -99,7 +99,12 @@ repApp.service('authSvc', function($http, $state, $stateParams, $q, questionSvc)
         if(!response) {
           def.resolve();
         } else if (response) {
-          def.reject();
+          if (response.role === 'voter') {
+            $state.go('voter', {voterId: response._id});
+          } else if (response.role === 'rep') {
+            $state.go('rep', {'repId': response.rep_id._id});
+          }
+
         }
       }
     );

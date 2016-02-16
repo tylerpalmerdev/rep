@@ -164,7 +164,12 @@ repApp.service('authSvc', function($http, $state, $stateParams, $q, questionSvc)
         if(!response) {
           def.resolve();
         } else if (response) {
-          def.reject();
+          if (response.role === 'voter') {
+            $state.go('voter', {voterId: response._id});
+          } else if (response.role === 'rep') {
+            $state.go('rep', {'repId': response.rep_id._id});
+          }
+
         }
       }
     );
@@ -1837,14 +1842,6 @@ repApp.controller('loginCtrl', function($scope, $state, repSvc, authSvc) {
 
 });
 
-repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, util) {
-
-  // make injected data about authed user available on $scope
-  $scope.voterData = voterData;
-  $scope.voterQs = voterQs;
-
-});
-
 repApp.controller('repCtrl', function($scope, $stateParams, repSvc, districtSvc, questionSvc, authSvc, currUser, repData, repQuestions, qFeedSvc) {
 
   $scope.currUserData = currUser; // data about current user
@@ -1901,3 +1898,11 @@ repApp.controller('signupCtrl', function($scope, districtSvc, authSvc, util) {
   };
 
 }); // END
+
+repApp.controller('voterCtrl', function($scope, constants, voterData, voterQs, util) {
+
+  // make injected data about authed user available on $scope
+  $scope.voterData = voterData;
+  $scope.voterQs = voterQs;
+
+});

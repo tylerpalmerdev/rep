@@ -35,7 +35,6 @@ module.exports = function(app, io) {
 
   // question endpoints
   app.post('/questions', questionCtrl.create, function(req) {
-    console.log("new q created with ", req.newQData);
     io.sockets.emit('newQuestion', req.newQData);
   });
 
