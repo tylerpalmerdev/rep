@@ -20,5 +20,5 @@ repApp.controller('dualToggleCtrl', function($scope) {
   });
 
   // revert to default when coming back to view
-  $scope.select(0);
+  // $scope.select(0);
 });

@@ -484,8 +484,8 @@ repApp.service('util', function(constants) {
   };
 
   this.qFeedFilterOptions = [
-    {label: 'Active', value: 'active', selected: true},
-    {label: 'Completed', value: 'completed'}
+    {label: 'Active', value: 'active'},
+    {label: 'Completed', value: 'completed', selected: true}
   ];
 
   this.newQFormOptions = [
@@ -587,7 +587,7 @@ repApp.controller('dualToggleCtrl', function($scope) {
   });
 
   // revert to default when coming back to view
-  $scope.select(0);
+  // $scope.select(0);
 });
 
 repApp.directive('dualToggle', function() {
