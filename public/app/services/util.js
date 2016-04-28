@@ -4,8 +4,8 @@ repApp.service('util', function(constants) {
   };
 
   this.qFeedFilterOptions = [
-    {label: 'Active', value: 'active', selected: true},
-    {label: 'Completed', value: 'completed'}
+    {label: 'Active', value: 'active'},
+    {label: 'Completed', value: 'completed', selected: true}
   ];
 
   this.newQFormOptions = [
